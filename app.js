@@ -227,14 +227,14 @@ function showResults() {
       boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
   });
   // HIER: Text "Dein Spiel" / "Your Game" - Größe und Kursiv für beide Überschriften
-  const styleTitleText = lang === "de" ? "Dein Spiel" : "Your Game";
+  const styleTitleText = lang === "de" ? "Your Game" : "Your Game";
   const styleTitle = `<h3 style="margin:0 0 10px 0; font-size:1.3rem; font-style:italic; font-weight:700;">${styleTitleText}</h3>`;
   styleDiv.innerHTML = `${styleTitle}<div style="font-size:1.0rem;">${styleDesc}</div>`;
   card.appendChild(styleDiv);
 
   // 3. Neue Überschrift "Dein Racket"
   const racketTitle = document.createElement("h3");
-  const racketTitleText = lang === "de" ? "Dein Racket" : "YourRacket";
+  const racketTitleText = lang === "de" ? "YourRacket" : "YourRacket";
   racketTitle.innerText = racketTitleText;
   // HIER: Größe und Kursiv wie Spielstil-Überschrift (1.3rem, italic)
   Object.assign(racketTitle.style, {
@@ -865,3 +865,4 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
