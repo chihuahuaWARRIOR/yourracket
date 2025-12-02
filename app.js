@@ -1,4 +1,4 @@
-// app.js (vanilla JS) - ersetze exakt die bestehende app.js damit
+// app.js (vanilla JS) - ERSETZT die bestehende app.js
 
 let currentQuestion = 0;
 let userProfile = {};
@@ -209,14 +209,7 @@ function showResults() {
     overflowY: "auto"
   });
 
-  // 1. Branding Header (minimal) - CLAIM ENTFERNT
-  // const header = document.createElement("div");
-  // header.style.marginBottom = "20px";
-  // header.innerHTML = `<h2 style="margin:0 0 0 0; font-size:1.4rem;">Your Game. <b>YourRacket.</b></h2>`;
-  // card.appendChild(header);
-
-
-  // 2. Überschrift "Your Game" (Spielstil)
+  // 1. Überschrift "Your Game" (Spielstil)
   const styleTitle = document.createElement("h3");
   const styleTitleText = "Your Game"; // CI-konstant
   styleTitle.innerText = styleTitleText;
@@ -228,7 +221,7 @@ function showResults() {
   });
   card.appendChild(styleTitle);
 
-  // 3. Spielstil Box (an den Anfang verschoben, ohne eigene Überschrift)
+  // 2. Spielstil Box (an den Anfang verschoben, ohne eigene Überschrift)
   const styleDesc = getPlayStyleDescription(normalizedProfile);
   const styleDiv = document.createElement("div");
   Object.assign(styleDiv.style, {
@@ -243,7 +236,7 @@ function showResults() {
   styleDiv.innerHTML = `<div style="font-size:1.0rem;">${styleDesc}</div>`;
   card.appendChild(styleDiv);
 
-  // 4. Neue Überschrift "YourRacket"
+  // 3. Neue Überschrift "YourRacket"
   const racketTitle = document.createElement("h3");
   const racketTitleText = "YourRacket"; // CI-konstant
   racketTitle.innerText = racketTitleText;
@@ -256,7 +249,7 @@ function showResults() {
   });
   card.appendChild(racketTitle);
 
-  // 5. Mode Selection Text + Buttons (Unter "YourRacket" verschoben)
+  // 4. Mode Selection Text + Buttons (Unter "YourRacket" verschoben)
   const modeSelectionWrap = document.createElement("div");
   Object.assign(modeSelectionWrap.style, {
     display: "flex",
@@ -318,7 +311,7 @@ function showResults() {
   card.appendChild(modeSelectionWrap);
 
 
-  // 6. horizontal row with top3 cards
+  // 5. horizontal row with top3 cards
   const topRow = document.createElement("div");
   topRow.id = "racket-cards-container"; // ID für das Highlighting
   Object.assign(topRow.style, {
@@ -329,7 +322,7 @@ function showResults() {
     marginTop: "0px", // Abstand wird durch modeSelectionWrap geregelt
     marginBottom: "18px",
     // Rahmen für die gesamte Reihe
-    padding: "18px", // ANGEPASST: Erhöht für besseren Abstand zum Rand
+    padding: "18px", // *** ANGEPASST: Erhöht für besseren Abstand zum Rand ***
     borderRadius: "14px",
   });
 
@@ -402,7 +395,7 @@ function showResults() {
   card.appendChild(topRow);
 
 
-  // 7. Profilvergleich Tabelle
+  // 6. Profilvergleich Tabelle
   const tableWrap = document.createElement("div");
   tableWrap.style.overflowX = "auto";
   const table = document.createElement("table");
@@ -471,16 +464,24 @@ function showResults() {
   injectResponsiveStyles();
 }
 
-// NEUE FUNKTION: Grüne/Rote Umrandung für den gesamten Match-Mode
+// *** AKTUALISIERT: Entfernt Outline, nutzt starken Border und Box-Shadow ***
 function highlightMatchMode() {
   const topRow = document.getElementById("racket-cards-container");
   if (!topRow) return;
 
+  // Farbe des Modus: Grün für Stärke, Rot für Schwäche
   const color = matchMode === "strength" ? "#2ea44f" : "#c92a2a";
-  // 3px Outline für den Container
-  topRow.style.outline = `3px solid ${color}`;
-  topRow.style.outlineOffset = "-20px"; // ANGEPASST: Noch weiter weg von den Karten
-  topRow.style.boxShadow = `0 0 10px ${color}50`; // Leichter Schatten für den Effekt
+
+  // 1. Outline komplett entfernen
+  topRow.style.outline = "none";
+  topRow.style.outlineOffset = "0"; 
+
+  // 2. Sichtbaren Rand (Border) des Containers verstärken
+  topRow.style.border = `3px solid ${color}`; // Jetzt 3px Border in Farbe
+
+  // 3. Box-Shadow für den "Popp"-Effekt verstärken
+  // Wert: Horizontaler Versatz, Vertikaler Versatz, Weichheit, Ausbreitung, Farbe mit Alpha
+  topRow.style.boxShadow = `0 0 16px 2px ${color}80`; // Größerer, leuchtender Schatten
 
   // Um die innere Auswahl beizubehalten, muss sichergestellt werden,
   // dass highlightSelectedRacket danach oder in updateRacketDisplay aufgerufen wird.
@@ -563,7 +564,7 @@ function highlightSelectedRacket(index) {
   const cards = overlay.querySelectorAll("div[data-index]");
   cards.forEach(c => {
     const idx = parseInt(c.dataset.index, 10);
-    // Basisfarbe für den Match-Mode
+    // Basisfarbe für den Match-Modus
     const modeColor = matchMode === "strength" ? "#2ea44f" : "#c92a2a";
 
     if (idx === index) {
@@ -626,13 +627,8 @@ function injectResponsiveStyles() {
       #profile-table { min-width: 100% !important; }
       #restart-floating { display: none; }
     }
-    /* Korrektur für Matchmode Outline auf Mobile: */
-    @media (max-width: 580px) {
-      #racket-cards-container {
-        outline-offset: -3px !important; /* Etwas näher an den Boxen, für kleinere Screens */
-        padding: 3px !important;
-      }
-    }
+    /* Die Korrektur für Matchmode Outline auf Mobile wurde entfernt,
+      da wir jetzt Border/Box-Shadow verwenden. */
   `;
   document.head.appendChild(s);
 }
