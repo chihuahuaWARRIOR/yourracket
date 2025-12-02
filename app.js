@@ -328,8 +328,8 @@ function showResults() {
     flexWrap: "wrap",
     marginTop: "0px", // Abstand wird durch modeSelectionWrap geregelt
     marginBottom: "18px",
-    // Rahmen für die gesamte Reihe (wird in highlightMatchMode gesetzt)
-    padding: "1px", 
+    // Rahmen für die gesamte Reihe
+    padding: "6px", // Erhöht für besseren Abstand
     borderRadius: "14px",
   });
 
@@ -479,7 +479,7 @@ function highlightMatchMode() {
   const color = matchMode === "strength" ? "#2ea44f" : "#c92a2a";
   // 3px Outline für den Container
   topRow.style.outline = `3px solid ${color}`;
-  topRow.style.outlineOffset = "-4px"; // lässt den Container innerhalb des Rahmens erscheinen
+  topRow.style.outlineOffset = "-10px"; // ANGEPASST für mehr Abstand
   topRow.style.boxShadow = `0 0 10px ${color}50`; // Leichter Schatten für den Effekt
 
   // Um die innere Auswahl beizubehalten, muss sichergestellt werden,
@@ -629,7 +629,8 @@ function injectResponsiveStyles() {
     /* Korrektur für Matchmode Outline auf Mobile: */
     @media (max-width: 580px) {
       #racket-cards-container {
-        outline-offset: -3px !important; /* Etwas näher an den Boxen */
+        outline-offset: -3px !important; /* Etwas näher an den Boxen, für kleinere Screens */
+        padding: 3px !important;
       }
     }
   `;
