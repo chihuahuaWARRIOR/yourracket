@@ -219,7 +219,7 @@ function showResults() {
 
   const left = document.createElement("div");
   left.style.flex = "1 1 300px";
-  // HIER: Leerzeichen entfernt
+  // HIER: Leerzeichen entfernt (durch direkteres Zusammenfügen)
   left.innerHTML = `<h2 style="margin:0 0 6px 0; font-size:1.4rem;">Your Game. <b>YourRacket.</b></h2>
     <p style="margin:0; color:#444;">${lang === "de" ? "Möchtest du" : "Would you like to"}
     <span style="font-weight:700; color:#2ea44f;">${lang === "de" ? "Deine Stärken ausbauen" : "enhance strengths"}</span> ${lang === "de" ? "oder" : "or"}
@@ -290,9 +290,12 @@ function showResults() {
       borderRadius: "12px",
       padding: "12px",
       boxSizing: "border-box",
-      border: idx === 0 ? "2px solid #111" : "1px solid #ddd",
-      background: idx === 0 ? "rgba(0,0,0,0.03)" : "#fff",
-      cursor: "pointer"
+      // Initialer Rahmen (wird durch highlightSelectedRacket überschrieben)
+      border: "1px solid #ddd", 
+      background: "#fff", 
+      cursor: "pointer",
+      // Hinzufügen eines einfachen Übergangs für das Highlighting
+      transition: "border 0.2s, box-shadow 0.2s" 
     });
     div.dataset.index = idx;
     div.onclick = () => updateRacketDisplay(idx);
@@ -300,13 +303,15 @@ function showResults() {
     const img = document.createElement("img");
     img.src = r.img;
     img.alt = r.name;
-    // HIER: Bildgröße der Rackets reduziert (width: 50% des Parent-Containers)
+    // Bildgröße und Zentrierung (reduziert)
     Object.assign(img.style, { 
       width: "50%", 
       borderRadius: "8px", 
       display: "block", 
       marginBottom: "8px",
-      margin: "0 auto 8px auto" // Zentrierung
+      margin: "0 auto 8px auto",
+      // Hinzugefügt, um sicherzustellen, dass kein weißer Rand sichtbar ist
+      border: "1px solid transparent"
     });
 
     const h = document.createElement("div");
@@ -356,8 +361,9 @@ function showResults() {
       background: "#f9f9f9",
       boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
   });
-  styleDiv.innerHTML = `<h3 style="margin:0 0 8px 0; font-size:1.1rem; font-weight:800; color:#333;">${lang === "de" ? "Dein dominanter Spielstil" : "Your Dominant Play Style"}</h3>
-    <div style="font-size:1.0rem;">${styleDesc}</div>`;
+  // HIER: Anpassung der Ausgabe, um den übergeordneten Titel zu entfernen und die erste Zeile kursiv zu machen
+  const finalStyleOutput = lang === "de" ? `<i>Dein Spielstil</i><br>${styleDesc}` : `<i>Your Play Style</i><br>${styleDesc}`;
+  styleDiv.innerHTML = `<div style="font-size:1.0rem;">${finalStyleOutput}</div>`;
   card.appendChild(styleDiv);
 
   // Profilvergleich Tabelle
@@ -502,13 +508,14 @@ function highlightSelectedRacket(index) {
   cards.forEach(c => {
     const idx = parseInt(c.dataset.index, 10);
     if (idx === index) {
-      c.style.background = "#f4f4f4";
-      c.style.border = "2px solid #666";
-      c.style.boxShadow = "0 6px 18px rgba(0,0,0,0.06)";
+      // HIER: Keine Hintergrundänderung, nur dickerer Rahmen
+      c.style.background = "#fff"; 
+      c.style.border = "3px solid #111"; // Dickerer dunkler Rahmen
+      c.style.boxShadow = "0 6px 18px rgba(0,0,0,0.1)"; // Etwas stärkerer Schatten
     } else {
-      c.style.background = "";
-      c.style.border = idx === 0 ? "2px solid #111" : "1px solid #ddd";
-      c.style.boxShadow = "";
+      c.style.background = "#fff";
+      c.style.border = "1px solid #ddd"; // Normaler Rahmen
+      c.style.boxShadow = "0 1px 4px rgba(0,0,0,0.05)"; // Dezenter Schatten
     }
   });
 }
@@ -716,23 +723,25 @@ function getPlayStyleDescription(profile) {
         const style1 = playStyles[bestStyle.name][lang];
         const style2 = playStyles[secondBest.name][lang];
       
+        // HIER: Formatierung angepasst, um "Hybrid: Name1 & Name2" und darunter die Beschreibungen zu zeigen
         const hybridName = lang === "de"
-          ? `Hybrid: <strong>${style1.name}</strong> (${bestStyle.score}) & <strong>${style2.name}</strong> (${secondBest.score})`
-          : `Hybrid: <strong>${style1.name}</strong> (${bestStyle.score}) & <strong>${style2.name}</strong> (${secondBest.score})`;
+          ? `Hybrid: <strong>${style1.name}</strong> & <strong>${style2.name}</strong>`
+          : `Hybrid: <strong>${style1.name}</strong> & <strong>${style2.name}</strong>`;
       
-        // Bessere Formatierung des Hybrid-Textes (bold Name)
         const hybridDesc = lang === "de"
-          ? `<strong>${style1.name}</strong>: ${style1.desc} <br> <br> <strong>UND</strong> <br> <br> <strong>${style2.name}</strong>: ${style2.desc}`
-          : `<strong>${style1.name}</strong>: ${style1.desc} <br> <br> <strong>AND</strong> <br> <br> <strong>${style2.name}</strong>: ${style2.desc}`;
+          ? `<strong>${style1.name}</strong>: ${style1.desc} <br> <br> <strong>${style2.name}</strong>: ${style2.desc}`
+          : `<strong>${style1.name}</strong>: ${style1.desc} <br> <br> <strong>${style2.name}</strong>: ${style2.desc}`;
 
-        return `${hybridName}<br><span style="font-weight:400; font-size:0.95em; line-height:1.4;">${hybridDesc}</span>`;
+        return `${hybridName}<br><span style="font-weight:400; font-size:0.95em; line-height:1.4;"><br>${hybridDesc}</span>`;
 
       }
   }
 
   // Single Style
   const style = playStyles[bestStyle.name][lang];
-  return `<strong>${style.name}</strong> (${bestStyle.score})<br><span style="font-weight:400; font-size:0.95em;">${style.desc}</span>`;
+  // HIER: Formatierung angepasst
+  const singleDesc = `<strong>${style.name}</strong>: ${style.desc}`;
+  return `${style.name}<br><span style="font-weight:400; font-size:0.95em;"><br>${singleDesc}</span>`;
 }
 
 // === Zurück-Button ===
