@@ -219,11 +219,9 @@ function showResults() {
 
   const left = document.createElement("div");
   left.style.flex = "1 1 300px";
-  // HIER: Leerzeichen entfernt (durch direkteres Zusammenfügen)
+  // HIER: Leerzeichen entfernt durch direkteres Zusammenfügen
   left.innerHTML = `<h2 style="margin:0 0 6px 0; font-size:1.4rem;">Your Game. <b>YourRacket.</b></h2>
-    <p style="margin:0; color:#444;">${lang === "de" ? "Möchtest du" : "Would you like to"}
-    <span style="font-weight:700; color:#2ea44f;">${lang === "de" ? "Deine Stärken ausbauen" : "enhance strengths"}</span> ${lang === "de" ? "oder" : "or"}
-    <span style="font-weight:700; color:#c92a2a;">${lang === "de" ? "Schwächen ausgleichen" : "balance weaknesses"}</span>?</p>`;
+    <p style="margin:0; color:#444;">${lang === "de" ? "Möchtest du" : "Would you like to"}<span style="font-weight:700; color:#2ea44f;">${lang === "de" ? "Deine Stärken ausbauen" : "enhance strengths"}</span>${lang === "de" ? " oder " : " or "}<span style="font-weight:700; color:#c92a2a;">${lang === "de" ? "Schwächen ausgleichen" : "balance weaknesses"}</span>?</p>`;
 
   const right = document.createElement("div");
   right.style.display = "flex";
@@ -270,14 +268,42 @@ function showResults() {
   header.appendChild(right);
   card.appendChild(header);
 
-  // horizontal row with top3 cards
+  // --- 1. Spielstil (als erste Box) ---
+  const styleDesc = getPlayStyleDescription(normalizedProfile);
+  const styleDiv = document.createElement("div");
+  Object.assign(styleDiv.style, {
+      margin: "16px 0 18px 0",
+      padding: "16px", 
+      borderRadius: "12px",
+      border: "1px solid #ddd", 
+      background: "#f9f9f9",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
+  });
+  // HIER: Anpassung der Überschrift (größer als der Text, kursiv)
+  const styleTitle = lang === "de" ? `<h3 style="margin:0 0 10px 0; font-size:1.3rem; font-style:italic;">Dein Spielstil</h3>` : `<h3 style="margin:0 0 10px 0; font-size:1.3rem; font-style:italic;">Your Game</h3>`;
+  styleDiv.innerHTML = `${styleTitle}<div style="font-size:1.0rem;">${styleDesc}</div>`;
+  card.appendChild(styleDiv);
+
+  // --- 2. Neue Überschrift "Dein Schläger" ---
+  const racketTitle = document.createElement("h3");
+  racketTitle.innerText = lang === "de" ? "Dein Schläger" : "Your Racket";
+  // Größe wie Spielstil-Überschrift, normaler Stil
+  Object.assign(racketTitle.style, {
+    margin: "24px 0 12px 0",
+    fontSize: "1.3rem",
+    fontStyle: "normal",
+    fontWeight: "700"
+  });
+  card.appendChild(racketTitle);
+  
+  // --- 3. horizontal row with top3 cards ---
   const topRow = document.createElement("div");
   Object.assign(topRow.style, {
     display: "flex",
     gap: "14px",
     justifyContent: "space-between",
     flexWrap: "wrap",
-    marginTop: "16px",
+    marginTop: "0px", // Abstand wird durch die Überschrift geregelt
     marginBottom: "18px"
   });
 
@@ -349,24 +375,8 @@ function showResults() {
   });
   card.appendChild(topRow);
 
-  // Spielstil (über Tabelle) - Modernisiert als eigene Box
-  const styleDesc = getPlayStyleDescription(normalizedProfile);
-  const styleDiv = document.createElement("div");
-  // HIER: Styling für Spielstil-Box ähnlich den Racket-Cards
-  Object.assign(styleDiv.style, {
-      margin: "6px 0 18px 0",
-      padding: "12px", 
-      borderRadius: "12px",
-      border: "1px solid #ddd", 
-      background: "#f9f9f9",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
-  });
-  // HIER: Anpassung der Ausgabe, um den übergeordneten Titel zu entfernen und die erste Zeile kursiv zu machen
-  const finalStyleOutput = lang === "de" ? `<i>Dein Spielstil</i><br>${styleDesc}` : `<i>Your Play Style</i><br>${styleDesc}`;
-  styleDiv.innerHTML = `<div style="font-size:1.0rem;">${finalStyleOutput}</div>`;
-  card.appendChild(styleDiv);
 
-  // Profilvergleich Tabelle
+  // --- 4. Profilvergleich Tabelle ---
   const tableWrap = document.createElement("div");
   tableWrap.style.overflowX = "auto";
   const table = document.createElement("table");
@@ -508,7 +518,7 @@ function highlightSelectedRacket(index) {
   cards.forEach(c => {
     const idx = parseInt(c.dataset.index, 10);
     if (idx === index) {
-      // HIER: Keine Hintergrundänderung, nur dickerer Rahmen
+      // Keine Hintergrundänderung, nur dickerer Rahmen
       c.style.background = "#fff"; 
       c.style.border = "3px solid #111"; // Dickerer dunkler Rahmen
       c.style.boxShadow = "0 6px 18px rgba(0,0,0,0.1)"; // Etwas stärkerer Schatten
@@ -729,8 +739,9 @@ function getPlayStyleDescription(profile) {
           : `Hybrid: <strong>${style1.name}</strong> & <strong>${style2.name}</strong>`;
       
         const hybridDesc = lang === "de"
-          ? `<strong>${style1.name}</strong>: ${style1.desc} <br> <br> <strong>${style2.name}</strong>: ${style2.desc}`
-          : `<strong>${style1.name}</strong>: ${style1.desc} <br> <br> <strong>${style2.name}</strong>: ${style2.desc}`;
+          // Zeilenumbruch und Abstand für die Beschreibung, Name fett
+          ? `<span style="font-weight:700;">${style1.name}</span>: ${style1.desc} <br><br> <span style="font-weight:700;">${style2.name}</span>: ${style2.desc}`
+          : `<span style="font-weight:700;">${style1.name}</span>: ${style1.desc} <br><br> <span style="font-weight:700;">${style2.name}</span>: ${style2.desc}`;
 
         return `${hybridName}<br><span style="font-weight:400; font-size:0.95em; line-height:1.4;"><br>${hybridDesc}</span>`;
 
@@ -740,7 +751,7 @@ function getPlayStyleDescription(profile) {
   // Single Style
   const style = playStyles[bestStyle.name][lang];
   // HIER: Formatierung angepasst
-  const singleDesc = `<strong>${style.name}</strong>: ${style.desc}`;
+  const singleDesc = `<span style="font-weight:700;">${style.name}</span>: ${style.desc}`;
   return `${style.name}<br><span style="font-weight:400; font-size:0.95em;"><br>${singleDesc}</span>`;
 }
 
