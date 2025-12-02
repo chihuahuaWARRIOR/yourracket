@@ -329,7 +329,7 @@ function showResults() {
     marginTop: "0px", // Abstand wird durch modeSelectionWrap geregelt
     marginBottom: "18px",
     // Rahmen für die gesamte Reihe
-    padding: "12px", // ANGEPASST: Erhöht für besseren Abstand zum Rand
+    padding: "18px", // ANGEPASST: Erhöht für besseren Abstand zum Rand
     borderRadius: "14px",
   });
 
@@ -479,7 +479,7 @@ function highlightMatchMode() {
   const color = matchMode === "strength" ? "#2ea44f" : "#c92a2a";
   // 3px Outline für den Container
   topRow.style.outline = `3px solid ${color}`;
-  topRow.style.outlineOffset = "-16px"; // ANGEPASST: Noch weiter weg von den Karten
+  topRow.style.outlineOffset = "-20px"; // ANGEPASST: Noch weiter weg von den Karten
   topRow.style.boxShadow = `0 0 10px ${color}50`; // Leichter Schatten für den Effekt
 
   // Um die innere Auswahl beizubehalten, muss sichergestellt werden,
