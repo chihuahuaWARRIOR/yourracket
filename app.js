@@ -209,24 +209,62 @@ function showResults() {
     overflowY: "auto"
   });
 
-  // Header + mode buttons (always colored; selected -> slightly faded)
+  // 1. Branding Header (minimal, ohne Mode-Buttons)
   const header = document.createElement("div");
-  header.style.display = "flex";
-  header.style.justifyContent = "space-between";
-  header.style.alignItems = "center";
-  header.style.flexWrap = "wrap";
-  header.style.gap = "12px";
+  header.style.marginBottom = "20px";
+  header.innerHTML = `<h2 style="margin:0 0 0 0; font-size:1.4rem;">Your Game. <b>YourRacket.</b></h2>`;
+  card.appendChild(header);
 
-  const left = document.createElement("div");
-  left.style.flex = "1 1 300px";
-  // HIER: Leerzeichen entfernt durch direkteres Zusammenfügen
-  left.innerHTML = `<h2 style="margin:0 0 6px 0; font-size:1.4rem;">Your Game. <b>YourRacket.</b></h2>
-    <p style="margin:0; color:#444;">${lang === "de" ? "Möchtest du" : "Would you like to"}<span style="font-weight:700; color:#2ea44f;">${lang === "de" ? "Deine Stärken ausbauen" : "enhance strengths"}</span>${lang === "de" ? " oder " : " or "}<span style="font-weight:700; color:#c92a2a;">${lang === "de" ? "Schwächen ausgleichen" : "balance weaknesses"}</span>?</p>`;
+  // 2. Spielstil Box (an den Anfang verschoben)
+  const styleDesc = getPlayStyleDescription(normalizedProfile);
+  const styleDiv = document.createElement("div");
+  Object.assign(styleDiv.style, {
+      margin: "0 0 18px 0",
+      padding: "16px", 
+      borderRadius: "12px",
+      border: "1px solid #ddd", 
+      background: "#f9f9f9",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
+  });
+  // HIER: Text "Dein Spiel" / "Your Game" - Größe und Kursiv für beide Überschriften
+  const styleTitleText = lang === "de" ? "Dein Spiel" : "Your Game";
+  const styleTitle = `<h3 style="margin:0 0 10px 0; font-size:1.3rem; font-style:italic; font-weight:700;">${styleTitleText}</h3>`;
+  styleDiv.innerHTML = `${styleTitle}<div style="font-size:1.0rem;">${styleDesc}</div>`;
+  card.appendChild(styleDiv);
 
-  const right = document.createElement("div");
-  right.style.display = "flex";
-  right.style.gap = "10px";
-  right.style.alignItems = "center";
+  // 3. Neue Überschrift "Dein Racket"
+  const racketTitle = document.createElement("h3");
+  const racketTitleText = lang === "de" ? "Dein Racket" : "YourRacket";
+  racketTitle.innerText = racketTitleText;
+  // HIER: Größe und Kursiv wie Spielstil-Überschrift (1.3rem, italic)
+  Object.assign(racketTitle.style, {
+    margin: "24px 0 12px 0",
+    fontSize: "1.3rem",
+    fontStyle: "italic", 
+    fontWeight: "700"
+  });
+  card.appendChild(racketTitle);
+
+  // 4. Mode Selection Text + Buttons (Unter "Dein Racket" verschoben)
+  const modeSelectionWrap = document.createElement("div");
+  Object.assign(modeSelectionWrap.style, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: "12px",
+    marginBottom: "18px"
+  });
+
+  const modeLeft = document.createElement("div");
+  modeLeft.style.flex = "1 1 300px";
+  // HIER: Leerzeichen-Korrektur: `Möchtest du `
+  modeLeft.innerHTML = `<p style="margin:0; color:#444;">${lang === "de" ? "Möchtest du " : "Would you like to "}<span style="font-weight:700; color:#2ea44f;">${lang === "de" ? "Deine Stärken ausbauen" : "enhance strengths"}</span>${lang === "de" ? " oder " : " or "}<span style="font-weight:700; color:#c92a2a;">${lang === "de" ? "Schwächen ausgleichen" : "balance weaknesses"}</span>?</p>`;
+
+  const modeRight = document.createElement("div");
+  modeRight.style.display = "flex";
+  modeRight.style.gap = "10px";
+  modeRight.style.alignItems = "center";
 
   const btnStrength = document.createElement("button");
   btnStrength.id = "mode-strength";
@@ -261,49 +299,22 @@ function showResults() {
   btnStrength.onclick = () => { matchMode = "strength"; refreshOverlay(); };
   btnWeak.onclick = () => { matchMode = "weakness"; refreshOverlay(); };
 
-  right.appendChild(btnStrength);
-  right.appendChild(btnWeak);
+  modeRight.appendChild(btnStrength);
+  modeRight.appendChild(btnWeak);
 
-  header.appendChild(left);
-  header.appendChild(right);
-  card.appendChild(header);
+  modeSelectionWrap.appendChild(modeLeft);
+  modeSelectionWrap.appendChild(modeRight);
+  card.appendChild(modeSelectionWrap);
 
-  // --- 1. Spielstil (als erste Box) ---
-  const styleDesc = getPlayStyleDescription(normalizedProfile);
-  const styleDiv = document.createElement("div");
-  Object.assign(styleDiv.style, {
-      margin: "16px 0 18px 0",
-      padding: "16px", 
-      borderRadius: "12px",
-      border: "1px solid #ddd", 
-      background: "#f9f9f9",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
-  });
-  // HIER: Anpassung der Überschrift (größer als der Text, kursiv)
-  const styleTitle = lang === "de" ? `<h3 style="margin:0 0 10px 0; font-size:1.3rem; font-style:italic;">Dein Spielstil</h3>` : `<h3 style="margin:0 0 10px 0; font-size:1.3rem; font-style:italic;">Your Game</h3>`;
-  styleDiv.innerHTML = `${styleTitle}<div style="font-size:1.0rem;">${styleDesc}</div>`;
-  card.appendChild(styleDiv);
 
-  // --- 2. Neue Überschrift "Dein Schläger" ---
-  const racketTitle = document.createElement("h3");
-  racketTitle.innerText = lang === "de" ? "Dein Schläger" : "Your Racket";
-  // Größe wie Spielstil-Überschrift, normaler Stil
-  Object.assign(racketTitle.style, {
-    margin: "24px 0 12px 0",
-    fontSize: "1.3rem",
-    fontStyle: "normal",
-    fontWeight: "700"
-  });
-  card.appendChild(racketTitle);
-  
-  // --- 3. horizontal row with top3 cards ---
+  // 5. horizontal row with top3 cards
   const topRow = document.createElement("div");
   Object.assign(topRow.style, {
     display: "flex",
     gap: "14px",
     justifyContent: "space-between",
     flexWrap: "wrap",
-    marginTop: "0px", // Abstand wird durch die Überschrift geregelt
+    marginTop: "0px", // Abstand wird durch modeSelectionWrap geregelt
     marginBottom: "18px"
   });
 
@@ -376,7 +387,7 @@ function showResults() {
   card.appendChild(topRow);
 
 
-  // --- 4. Profilvergleich Tabelle ---
+  // 6. Profilvergleich Tabelle
   const tableWrap = document.createElement("div");
   tableWrap.style.overflowX = "auto";
   const table = document.createElement("table");
@@ -645,7 +656,7 @@ function getPlayStyleDescription(profile) {
     TheBigServer: {
       de: {
         name: "The Big Server",
-        // HIER: ** durch <b> ersetzt (Spielstilname fett)
+        // ** durch <b> ersetzt (Spielstilname fett)
         desc: "Du bist ein Spieler mit einem <b>schnellen ersten Aufschlag</b>, der oft Punkte innerhalb seiner ersten zwei Schläge gewinnt (z.B. Asse, unreturnierte Aufschläge, Aufschlag-Plus-Eins-Winner)."
       },
       en: {
@@ -733,7 +744,7 @@ function getPlayStyleDescription(profile) {
         const style1 = playStyles[bestStyle.name][lang];
         const style2 = playStyles[secondBest.name][lang];
       
-        // HIER: Formatierung angepasst, um "Hybrid: Name1 & Name2" und darunter die Beschreibungen zu zeigen
+        // Formatierung angepasst, um "Hybrid: Name1 & Name2" und darunter die Beschreibungen zu zeigen
         const hybridName = lang === "de"
           ? `Hybrid: <strong>${style1.name}</strong> & <strong>${style2.name}</strong>`
           : `Hybrid: <strong>${style1.name}</strong> & <strong>${style2.name}</strong>`;
@@ -750,7 +761,7 @@ function getPlayStyleDescription(profile) {
 
   // Single Style
   const style = playStyles[bestStyle.name][lang];
-  // HIER: Formatierung angepasst
+  // Formatierung angepasst
   const singleDesc = `<span style="font-weight:700;">${style.name}</span>: ${style.desc}`;
   return `${style.name}<br><span style="font-weight:400; font-size:0.95em;"><br>${singleDesc}</span>`;
 }
