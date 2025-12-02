@@ -215,7 +215,19 @@ function showResults() {
   header.innerHTML = `<h2 style="margin:0 0 0 0; font-size:1.4rem;">Your Game. <b>YourRacket.</b></h2>`;
   card.appendChild(header);
 
-  // 2. Spielstil Box (an den Anfang verschoben)
+  // 2. Überschrift "Your Game" (Spielstil)
+  const styleTitle = document.createElement("h3");
+  const styleTitleText = "Your Game"; // CI-konstant
+  styleTitle.innerText = styleTitleText;
+  Object.assign(styleTitle.style, {
+    margin: "0 0 12px 0",
+    fontSize: "1.3rem",
+    fontStyle: "italic",
+    fontWeight: "700"
+  });
+  card.appendChild(styleTitle);
+
+  // 3. Spielstil Box (an den Anfang verschoben, ohne eigene Überschrift)
   const styleDesc = getPlayStyleDescription(normalizedProfile);
   const styleDiv = document.createElement("div");
   Object.assign(styleDiv.style, {
@@ -226,17 +238,15 @@ function showResults() {
       background: "#f9f9f9",
       boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
   });
-  // HIER: Text "Dein Spiel" / "Your Game" - Größe und Kursiv für beide Überschriften
-  const styleTitleText = lang === "de" ? "Your Game" : "Your Game";
-  const styleTitle = `<h3 style="margin:0 0 10px 0; font-size:1.3rem; font-style:italic; font-weight:700;">${styleTitleText}</h3>`;
-  styleDiv.innerHTML = `${styleTitle}<div style="font-size:1.0rem;">${styleDesc}</div>`;
+  // Nur der Inhalt, die Überschrift ist separat
+  styleDiv.innerHTML = `<div style="font-size:1.0rem;">${styleDesc}</div>`;
   card.appendChild(styleDiv);
 
-  // 3. Neue Überschrift "Dein Racket"
+  // 4. Neue Überschrift "YourRacket"
   const racketTitle = document.createElement("h3");
-  const racketTitleText = lang === "de" ? "YourRacket" : "YourRacket";
+  const racketTitleText = "YourRacket"; // CI-konstant
   racketTitle.innerText = racketTitleText;
-  // HIER: Größe und Kursiv wie Spielstil-Überschrift (1.3rem, italic)
+  // Größe und Kursiv wie Your Game
   Object.assign(racketTitle.style, {
     margin: "24px 0 12px 0",
     fontSize: "1.3rem",
@@ -245,7 +255,7 @@ function showResults() {
   });
   card.appendChild(racketTitle);
 
-  // 4. Mode Selection Text + Buttons (Unter "Dein Racket" verschoben)
+  // 5. Mode Selection Text + Buttons (Unter "YourRacket" verschoben)
   const modeSelectionWrap = document.createElement("div");
   Object.assign(modeSelectionWrap.style, {
     display: "flex",
@@ -258,7 +268,7 @@ function showResults() {
 
   const modeLeft = document.createElement("div");
   modeLeft.style.flex = "1 1 300px";
-  // HIER: Leerzeichen-Korrektur: `Möchtest du `
+  // Leerzeichen-Korrektur
   modeLeft.innerHTML = `<p style="margin:0; color:#444;">${lang === "de" ? "Möchtest du " : "Would you like to "}<span style="font-weight:700; color:#2ea44f;">${lang === "de" ? "Deine Stärken ausbauen" : "enhance strengths"}</span>${lang === "de" ? " oder " : " or "}<span style="font-weight:700; color:#c92a2a;">${lang === "de" ? "Schwächen ausgleichen" : "balance weaknesses"}</span>?</p>`;
 
   const modeRight = document.createElement("div");
@@ -307,7 +317,7 @@ function showResults() {
   card.appendChild(modeSelectionWrap);
 
 
-  // 5. horizontal row with top3 cards
+  // 6. horizontal row with top3 cards
   const topRow = document.createElement("div");
   Object.assign(topRow.style, {
     display: "flex",
@@ -387,7 +397,7 @@ function showResults() {
   card.appendChild(topRow);
 
 
-  // 6. Profilvergleich Tabelle
+  // 7. Profilvergleich Tabelle
   const tableWrap = document.createElement("div");
   tableWrap.style.overflowX = "auto";
   const table = document.createElement("table");
@@ -865,4 +875,3 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
-
