@@ -209,11 +209,12 @@ function showResults() {
     overflowY: "auto"
   });
 
-  // 1. Branding Header (minimal, ohne Mode-Buttons)
-  const header = document.createElement("div");
-  header.style.marginBottom = "20px";
-  header.innerHTML = `<h2 style="margin:0 0 0 0; font-size:1.4rem;">Your Game. <b>YourRacket.</b></h2>`;
-  card.appendChild(header);
+  // 1. Branding Header (minimal) - CLAIM ENTFERNT
+  // const header = document.createElement("div");
+  // header.style.marginBottom = "20px";
+  // header.innerHTML = `<h2 style="margin:0 0 0 0; font-size:1.4rem;">Your Game. <b>YourRacket.</b></h2>`;
+  // card.appendChild(header);
+
 
   // 2. Überschrift "Your Game" (Spielstil)
   const styleTitle = document.createElement("h3");
@@ -221,7 +222,7 @@ function showResults() {
   styleTitle.innerText = styleTitleText;
   Object.assign(styleTitle.style, {
     margin: "0 0 12px 0",
-    fontSize: "1.3rem",
+    fontSize: "1.6rem", // VERGRÖSSERT
     fontStyle: "italic",
     fontWeight: "700"
   });
@@ -232,9 +233,9 @@ function showResults() {
   const styleDiv = document.createElement("div");
   Object.assign(styleDiv.style, {
       margin: "0 0 18px 0",
-      padding: "16px", 
+      padding: "16px", 
       borderRadius: "12px",
-      border: "1px solid #ddd", 
+      border: "1px solid #ddd", 
       background: "#f9f9f9",
       boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
   });
@@ -249,8 +250,8 @@ function showResults() {
   // Größe und Kursiv wie Your Game
   Object.assign(racketTitle.style, {
     margin: "24px 0 12px 0",
-    fontSize: "1.3rem",
-    fontStyle: "italic", 
+    fontSize: "1.6rem", // VERGRÖSSERT
+    fontStyle: "italic", 
     fontWeight: "700"
   });
   card.appendChild(racketTitle);
@@ -319,13 +320,17 @@ function showResults() {
 
   // 6. horizontal row with top3 cards
   const topRow = document.createElement("div");
+  topRow.id = "racket-cards-container"; // ID für das Highlighting
   Object.assign(topRow.style, {
     display: "flex",
     gap: "14px",
     justifyContent: "space-between",
     flexWrap: "wrap",
     marginTop: "0px", // Abstand wird durch modeSelectionWrap geregelt
-    marginBottom: "18px"
+    marginBottom: "18px",
+    // Rahmen für die gesamte Reihe (wird in highlightMatchMode gesetzt)
+    padding: "1px", 
+    borderRadius: "14px",
   });
 
   const makeRacketCard = (r, idx) => {
@@ -338,11 +343,11 @@ function showResults() {
       padding: "12px",
       boxSizing: "border-box",
       // Initialer Rahmen (wird durch highlightSelectedRacket überschrieben)
-      border: "1px solid #ddd", 
-      background: "#fff", 
+      border: "1px solid #ddd", 
+      background: "#fff", 
       cursor: "pointer",
       // Hinzufügen eines einfachen Übergangs für das Highlighting
-      transition: "border 0.2s, box-shadow 0.2s" 
+      transition: "border 0.2s, box-shadow 0.2s" 
     });
     div.dataset.index = idx;
     div.onclick = () => updateRacketDisplay(idx);
@@ -351,10 +356,10 @@ function showResults() {
     img.src = r.img;
     img.alt = r.name;
     // Bildgröße und Zentrierung (reduziert)
-    Object.assign(img.style, { 
-      width: "50%", 
-      borderRadius: "8px", 
-      display: "block", 
+    Object.assign(img.style, { 
+      width: "50%", 
+      borderRadius: "8px", 
+      display: "block", 
       marginBottom: "8px",
       margin: "0 auto 8px auto",
       // Hinzugefügt, um sicherzustellen, dass kein weißer Rand sichtbar ist
@@ -458,10 +463,30 @@ function showResults() {
   // floating left restart (bigger)
   createRestartFloatingButton();
 
+  // DYNAMISCHE OUTLINE FÜR DEN MATCH MODE
+  highlightMatchMode(); 
+  
   // make sure first racket highlighted
   highlightSelectedRacket(0);
   injectResponsiveStyles();
 }
+
+// NEUE FUNKTION: Grüne/Rote Umrandung für den gesamten Match-Mode
+function highlightMatchMode() {
+  const topRow = document.getElementById("racket-cards-container");
+  if (!topRow) return;
+
+  const color = matchMode === "strength" ? "#2ea44f" : "#c92a2a";
+  // 3px Outline für den Container
+  topRow.style.outline = `3px solid ${color}`;
+  topRow.style.outlineOffset = "-4px"; // lässt den Container innerhalb des Rahmens erscheinen
+  topRow.style.boxShadow = `0 0 10px ${color}50`; // Leichter Schatten für den Effekt
+
+  // Um die innere Auswahl beizubehalten, muss sichergestellt werden,
+  // dass highlightSelectedRacket danach oder in updateRacketDisplay aufgerufen wird.
+  highlightSelectedRacket(selectedRacketIndex);
+}
+
 
 // === Profilvergleich-Zeilenaufbau ===
 function buildProfileTableRows(player, racketStats) {
@@ -538,14 +563,18 @@ function highlightSelectedRacket(index) {
   const cards = overlay.querySelectorAll("div[data-index]");
   cards.forEach(c => {
     const idx = parseInt(c.dataset.index, 10);
+    // Basisfarbe für den Match-Mode
+    const modeColor = matchMode === "strength" ? "#2ea44f" : "#c92a2a";
+
     if (idx === index) {
-      // Keine Hintergrundänderung, nur dickerer Rahmen
-      c.style.background = "#fff"; 
+      // Aktive Karte: Dicker schwarzer Rahmen
+      c.style.background = "#fff"; 
       c.style.border = "3px solid #111"; // Dickerer dunkler Rahmen
       c.style.boxShadow = "0 6px 18px rgba(0,0,0,0.1)"; // Etwas stärkerer Schatten
     } else {
+      // Nicht aktive Karte: Rahmen in Modus-Farbe
       c.style.background = "#fff";
-      c.style.border = "1px solid #ddd"; // Normaler Rahmen
+      c.style.border = `1px solid ${modeColor}`; // Dünner Rahmen in Modusfarbe
       c.style.boxShadow = "0 1px 4px rgba(0,0,0,0.05)"; // Dezenter Schatten
     }
   });
@@ -596,6 +625,12 @@ function injectResponsiveStyles() {
     @media (max-width: 640px) {
       #profile-table { min-width: 100% !important; }
       #restart-floating { display: none; }
+    }
+    /* Korrektur für Matchmode Outline auf Mobile: */
+    @media (max-width: 580px) {
+      #racket-cards-container {
+        outline-offset: -3px !important; /* Etwas näher an den Boxen */
+      }
     }
   `;
   document.head.appendChild(s);
