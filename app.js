@@ -177,13 +177,13 @@ function showResults() {
     const raw = userProfile[cat] ?? null;
     if (raw === null) normalizedProfile[cat] = 0;
     else {
-    	// nur die Performance/Racket-Kats auf 0-10 normalisieren
-    	if (["Groundstrokes","Volleys","Serves","Returns","Power","Control","Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice"].includes(cat)) {
-    		normalizedProfile[cat] = Math.round((raw / 10) * 10) / 10;
-    	} else {
-    		// Spielstil-Kats bleiben intern 0-100 für die neue Logik
-    		normalizedProfile[cat] = raw;
-    	}
+        // nur die Performance/Racket-Kats auf 0-10 normalisieren
+        if (["Groundstrokes","Volleys","Serves","Returns","Power","Control","Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice"].includes(cat)) {
+            normalizedProfile[cat] = Math.round((raw / 10) * 10) / 10;
+        } else {
+            // Spielstil-Kats bleiben intern 0-100 für die neue Logik
+            normalizedProfile[cat] = raw;
+        }
     }
   });
 
@@ -219,9 +219,10 @@ function showResults() {
 
   const left = document.createElement("div");
   left.style.flex = "1 1 300px";
+  // HIER: Leerzeichen entfernt
   left.innerHTML = `<h2 style="margin:0 0 6px 0; font-size:1.4rem;">Your Game. <b>YourRacket.</b></h2>
-    <p style="margin:0; color:#444;">${lang === "de" ? "Möchtest du" : "Would you like to"} 
-    <span style="font-weight:700; color:#2ea44f;">${lang === "de" ? "Deine Stärken ausbauen" : "enhance strengths"}</span> ${lang === "de" ? "oder" : "or"} 
+    <p style="margin:0; color:#444;">${lang === "de" ? "Möchtest du" : "Would you like to"}
+    <span style="font-weight:700; color:#2ea44f;">${lang === "de" ? "Deine Stärken ausbauen" : "enhance strengths"}</span> ${lang === "de" ? "oder" : "or"}
     <span style="font-weight:700; color:#c92a2a;">${lang === "de" ? "Schwächen ausgleichen" : "balance weaknesses"}</span>?</p>`;
 
   const right = document.createElement("div");
@@ -299,7 +300,14 @@ function showResults() {
     const img = document.createElement("img");
     img.src = r.img;
     img.alt = r.name;
-    Object.assign(img.style, { width: "100%", borderRadius: "8px", display: "block", marginBottom: "8px" });
+    // HIER: Bildgröße der Rackets reduziert (width: 50% des Parent-Containers)
+    Object.assign(img.style, { 
+      width: "50%", 
+      borderRadius: "8px", 
+      display: "block", 
+      marginBottom: "8px",
+      margin: "0 auto 8px auto" // Zentrierung
+    });
 
     const h = document.createElement("div");
     h.innerText = r.name;
@@ -336,11 +344,20 @@ function showResults() {
   });
   card.appendChild(topRow);
 
-  // Spielstil (über Tabelle)
+  // Spielstil (über Tabelle) - Modernisiert als eigene Box
   const styleDesc = getPlayStyleDescription(normalizedProfile);
   const styleDiv = document.createElement("div");
-  styleDiv.style.margin = "6px 0 14px 0";
-  styleDiv.innerHTML = `<strong>${lang === "de" ? "Spielstil:" : "Play style:"}</strong> ${styleDesc}`;
+  // HIER: Styling für Spielstil-Box ähnlich den Racket-Cards
+  Object.assign(styleDiv.style, {
+      margin: "6px 0 18px 0",
+      padding: "12px", 
+      borderRadius: "12px",
+      border: "1px solid #ddd", 
+      background: "#f9f9f9",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
+  });
+  styleDiv.innerHTML = `<h3 style="margin:0 0 8px 0; font-size:1.1rem; font-weight:800; color:#333;">${lang === "de" ? "Dein dominanter Spielstil" : "Your Dominant Play Style"}</h3>
+    <div style="font-size:1.0rem;">${styleDesc}</div>`;
   card.appendChild(styleDiv);
 
   // Profilvergleich Tabelle
@@ -364,12 +381,12 @@ function showResults() {
   // Wichtig: Für die Tabelle nur die 0-10 Werte nutzen, nicht die 0-100 Spielstilwerte
   const profileForTable = {};
   Object.entries(normalizedProfile).forEach(([key, val]) => {
-  	if (typeof val === 'number' && val <= 10.00001) { // 0-10 Werte
-  		profileForTable[key] = val;
-  	}
-  	if (key.endsWith("Pref")) { // Præferenzen
-  		profileForTable[key] = val;
-  	}
+      if (typeof val === 'number' && val <= 10.00001) { // 0-10 Werte
+          profileForTable[key] = val;
+      }
+      if (key.endsWith("Pref")) { // Præferenzen
+          profileForTable[key] = val;
+      }
   });
   tbody.innerHTML = buildProfileTableRows(profileForTable, best.stats);
   table.appendChild(tbody);
@@ -445,11 +462,11 @@ function updateRacketDisplay(index) {
     const raw = userProfile[cat] ?? null;
     if (raw === null) normalized[cat] = 0;
     else {
-    	if (["Groundstrokes","Volleys","Serves","Returns","Power","Control","Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice"].includes(cat)) {
-    		normalized[cat] = Math.round((raw / 10) * 10) / 10;
-    	} else {
-    		normalized[cat] = raw;
-    	}
+        if (["Groundstrokes","Volleys","Serves","Returns","Power","Control","Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice"].includes(cat)) {
+            normalized[cat] = Math.round((raw / 10) * 10) / 10;
+        } else {
+            normalized[cat] = raw;
+        }
     }
   });
   if (userProfile.WeightPref) normalized.WeightPref = userProfile.WeightPref;
@@ -461,12 +478,12 @@ function updateRacketDisplay(index) {
 
   const profileForTable = {};
   Object.entries(normalized).forEach(([key, val]) => {
-  	if (typeof val === 'number' && val <= 10.00001) {
-  		profileForTable[key] = val;
-  	}
-  	if (key.endsWith("Pref")) {
-  		profileForTable[key] = val;
-  	}
+      if (typeof val === 'number' && val <= 10.00001) {
+          profileForTable[key] = val;
+      }
+      if (key.endsWith("Pref")) {
+          profileForTable[key] = val;
+      }
   });
 
   if (tbody && racket) tbody.innerHTML = buildProfileTableRows(profileForTable, racket.stats);
@@ -611,64 +628,65 @@ function getPlayStyleDescription(profile) {
     TheBigServer: {
       de: {
         name: "The Big Server",
-        desc: "Du bist ein Spieler mit einem **schnellen ersten Aufschlag**, der oft Punkte innerhalb seiner ersten zwei Schläge gewinnt (z.B. Asse, unreturnierte Aufschläge, Aufschlag-Plus-Eins-Winner)."
+        // HIER: ** durch <b> ersetzt (Spielstilname fett)
+        desc: "Du bist ein Spieler mit einem <b>schnellen ersten Aufschlag</b>, der oft Punkte innerhalb seiner ersten zwei Schläge gewinnt (z.B. Asse, unreturnierte Aufschläge, Aufschlag-Plus-Eins-Winner)."
       },
       en: {
         name: "The Big Server",
-        desc: "A player with a **fast first serve**, who will often win points within their first two shots (e.g. aces, unreturned serves, serve + one winners)."
+        desc: "A player with a <b>fast first serve</b>, who will often win points within their first two shots (e.g. aces, unreturned serves, serve + one winners)."
       }
     },
     ServeAndVolleyer: {
       de: {
         name: "Serve and Volleyer",
-        desc: "Du nutzt **Aufschlag und Volley als deine primäre Taktik**."
+        desc: "Du nutzt <b>Aufschlag und Volley als deine primäre Taktik</b>."
       },
       en: {
         name: "Serve and Volleyer",
-        desc: "A player who uses **serve and volley as their primary tactic**."
+        desc: "A player who uses <b>serve and volley as their primary tactic</b>."
       }
     },
     AllCourtPlayer: {
       de: {
         name: "All-Court Player",
-        desc: "Du fühlst dich in **allen Bereichen des Platzes wohl** und nutzt deine Fähigkeit am Netz oft zu deinem Vorteil."
+        desc: "Du fühlst dich in <b>allen Bereichen des Platzes wohl</b> und nutzt deine Fähigkeit am Netz oft zu deinem Vorteil."
       },
       en: {
         name: "All-Court Player",
-        desc: "A player who is **comfortable in all areas of the court**, and often utilises their ability at the net to their advantage."
+        desc: "A player who is <b>comfortable in all areas of the court</b>, and often utilises their ability at the net to their advantage."
       }
     },
-  	// Achtung: AttackingBaseliner, SolidBaseliner und CounterPuncher sind oft eng verwandt
+      // Achtung: AttackingBaseliner, SolidBaseliner und CounterPuncher sind oft eng verwandt
     AttackingBaseliner: {
       de: {
         name: "Attacking Baseliner",
-      	 desc: "Du versuchst, das Spiel von der Grundlinie aus zu **diktieren**."
+           desc: "Du versuchst, das Spiel von der Grundlinie aus zu <b>diktieren</b>."
       },
       en: {
         name: "Attacking Baseliner",
-        desc: "A player who looks to **dictate play from the baseline**."
+        desc: "A player who looks to <b>dictate play from the baseline</b>."
       }
     },
     SolidBaseliner: {
       de: {
         name: "Solid Baseliner",
-        desc: "Du **balancierst Angriff und Verteidigung** von der Grundlinie aus."
+        desc: "Du <b>balancierst Angriff und Verteidigung</b> von der Grundlinie aus."
       },
       en: {
         name: "Solid Baseliner",
-        desc: "A player who **balances attacking and defending from the baseline**."
+        desc: "A player who <b>balances attacking and defending from the baseline</b>."
       }
     },
     CounterPuncher: {
       de: {
         name: "Counter Puncher",
-        desc: "Du fühlst dich in der **Defensive wohl**. Du nutzt diese Fähigkeit, um deine Gegner zu frustrieren oder den Moment zu wählen, um die Verteidigung in einen Angriff umzuwandeln."
+        desc: "Du fühlst dich in der <b>Defensive wohl</b>. Du nutzt diese Fähigkeit, um deine Gegner zu frustrieren oder den Moment zu wählen, um die Verteidigung in einen Angriff umzuwandeln."
       },
       en: {
         name: "Counter Puncher",
-        desc: "A player who is **comfortable playing in defence**. They use this ability to frustrate their opponent or choose their moment to turn defence into attack."
+        desc: "A player who is <b>comfortable playing in defence</b>. They use this ability to frustrate their opponent or choose their moment to turn defence into attack."
       }
-  	}
+      }
   };
 
   // Normalisierung: 0-100 intern -> -16 bis +16 extern (Basis 50/100 = 0)
@@ -694,27 +712,27 @@ function getPlayStyleDescription(profile) {
     const secondBest = sortedStyles[1];
     // Nur Hybrid, wenn beide einen positiven oder neutralen Score haben ( > 0 )
     if (bestStyle.score - secondBest.score <= 3 && bestStyle.score >= 0 && secondBest.score >= 0) {
-    	
-    	const style1 = playStyles[bestStyle.name][lang];
-    	const style2 = playStyles[secondBest.name][lang];
-  	
-    	const hybridName = lang === "de"
-    	  ? `Hybrid: ${style1.name} (${bestStyle.score}) & ${style2.name} (${secondBest.score})`
-    	  : `Hybrid: ${style1.name} (${bestStyle.score}) & ${style2.name} (${secondBest.score})`;
-  	
-    	// Bessere Formatierung des Hybrid-Textes (bold Name)
-  	  const hybridDesc = lang === "de"
-    	  ? `<b>${style1.name}</b>: ${style1.desc} <br> <br> <b>UND</b> <br> <br> <b>${style2.name}</b>: ${style2.desc}`
-  	    : `<b>${style1.name}</b>: ${style1.desc} <br> <br> <b>AND</b> <br> <br> <b>${style2.name}</b>: ${style2.desc}`;
+        
+        const style1 = playStyles[bestStyle.name][lang];
+        const style2 = playStyles[secondBest.name][lang];
+      
+        const hybridName = lang === "de"
+          ? `Hybrid: <strong>${style1.name}</strong> (${bestStyle.score}) & <strong>${style2.name}</strong> (${secondBest.score})`
+          : `Hybrid: <strong>${style1.name}</strong> (${bestStyle.score}) & <strong>${style2.name}</strong> (${secondBest.score})`;
+      
+        // Bessere Formatierung des Hybrid-Textes (bold Name)
+        const hybridDesc = lang === "de"
+          ? `<strong>${style1.name}</strong>: ${style1.desc} <br> <br> <strong>UND</strong> <br> <br> <strong>${style2.name}</strong>: ${style2.desc}`
+          : `<strong>${style1.name}</strong>: ${style1.desc} <br> <br> <strong>AND</strong> <br> <br> <strong>${style2.name}</strong>: ${style2.desc}`;
 
-    	return `${hybridName}<br><span style="font-weight:400; font-size:0.95em; line-height:1.4;">${hybridDesc}</span>`;
+        return `${hybridName}<br><span style="font-weight:400; font-size:0.95em; line-height:1.4;">${hybridDesc}</span>`;
 
-  	}
+      }
   }
 
   // Single Style
   const style = playStyles[bestStyle.name][lang];
-  return `${style.name} (${bestStyle.score})<br><span style="font-weight:400; font-size:0.95em;">${style.desc}</span>`;
+  return `<strong>${style.name}</strong> (${bestStyle.score})<br><span style="font-weight:400; font-size:0.95em;">${style.desc}</span>`;
 }
 
 // === Zurück-Button ===
