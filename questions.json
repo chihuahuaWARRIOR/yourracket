@@ -41,7 +41,7 @@
       "answers": [
         { "text": "Ich versuche die Rallye schnell zu beenden - volles Risiko", "effects": { "Control": 2, "HeadsizeMax": 630, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": -1, "CounterPuncher": -1 } },
         { "text": "Ich komme nach vorne an das Netz und versuche den Punkt zu machen", "effects": { "Control": 1, "Power": 1, "HeadsizeMin": 630, "HeadsizeMax": 645, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "Ich bleibe hinten und attackiere mit harten und platzierten Bällen", "effects": { "Power": 2, "Comfort": 1, "HeadsizeMin": 645, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": -1 } }
+        { "text": "Ich bleibe hinten und attackiere mit harten und platzierten Bällen", "effects": { "Power": 2, "Comfort": 1, "HeadsizeMin": 645, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": -1 } },
         { "text": "Ich bleibe hinten und spiele den Ball konstant zurück bis der Gegner einen Fehler macht", "effects": { "TheBigServer": 0, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
       ]
     },
@@ -581,4 +581,5 @@
     }
   ]
 }
+
 
