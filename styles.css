@@ -14,6 +14,30 @@ body {
   height: 100vh;
 }
 
+/* === Zurück-Button (Blockpfeil) === */
+#back-button {
+    position: absolute;
+    top: 30px; 
+    left: 40px;
+    z-index: 30; /* Höher als die Fragebox */
+    background: #222; /* Dunkler Blockhintergrund */
+    color: #fff;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s;
+    display: none;
+}
+
+#back-button:hover {
+    background: #444;
+}
+
+
 /* === Fragenbox === */
 #question-container {
   position: absolute;
@@ -23,7 +47,7 @@ body {
   text-align: center;
   z-index: 2;
   color: #222;
-  /* NEU: Fester weißer Hintergrund (statt transparent/blur) */
+  /* Fester weißer Hintergrund */
   background: #ffffff;
   border-radius: 20px;
   width: 60%;
@@ -32,28 +56,14 @@ body {
   box-sizing: border-box;
 }
 
-/* === Zurück-Button (Blockpfeil) === */
-/* NEU: Stil für den dicken Zurück-Button */
-#back-button {
-    position: absolute;
-    top: 30px;
-    left: 40px;
-    z-index: 3;
-    background: #222; /* Dunkler Blockhintergrund */
-    color: #fff;
-    padding: 8px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: background 0.2s;
-    display: none; /* Am Anfang verstecken und in JS anzeigen lassen */
+/* Stil für die dynamische Frage-Nummer */
+#question-number {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #555;
+    margin: 0 0 10px 0;
 }
 
-#back-button:hover {
-    background: #444;
-}
 
 /* === Fortschrittsanzeige === */
 #progress-container {
@@ -76,13 +86,13 @@ body {
   display: inline-block;
   width: 12px;
   height: 4px;
-  background: #000; /* Anfang: schwarz */
+  background: #000;
   border-radius: 2px;
   transition: background 0.3s ease;
 }
 
 #progress-bar span.active {
-  background: #7CFC00; /* hellgrün bei Fortschritt */
+  background: #7CFC00;
 }
 
 /* === Antwort-Grid === */
@@ -100,24 +110,24 @@ body {
   border: none;
   font-size: 1.2rem;
   font-weight: 500;
-  color: #fff; /* Standardtextfarbe weiß */
+  color: #fff;
   cursor: pointer;
   
   /* NEU: Eigenschaften für die Bildanzeige */
-  background-size: cover;          /* Bild füllt den Button aus */
-  background-position: center;     /* Bild zentrieren */
-  background-repeat: no-repeat;    /* Verhindert Kachelung */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   
   /* Übergang für Hover und Klick-Feedback */
   transition: opacity 0.2s, transform 0.05s ease-out; 
 }
 
-/* Hover-Effekt (leichtes Abdunkeln/Aufhellen) */
+/* Hover-Effekt */
 .answer:hover {
   opacity: 0.85; 
 }
 
-/* Klick-Feedback (Momentanes Einsinken) */
+/* Klick-Feedback */
 .answer:active {
   opacity: 0.7; 
   transform: scale(0.98); 
@@ -132,8 +142,7 @@ body {
 }
 #a3 { 
     background-image: url('https://github.com/chihuahuaWARRIOR/yourracket/blob/main/assets/wimby.png?raw=true'); 
-    /* Textfarbe schwarz, da Wimbledon-Bild hell ist */
-    color: #222; 
+    color: #222; /* Textfarbe schwarz, da Wimbledon-Bild hell ist */
 }
 #a4 { 
     background-image: url('https://github.com/chihuahuaWARRIOR/yourracket/blob/main/assets/USO.png?raw=true');
@@ -141,20 +150,8 @@ body {
 
 .hidden { display: none; }
 
-#result-container {
-  text-align: center;
-  padding: 40px 20px;
-}
-
-#result-content img {
-  max-width: 250px;
-  border-radius: 12px;
-  margin-top: 20px;
-}
-
-/* === Branding-Inseln === */
+/* === Branding-Inseln (Fester weißer Hintergrund) === */
 .brand-island {
-  /* NEU: Fester weißer Hintergrund (statt transparent/blur) */
   background: #ffffff; 
   color: black;
   padding: 8px 20px;
@@ -167,13 +164,13 @@ body {
   z-index: 10;
 }
 
-/* racquelle links oben */
+/* whichracket.com links oben */
 #brand {
   top: 0;
   left: 50px;
   z-index: 10;
-  /* NEU: Fester weißer Hintergrund */
   background: #ffffff;
+  position: absolute; /* Hinzugefügt, da es in der Original-CSS fehlte */
 }
 
 /* Kein Unterstrich für Link */
@@ -189,33 +186,11 @@ body {
   display: flex;
   gap: 6px;
   z-index: 10;
-  /* NEU: Fester weißer Hintergrund */
   background: #ffffff;
   padding: 6px 12px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-}
-
-#lang-switch button {
-  background: none;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  color: black;
-  padding: 4px 6px;
-  border-radius: 6px;
-  transition: background 0.2s;
-  font-size: 1rem;
-}
-
-#lang-switch button:hover {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-/* " | " zwischen Sprachen */
-#lang-switch span {
-  color: black;
-  opacity: 0.6;
+  position: absolute; /* Hinzugefügt, da es in der Original-CSS fehlte */
 }
 
 /* Impressum unten rechts – oben abgerundet, unten eckig */
@@ -223,7 +198,6 @@ body {
   position: fixed;
   bottom: 0;
   right: 30px;
-  /* NEU: Fester weißer Hintergrund */
   background: #ffffff;
   padding: 8px 20px;
   font-weight: 700;
@@ -248,47 +222,15 @@ body {
       font-size: 0.9rem;
   }
   
-  #question-container {
-    width: 85%;
-    min-height: 160px;
-    padding: 20px;
-    font-size: 0.75rem;
-    transform: translate(-50%, -70%);
-  }
-
-  .answer {
-    font-size: 1rem;
-  }
-
-  .brand-island {
-    font-size: 1rem;
-    padding: 6px 14px;
-  }
-
-  #brand {
-    left: 20px;
-  }
-
-  #lang-switch {
-    right: 20px;
-    padding: 4px 10px;
-  }
-
-  #footer-island {
-    right: 20px;
-  }
-}
-/* ---------------------------
-    Mobile-Fix: Fragebox nicht überlappen
+  /* ---------------------------
+    Mobile-Fix: Fragebox und Grid werden responsive
     --------------------------- */
-@media (max-width: 768px) {
-  /* Stelle sicher, dass die Seite scrollbar ist, falls nötig */
   html, body {
     height: 100%;
     overflow-y: auto;
   }
 
-  /* Fragebox kleiner und oben fix, nicht mehr so stark nach oben verschoben */
+  /* Fragebox: Nimmt relativen Platz ein */
   #question-container {
     position: relative;
     top: auto;
@@ -301,51 +243,45 @@ body {
     padding: 14px 16px 18px 16px;
     box-sizing: border-box;
     z-index: 5;
+    font-size: 0.8rem;
   }
   
-  
-  /* Antworten-Grid rutscht unter die Fragebox */
+  /* Antworten-Grid rutscht unter die Fragebox (1 Spalte) */
   #answers-grid {
     position: relative;
     top: auto;
-    height: calc(100vh - 180px);
+    height: auto; 
     width: 100%;
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(4, auto);
     gap: 6px;
     padding: 0 10px 24px 10px;
     box-sizing: border-box;
   }
   
-  /* Antworten etwas kleiner und höherer Padding für Touch */
+  /* Antworten auf Mobile mit Radius */
   .answer {
     font-size: 0.95rem;
     padding: 14px;
     border-radius: 12px;
   }
 
-  /* Branding-Inseln etwas kleiner positionieren */
-  .brand-island {
-    font-size: 0.95rem;
-    padding: 6px 12px;
-  }
-
+  /* Branding-Inseln */
   #brand { left: 12px; top: 8px; }
   #lang-switch { right: 12px; top: 8px; padding: 6px 10px; }
   #footer-island { right: 12px; bottom: 0; padding: 8px 12px; }
-
-  /* Fortschrittsbar: kleiner und zentral unter Frage */
+  
+  /* Fortschrittsbar */
   #progress-bar { gap: 4px; margin-top: 8px; }
   #progress-bar span { width: 10px; height: 4px; }
 }
-/* === Abschlussbildschirm als Overlay (NEU: Fester weißer Hintergrund) === */
+/* === Abschlussbildschirm als Overlay (Fester weißer Hintergrund) === */
 #result-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  /* NEU: Fester weißer Hintergrund (statt transparent/blur) */
   background: #ffffff; 
   z-index: 50;
   display: flex;
@@ -360,102 +296,16 @@ body {
   box-sizing: border-box;
 }
 
-/* sichtbar / interaktiv */
-#result-container.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Innen-Card im Overlay (zentriert, schöner) */
-#result-container .result-card {
-  background: rgba(255,255,255,1);
-  border-radius: 14px;
-  padding: 22px;
-  max-width: 820px;
-  width: 96%;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
-  text-align: center;
-}
-
-/* optional: Bild im Ergebnis */
-#result-container .result-card img {
-  max-width: 320px;
-  width: 50%;
-  height: auto;
-  border-radius: 10px;
-  display: block;
-  margin: 12px auto;
-}
-
-/* Restart-Button */
-#result-container .btn-restart {
-  margin-top: 12px;
-  padding: 10px 16px;
-  background: #111;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-/* === Matrix-Stil für Spielerprofil === */
-.matrix {
-  margin-top: 20px;
-  text-align: left;
-  width: 90%;
-  margin-inline: auto;
-}
-.matrix-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 6px;
-}
-.matrix-row span {
-  flex: 0 0 130px;
-  font-size: 0.9rem;
-  color: #333;
-}
-.matrix-row .bar {
-  flex: 1;
-  height: 8px;
-  background: #d9d9d9;
-  border-radius: 4px;
-  position: relative;
-}
-.matrix-row .bar::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  background: #4c7156;
-  border-radius: 4px;
-  width: var(--w);
-}
-
-.result-card img {
-  max-width: 250px;
-  border-radius: 16px;
-  margin: 15px 0;
-}
-.mode-select {
-  text-align: center;
-  padding: 40px;
-}
-.mode-select button {
-  margin: 10px;
-  padding: 10px 20px;
-  background: #4c7156;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-.mode-select button:hover {
-  opacity: 0.9;
-}
-/* Optional – falls Tailwind fehlt oder überschrieben wird */
-button.selected {
-  opacity: 0.7;
-  transform: scale(0.98);
-}
+/* ... (Restliche Styles für Result Card, Matrix, etc.) ... */
+#result-container.active { opacity: 1; pointer-events: auto; }
+#result-container .result-card { background: rgba(255,255,255,1); border-radius: 14px; padding: 22px; max-width: 820px; width: 96%; box-shadow: 0 12px 40px rgba(0,0,0,0.12); text-align: center; }
+.matrix { margin-top: 20px; text-align: left; width: 90%; margin-inline: auto; }
+.matrix-row { display: flex; align-items: center; margin-bottom: 6px; }
+.matrix-row span { flex: 0 0 130px; font-size: 0.9rem; color: #333; }
+.matrix-row .bar { flex: 1; height: 8px; background: #d9d9d9; border-radius: 4px; position: relative; }
+.matrix-row .bar::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; background: #4c7156; border-radius: 4px; width: var(--w); }
+.result-card img { max-width: 250px; border-radius: 16px; margin: 15px 0; }
+.mode-select { text-align: center; padding: 40px; }
+.mode-select button { margin: 10px; padding: 10px 20px; background: #4c7156; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1rem; }
+.mode-select button:hover { opacity: 0.9; }
+button.selected { opacity: 0.7; transform: scale(0.98); }
