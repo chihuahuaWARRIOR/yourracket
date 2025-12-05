@@ -633,23 +633,24 @@ function refreshOverlay() {
 
 // === Styles injection für responsive behavior (kleine Ergänzungen) ===
 function injectResponsiveStyles() {
-  if (document.getElementById("appjs-responsive-styles")) return;
-  const s = document.createElement("style");
-  s.id = "appjs-responsive-styles";
-  s.textContent = `
-/* KORREKTUR 4: Zielt auf den übergeordneten Block, der alle springenden Elemente enthält */
+  if (document.getElementById("appjs-responsive-styles")) return;
+  const s = document.createElement("style");
+  s.id = "appjs-responsive-styles";
+  s.textContent = `
+    /* KORREKTUR 5: Feste Ränder oben (20px) und unten (20px) für den Gesamtblock */
     #question-container {
-      min-height: 250px !important; /* SEHR HOCH: Muss die höchste Frage + Nummer + Progress-Bar halten */
+      min-height: 250px !important; /* Feste Gesamthöhe */
       display: flex;
       flex-direction: column;
-      justify-content: flex-start; /* Elemente starten oben (Nummer, Frage, Fortschritt) */
+      justify-content: flex-start;
       margin: 0;
-      padding: 20px 0 0 0;
+      padding: 20px 0 20px 0; /* NEU: 20px oben UND 20px unten */
     }
 
-    /* Optional: #question selbst kann jetzt kleiner sein, sollte aber zentriert bleiben */
+    /* KORREKTUR 5.1: Fragetext nimmt den gesamten verbleibenden Raum ein */
     #question {
-      min-height: 120px !important; /* Bleibt hoch, aber die Gesamtfixierung kommt von oben */
+      min-height: 120px !important; 
+      flex-grow: 1; /* MUSS BLEIBEN, um die Fortschrittsanzeige nach unten zu drücken */
       display: flex; 
       align-items: center; 
       justify-content: center;
@@ -663,6 +664,12 @@ function injectResponsiveStyles() {
         margin: 0 0 8px 0 !important;
         padding: 0;
     }
+    
+    /* Optionale Optimierung: Fortschrittsanzeige soll nicht wachsen */
+    #progress-container {
+        flex-grow: 0; 
+        flex-shrink: 0;
+    }
 
     @media (max-width: 900px) {
       #overlay { align-items: flex-start; padding-top: 24px; padding-bottom: 24px; }
@@ -672,7 +679,7 @@ function injectResponsiveStyles() {
       #restart-floating { display: none; }
     }
   `;
-  document.head.appendChild(s);
+  document.head.appendChild(s);
 }
 
 // === Matching-Logik ===
@@ -949,6 +956,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
