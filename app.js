@@ -633,53 +633,96 @@ function refreshOverlay() {
 
 // === Styles injection für responsive behavior (kleine Ergänzungen) ===
 function injectResponsiveStyles() {
-  if (document.getElementById("appjs-responsive-styles")) return;
-  const s = document.createElement("style");
-  s.id = "appjs-responsive-styles";
-  s.textContent = `
-    /* KORREKTUR 5: Feste Ränder oben (20px) und unten (20px) für den Gesamtblock */
-    #question-container {
-      min-height: 250px !important; /* Feste Gesamthöhe */
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      margin: 0;
-      padding: 20px 0 20px 0; /* NEU: 20px oben UND 20px unten */
-    }
-
-    /* KORREKTUR 5.1: Fragetext nimmt den gesamten verbleibenden Raum ein */
-    #question {
-      min-height: 120px !important; 
-      flex-grow: 1; /* MUSS BLEIBEN, um die Fortschrittsanzeige nach unten zu drücken */
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-      text-align: center;
-      margin: 0; 
-      padding: 0;
-    }
-
-    /* Wichtig: Sicherstellen, dass die Frage-Nummerierung keine unnötigen Abstände hat */
-    #question-number {
-        margin: 0 0 8px 0 !important;
+  if (document.getElementById("appjs-responsive-styles")) return;
+  const s = document.createElement("style");
+  s.id = "appjs-responsive-styles";
+  s.textContent = `
+    /* KORREKTUR A: Flexbox-Zentrierung des gesamten Quiz (ersetzt absolute Positionierung) */
+    body {
+        display: flex !important;
+        justify-content: center !important; /* Horizontale Zentrierung */
+        align-items: center !important; /* Vertikale Zentrierung */
+        min-height: 100vh !important;
+        flex-direction: column !important; 
         padding: 0;
+        margin: 0;
+        overflow: auto !important;
+    }
+
+    /* KORREKTUR B: Flexbox-Einstellungen für den Haupt-Quiz-Container */
+    #quiz-container {
+        display: flex !important; 
+        flex-direction: column !important;
+        min-height: auto !important;
+        margin: 0;
+        padding: 0;
+        /* Die anderen Styles wie width, height etc. werden von styles.css übernommen */
+    }
+
+    /* KORREKTUR C: ÜBERSCHREIBT ABSOLUTE POSITIONIERUNG auf #question-container */
+    #question-container {
+        /* Diese Regeln verhindern das Springen, indem sie die Zentrierung in styles.css überschreiben */
+        position: relative !important; 
+        top: auto !important;
+        left: auto !important;
+        transform: none !important; /* Entfernt die Verschiebung, die das Springen verursacht */
+        
+        min-height: 250px !important; /* Feste Mindesthöhe des Inhaltsblocks */
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start;
+        margin: 0 auto !important; /* Zentriert horizontal in der Mitte von #quiz-container */
+        /* Behält 20px oben/unten Padding und 40px links/rechts bei */
+        padding: 20px 40px 20px 40px !important; 
+        width: 60% !important; 
+    }
+
+    /* KORREKTUR D: Fragetext nimmt den gesamten verbleibenden Raum ein */
+    #question {
+      min-height: 120px !important; 
+      flex-grow: 1 !important; /* Zwingt das Element, den Raum auszufüllen */
+      display: flex !important; 
+      align-items: center !important; 
+      justify-content: center !important;
+      text-align: center;
+      margin: 0 !important; 
+      padding: 0 !important;
+    }
+
+    /* Wichtig: Sicherstellen, dass die Frage-Nummerierung keine unnötigen Abstände hat */
+    #question-number {
+        margin: 0 0 8px 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Fortschrittsanzeige */
+    #progress-container {
+        flex-grow: 0 !important; 
+        flex-shrink: 0 !important;
+        margin-top: 10px !important;
+    }
+
+    @media (max-width: 768px) {
+        /* Mobile Korrekturen */
+        #question-container {
+            width: 92% !important; 
+            margin: 32px auto !important;
+            padding: 14px 16px 18px 16px !important;
+        }
+        #quiz-container {
+            height: auto !important;
+        }
     }
     
-    /* Optionale Optimierung: Fortschrittsanzeige soll nicht wachsen */
-    #progress-container {
-        flex-grow: 0; 
-        flex-shrink: 0;
-    }
-
-    @media (max-width: 900px) {
-      #overlay { align-items: flex-start; padding-top: 24px; padding-bottom: 24px; }
-    }
-    @media (max-width: 640px) {
-      #profile-table { min-width: 100% !important; }
-      #restart-floating { display: none; }
-    }
-  `;
-  document.head.appendChild(s);
+    @media (max-width: 900px) {
+      #overlay { align-items: flex-start; padding-top: 24px; padding-bottom: 24px; }
+    }
+    @media (max-width: 640px) {
+      #profile-table { min-width: 100% !important; }
+      #restart-floating { display: none; }
+    }
+  `;
+  document.head.appendChild(s);
 }
 
 // === Matching-Logik ===
@@ -956,6 +999,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
