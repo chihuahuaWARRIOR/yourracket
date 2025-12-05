@@ -634,7 +634,7 @@ function injectResponsiveStyles() {
   s.textContent = `
 /* NEU: Fixiert die Mindesthöhe des Fragencontainers, um Springen zu verhindern */
     #question {
-      min-height: 120px; /* <--- DIESEN WERT BEI BEDARF ANPASSEN */
+      min-height: 120px !important; /* <--- DIESEN WERT BEI BEDARF ANPASSEN */
       display: flex; /* Optional: Stellt sicher, dass der Text vertikal zentriert bleibt */
       align-items: center; /* Optional: Stellt sicher, dass der Text vertikal zentriert bleibt */
       justify-content: center;
@@ -925,6 +925,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
