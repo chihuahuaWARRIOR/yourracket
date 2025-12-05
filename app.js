@@ -688,6 +688,13 @@ function injectResponsiveStyles() {
       margin: 0 !important; 
       padding: 0 !important;
     }
+    
+    /* KORREKTUR E: Progress-Bar fix 20px unter der Frage */
+    #progress-container {
+    margin-top: 20px !important;
+    padding-bottom: 20px !important;
+    position: relative !important;
+    }
 
     /* Wichtig: Sicherstellen, dass die Frage-Nummerierung keine unnötigen Abstände hat */
     #question-number {
@@ -999,6 +1006,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
