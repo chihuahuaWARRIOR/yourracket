@@ -67,23 +67,23 @@ function showQuestion() {
 
   const q = qList[currentQuestion];
   const qEl = document.getElementById("question");
-  
-    // 💡 Hinzugefügt: Element für die Fragen-Nummer finden
-    const qNumEl = document.getElementById("question-number"); 
+  
+    // 💡 Hinzugefügt: Element für die Fragen-Nummer finden
+    const qNumEl = document.getElementById("question-number"); 
 
-    // 💡 Hinzugefügt: Fragen-Nummer setzen (z.B. "Frage 1:" oder "Question 1:")
-    if (qNumEl) qNumEl.textContent = `${lang === "de" ? "Frage" : "Question"} ${currentQuestion + 1}:`;
+    // 💡 Hinzugefügt: Fragen-Nummer setzen (z.B. "Frage 1:" oder "Question 1:")
+    if (qNumEl) qNumEl.textContent = `${lang === "de" ? "Frage" : "Question"} ${currentQuestion + 1}:`;
 if (qNumEl) {
-    qNumEl.textContent = `${lang === "de" ? "Frage" : "Question"} ${currentQuestion + 1}:`;
-    // *** Hier die Größe anpassen (z.B. von 1.1rem auf 1.0rem oder 1.2rem) ***
-    qNumEl.style.fontSize = "1.1rem"; 
-    qNumEl.style.fontWeight = "bold"; // Und fett für mehr Kontrast
- // *** KORREKTUR für #question-number Margins ***
-    qNumEl.style.margin = "0 0 8px 0"; // Oben, Rechts, Unten (8px), Links
+    qNumEl.textContent = `${lang === "de" ? "Frage" : "Question"} ${currentQuestion + 1}:`;
+    // *** Hier die Größe anpassen (z.B. von 1.1rem auf 1.0rem oder 1.2rem) ***
+    qNumEl.style.fontSize = "1.1rem"; 
+    qNumEl.style.fontWeight = "bold"; // Und fett für mehr Kontrast
+ // *** KORREKTUR für #question-number Margins ***
+    qNumEl.style.margin = "0 0 8px 0"; // Oben, Rechts, Unten (8px), Links
 }
   if (qEl) qEl.innerText = q.q;
-    // *** KORREKTUR für #question (h2) Margins ***
-    qEl.style.margin = "0"; // Entfernt Standard-H2-Margins
+    // *** KORREKTUR für #question (h2) Margins ***
+    qEl.style.margin = "0"; // Entfernt Standard-H2-Margins
 
 
   for (let i = 0; i < 4; i++) {
@@ -632,54 +632,54 @@ function refreshOverlay() {
 }
 
 // === Styles injection für responsive behavior (kleine Ergänzungen) ===
-function injectResponsiveStyles() { // <--- Tippfehler 'unction' zu 'function' korrigiert
+function injectResponsiveStyles() {
   if (document.getElementById("appjs-responsive-styles")) return;
   const s = document.createElement("style");
   s.id = "appjs-responsive-styles";
   s.textContent = `
-    /* KORREKTUR A: Flexbox-Zentrierung des gesamten Quiz (ersetzt absolute Positionierung) */
-    body {
-        display: flex !important;
-        justify-content: center !important; /* Horizontale Zentrierung */
-        align-items: center !important; /* Vertikale Zentrierung */
-        min-height: 100vh !important;
-        flex-direction: column !important; 
-        padding: 0;
-        margin: 0;
-        overflow: auto !important;
-    }
+    /* KORREKTUR A: Flexbox-Zentrierung des gesamten Quiz (ersetzt absolute Positionierung) */
+    body {
+        display: flex !important;
+        justify-content: center !important; /* Horizontale Zentrierung */
+        align-items: center !important; /* Vertikale Zentrierung */
+        min-height: 100vh !important;
+        flex-direction: column !important; 
+        padding: 0;
+        margin: 0;
+        overflow: auto !important;
+    }
 
-    /* KORREKTUR B: Flexbox-Einstellungen für den Haupt-Quiz-Container */
-    #quiz-container {
-        display: flex !important; 
-        flex-direction: column !important;
-        min-height: auto !important;
-        margin: 0;
-        padding: 0;
-        /* Die anderen Styles wie width, height etc. werden von styles.css übernommen */
-    }
+    /* KORREKTUR B: Flexbox-Einstellungen für den Haupt-Quiz-Container */
+    #quiz-container {
+        display: flex !important; 
+        flex-direction: column !important;
+        min-height: auto !important;
+        margin: 0;
+        padding: 0;
+        /* Die anderen Styles wie width, height etc. werden von styles.css übernommen */
+    }
 
-    /* KORREKTUR C: ÜBERSCHREIBT ABSOLUTE POSITIONIERUNG auf #question-container */
+    /* KORREKTUR C: ÜBERSCHREIBT ABSOLUTE POSITIONIERUNG auf #question-container */
     #question-container {
-        /* Diese Regeln verhindern das Springen, indem sie die Zentrierung in styles.css überschreiben */
-        position: relative !important; 
-        top: auto !important;
-        left: auto !important;
-        transform: none !important; /* Entfernt die Verschiebung, die das Springen verursacht */
-        
-        min-height: 250px !important; /* Feste Mindesthöhe des Inhaltsblocks */
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: flex-start;
-        margin: 0 auto !important; /* Zentriert horizontal in der Mitte von #quiz-container */
-        /* Behält 20px oben/unten Padding und 40px links/rechts bei */
-        padding: 20px 40px 20px 40px !important; 
-        width: 60% !important; 
+        /* Diese Regeln verhindern das Springen, indem sie die Zentrierung in styles.css überschreiben */
+        position: relative !important; 
+        top: auto !important;
+        left: auto !important;
+        transform: none !important; /* Entfernt die Verschiebung, die das Springen verursacht */
+        
+        min-height: 250px !important; /* Feste Mindesthöhe des Inhaltsblocks */
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start;
+        margin: 0 auto !important; /* Zentriert horizontal in der Mitte von #quiz-container */
+        /* Behält 20px oben/unten Padding und 40px links/rechts bei */
+        padding: 20px 40px 20px 40px !important; 
+        width: 60% !important; 
     }
 
-    /* KORREKTUR D: Fragetext nimmt den gesamten verbleibenden Raum ein */
+    /* KORREKTUR D: Fragetext nimmt den gesamten verbleibenden Raum ein */
     #question {
-      min-height: 120px !important; 
+      min-height: 120px !important; 
       flex-grow: 1 !important; /* Zwingt das Element, den Raum auszufüllen */
       display: flex !important; 
       align-items: center !important; 
@@ -687,7 +687,6 @@ function injectResponsiveStyles() { // <--- Tippfehler 'unction' zu 'function' k
       text-align: center;
       margin: 0 !important; 
       padding: 0 !important;
-        line-height: 1.3 !important; /* Hinzugefügt, um konsistente Zeilenhöhe zu erzwingen */
     }
 
     /* Wichtig: Sicherstellen, dass die Frage-Nummerierung keine unnötigen Abstände hat */
@@ -695,26 +694,26 @@ function injectResponsiveStyles() { // <--- Tippfehler 'unction' zu 'function' k
         margin: 0 0 8px 0 !important;
         padding: 0 !important;
     }
-    
-    /* Fortschrittsanzeige */
+    
+    /* Fortschrittsanzeige */
     #progress-container {
-        flex-grow: 0 !important; 
-        flex-shrink: 0 !important;
-        margin-top: 10px !important;
+        flex-grow: 0 !important; 
+        flex-shrink: 0 !important;
+        margin-top: 10px !important;
     }
 
     @media (max-width: 768px) {
-        /* Mobile Korrekturen */
-        #question-container {
-            width: 92% !important; 
-            margin: 32px auto !important;
-            padding: 14px 16px 18px 16px !important;
-        }
-        #quiz-container {
-            height: auto !important;
-        }
-    }
-    
+        /* Mobile Korrekturen */
+        #question-container {
+            width: 92% !important; 
+            margin: 32px auto !important;
+            padding: 14px 16px 18px 16px !important;
+        }
+        #quiz-container {
+            height: auto !important;
+        }
+    }
+    
     @media (max-width: 900px) {
       #overlay { align-items: flex-start; padding-top: 24px; padding-bottom: 24px; }
     }
@@ -887,147 +886,127 @@ function getPlayStyleDescription(profile) {
         const hybridDesc = lang === "de"
           // Zeilenumbruch und Abstand für die Beschreibung, Name fett
           ? `<span style="font-weight:700;">${style1.name}</span>: ${style1.desc} <br><br> <span style="font-weight:700;">${style2.name}</span>: ${style2.desc}`
-          : `<span style="font-weight:700;">${style1.name}</span>: ${style1.desc} <br><br> <span style="font-weight:700;">${style2.name}</span>: ${style2.desc}`; // <--- Code ergänzt
+          : `<span style="font-weight:700;">${style1.name}</span>: ${style1.desc} <br><br> <span style="font-weight:700;">${style2.name}</span>: ${style2.desc}`;
 
-        return `<div style="font-size: 1.1rem; font-weight: 700;">${hybridName}</div><br>${hybridDesc}`;
-    }
+        return `${hybridName}<br><span style="font-weight:400; font-size:0.95em; line-height:1.4;"><br>${hybridDesc}</span>`;
+
+      }
   }
 
-  // Standardfall: Ein Spielstil dominiert
-  const styleData = playStyles[bestStyle.name][lang];
-  return `<div style="font-size: 1.1rem; font-weight: 700;">${styleData.name}</div><br>${styleData.desc}`;
-} // <--- Fehlendes Ende der Funktion ergänzt
+  // Single Style
+  const style = playStyles[bestStyle.name][lang];
+  // Formatierung angepasst
+  const singleDesc = `<span style="font-weight:700;">${style.name}</span>: ${style.desc}`;
+  return `${style.name}<br><span style="font-weight:400; font-size:0.95em;"><br>${singleDesc}</span>`;
+}
 
-// === Zurück-Button erstellen ===
+// === Zurück-Button ===
 function createBackButton() {
   const existing = document.getElementById("back-button");
-  if (existing) existing.remove();
-  
-  const btn = document.createElement("button");
+  if (existing) return;
+  const btn = document.createElement("div");
   btn.id = "back-button";
-  btn.innerText = lang === "de" ? "Zurück" : "Back";
+  btn.innerHTML = "&#8617";
   Object.assign(btn.style, {
     position: "fixed",
-    bottom: "10px",
-    left: "10px",
-    zIndex: 2000,
-    background: "#ccc",
-    color: "#333",
-    border: "none",
-    borderRadius: "8px",
-    padding: "8px 12px",
+    left: "8px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    width: "38px",
+    height: "38px",
+    background: "rgba(255,255,255,1)",
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "1.2rem",
+    fontWeight: "bold",
     cursor: "pointer",
-    transition: "opacity 0.2s",
-    opacity: currentQuestion > 0 ? "1" : "0",
-    pointerEvents: currentQuestion > 0 ? "auto" : "none"
+    userSelect: "none",
+    zIndex: "1000",
+    backdropFilter: "blur(4px)",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.2)"
   });
-  btn.onclick = goBack;
+  btn.onclick = () => goBack();
   document.body.appendChild(btn);
 }
 
-// === Zurück-Funktion ===
 function goBack() {
   if (currentQuestion > 0) {
     currentQuestion--;
-    // Da wir keine Antworten speichern, ist ein kompletter Neustart sinnvoller
-    const stepsToRedo = currentQuestion;
-
-    currentQuestion = 0;
-    // Quick fix: Einfach neu laden, um kompletten Reset des Profiles zu gewährleisten
-    restartQuiz(); 
-    
-    currentQuestion = stepsToRedo;
     showQuestion();
-    updateBackButton();
   }
 }
 
-// === Back Button Zustand aktualisieren ===
-function updateBackButton() {
-  const btn = document.getElementById("back-button");
-  if (btn) {
-    const opacity = currentQuestion > 0 ? "1" : "0";
-    btn.style.opacity = opacity;
-    btn.style.pointerEvents = currentQuestion > 0 ? "auto" : "none";
-  }
-}
-
-
-// === Language Switch Handlers ===
+// === Sprachumschaltung ===
 function attachLangSwitchHandlers() {
-  const langDe = document.getElementById("lang-de");
-  const langEn = document.getElementById("lang-en");
-  
-  if (langDe) {
-    langDe.onclick = () => switchLanguage("de");
-    langDe.style.fontWeight = lang === "de" ? "bold" : "normal";
-  }
-  if (langEn) {
-    langEn.onclick = () => switchLanguage("en");
-    langEn.style.fontWeight = lang === "en" ? "bold" : "normal";
+  // vorhandene Buttons: #lang-en und #lang-de oder elements inside #lang-switch
+  const en = document.getElementById("lang-en");
+  const de = document.getElementById("lang-de");
+
+  if (en) en.onclick = () => switchLang("en");
+  if (de) de.onclick = () => switchLang("de");
+
+  // fallback: if language switch container has buttons text "EN"/"DE"
+  const langSwitch = document.getElementById("lang-switch");
+  if (langSwitch && !en && !de) {
+    const btns = langSwitch.getElementsByTagName("button");
+    for (const b of btns) {
+      if (/en/i.test(b.innerText)) b.onclick = () => switchLang("en");
+      if (/de/i.test(b.innerText)) b.onclick = () => switchLang("de");
+    }
   }
 }
 
-// === Sprache wechseln ===
-function switchLanguage(newLang) {
-  if (lang === newLang) return;
+function switchLang(newLang) {
   lang = newLang;
   localStorage.setItem("language", newLang);
-  restartQuiz(); // Neustart, um alle Texte neu zu laden
+  currentQuestion = 0;
+  userProfile = {};
+  showQuestion();
+  renderProgress();
+}
+
+// === Impressum Hook (footer-island) ===
+function createImpressumHook() {
+  // prefer footer island for link
+  const footer = document.getElementById("footer-island");
+  if (!footer) return;
+  // avoid duplicates
+  if (document.getElementById("impressum-anchor")) return;
+  const a = document.createElement("a");
+  a.id = "impressum-anchor";
+  a.href = "impressum.html";
+  a.target = "_blank";
+  a.innerText = lang === "de" ? "Impressum" : "Imprint";
+  a.style.textDecoration = "none";
+  a.style.color = "inherit";
+  footer.appendChild(a);
 }
 
 // === Quiz neu starten ===
 function restartQuiz() {
-  currentQuestion = 0;
-  userProfile = {};
   const overlay = document.getElementById("overlay");
   if (overlay) overlay.remove();
-  const restartFloating = document.getElementById("restart-floating");
-  if (restartFloating) restartFloating.remove();
-  
-  // Ensure branding is re-attached if it was removed (it shouldn't be, but good practice)
-  const brandEl = document.getElementById("brand");
-  if (brandEl) {
-    brandEl.innerHTML = `<b>WhichRacket.com</b>`;
-    brandEl.style.textDecoration = "none";
-    brandEl.style.cursor = "pointer";
-  }
-  
-  // Update language switch highlights
-  attachLangSwitchHandlers();
-  
-  loadData(); // Lädt Fragen und startet neu
-  updateBackButton();
+  const rf = document.getElementById("restart-floating");
+  if (rf) rf.remove();
+  currentQuestion = 0;
+  userProfile = {};
+  selectedRacketIndex = 0;
+  showQuestion();
+  renderProgress();
 }
 
-// === Impressum Hook ===
-function createImpressumHook() {
-  const footer = document.getElementById("footer-island");
-  if (footer) {
-    const link = document.createElement("a");
-    link.href = "#";
-    link.innerText = lang === "de" ? "Impressum" : "Imprint";
-    Object.assign(link.style, {
-      textDecoration: "none",
-      color: "#888",
-      fontSize: "0.8rem",
-      marginLeft: "10px",
-      cursor: "pointer"
-    });
-    link.onclick = (e) => {
-      e.preventDefault();
-      // Ersetzen des alert() durch eine Konsole-Nachricht
-      console.log("Impressum/Imprint: Dies ist ein Beispiel-Quiz für eine KI-Demo. Alle Inhalte und Schlägerdaten sind fiktiv.");
-      // Bessere Lösung wäre ein modales Fenster hier
-    };
-    footer.appendChild(link);
-  }
-}
+// === Init ===
+loadData();
 
 
-// === Initialisierung ===
-window.onload = () => {
-  injectResponsiveStyles();
-  loadData();
-};
+
+
+
+
+
+
+
+
 
