@@ -107,7 +107,7 @@ body {
 /* === Branding-Inseln === */
 .brand-island {
   position: absolute;
-  background: rgba(255, 255, 255, 0.6); /* halbtransparent */
+  background: rgba(255, 255, 255, 1);
   color: black;
   padding: 8px 20px;
   font-weight: 700;
@@ -119,12 +119,12 @@ body {
   backdrop-filter: blur(6px);
 }
 
-/* racquelle links oben */
+/* Logo links oben */
 #brand {
   top: 0;
   left: 50px;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 1);
 }
 
 /* Kein Unterstrich für Link */
@@ -140,7 +140,7 @@ body {
   display: flex;
   gap: 6px;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 1);
   padding: 6px 12px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -174,7 +174,7 @@ body {
   position: fixed;
   bottom: 0;
   right: 30px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 1);
   padding: 8px 20px;
   font-weight: 700;
   font-size: 0.9rem;
@@ -402,5 +402,6 @@ button.selected {
   opacity: 0.7;
   transform: scale(0.98);
 }
+
 
 
