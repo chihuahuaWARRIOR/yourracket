@@ -73,7 +73,12 @@ function showQuestion() {
 
     // 💡 Hinzugefügt: Fragen-Nummer setzen (z.B. "Frage 1:" oder "Question 1:")
     if (qNumEl) qNumEl.textContent = `${lang === "de" ? "Frage" : "Question"} ${currentQuestion + 1}:`;
-
+if (qNumEl) {
+    qNumEl.textContent = `${lang === "de" ? "Frage" : "Question"} ${currentQuestion + 1}:`;
+    // *** Hier die Größe anpassen (z.B. von 1.1rem auf 1.0rem oder 1.2rem) ***
+    qNumEl.style.fontSize = "1.1rem"; 
+    qNumEl.style.fontWeight = "bold"; // Und fett für mehr Kontrast
+}
   if (qEl) qEl.innerText = q.q;
 
   for (let i = 0; i < 4; i++) {
@@ -914,3 +919,4 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
