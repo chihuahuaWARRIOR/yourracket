@@ -84,7 +84,7 @@ if (qNumEl) {
   if (qEl) qEl.innerText = q.q;
     // *** KORREKTUR für #question (h2) Margins ***
     qEl.style.margin = "0"; // Entfernt Standard-H2-Margins
-}
+
 
   for (let i = 0; i < 4; i++) {
     const btn = document.getElementById(`a${i + 1}`);
@@ -949,6 +949,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
