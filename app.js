@@ -632,7 +632,7 @@ function refreshOverlay() {
 }
 
 // === Styles injection für responsive behavior (kleine Ergänzungen) ===
-function injectResponsiveStyles() {
+unction injectResponsiveStyles() {
   if (document.getElementById("appjs-responsive-styles")) return;
   const s = document.createElement("style");
   s.id = "appjs-responsive-styles";
@@ -687,9 +687,10 @@ function injectResponsiveStyles() {
       text-align: center;
       margin: 0 !important; 
       padding: 0 !important;
+        line-height: 1.3 !important; /* Hinzugefügt, um konsistente Zeilenhöhe zu erzwingen */
     }
 
-    /* Wichtig: Sicherstellen, dass die Frage-Nummerierung keine unnötigen Abstände hat */
+    /* Wichtig: Sicherstellen, dass die Frage-Nummerierung keine unnötigen Abstände hat */
     #question-number {
         margin: 0 0 8px 0 !important;
         padding: 0 !important;
@@ -999,6 +1000,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
