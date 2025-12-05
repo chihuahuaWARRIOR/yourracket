@@ -632,16 +632,22 @@ function injectResponsiveStyles() {
   const s = document.createElement("style");
   s.id = "appjs-responsive-styles";
   s.textContent = `
-    @media (max-width: 900px) {
-      #overlay { align-items: flex-start; padding-top: 24px; padding-bottom: 24px; }
-    }
-    @media (max-width: 640px) {
-      #profile-table { min-width: 100% !important; }
-      #restart-floating { display: none; }
-    }
-    /* Die Korrektur für Matchmode Outline auf Mobile wurde entfernt,
-      da wir jetzt Border/Box-Shadow verwenden. */
-  `;
+/* NEU: Fixiert die Mindesthöhe des Fragencontainers, um Springen zu verhindern */
+    #question {
+      min-height: 80px; /* <--- DIESEN WERT BEI BEDARF ANPASSEN */
+      display: flex; /* Optional: Stellt sicher, dass der Text vertikal zentriert bleibt */
+      align-items: center; /* Optional: Stellt sicher, dass der Text vertikal zentriert bleibt */
+      justify-content: center;
+      text-align: center;
+    }
+    @media (max-width: 900px) {
+      #overlay { align-items: flex-start; padding-top: 24px; padding-bottom: 24px; }
+    }
+    @media (max-width: 640px) {
+      #profile-table { min-width: 100% !important; }
+      #restart-floating { display: none; }
+    }
+  `;
   document.head.appendChild(s);
 }
 
@@ -919,6 +925,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
