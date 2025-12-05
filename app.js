@@ -31,7 +31,7 @@ async function loadData() {
 const brandEl = document.getElementById("brand");
 if (brandEl) {
   // Branding-Text setzen
-  brandEl.innerHTML = `Your Game. <b>YourRacket.</b>`;
+  brandEl.innerHTML = `<b>WhichRacket.</b>`;
   brandEl.style.textDecoration = "none";
   brandEl.style.cursor = "pointer";
 
@@ -250,7 +250,7 @@ function showResults() {
 
   // 3. Neue Überschrift "YourRacket"
   const racketTitle = document.createElement("h3");
-  const racketTitleText = "YourRacket"; // CI-konstant
+  const racketTitleText = "Your Racket"; // CI-konstant
   racketTitle.innerText = racketTitleText;
   // Größe und Kursiv wie Your Game
   Object.assign(racketTitle.style, {
@@ -919,4 +919,5 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
