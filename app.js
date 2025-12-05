@@ -644,7 +644,7 @@ function injectResponsiveStyles() {
       flex-direction: column;
       justify-content: flex-start; /* Elemente starten oben (Nummer, Frage, Fortschritt) */
       margin: 0;
-      padding: 0;
+      padding: 20px 0 0 0;
     }
 
     /* Optional: #question selbst kann jetzt kleiner sein, sollte aber zentriert bleiben */
@@ -949,6 +949,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
