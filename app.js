@@ -78,9 +78,13 @@ if (qNumEl) {
     // *** Hier die Größe anpassen (z.B. von 1.1rem auf 1.0rem oder 1.2rem) ***
     qNumEl.style.fontSize = "1.1rem"; 
     qNumEl.style.fontWeight = "bold"; // Und fett für mehr Kontrast
-    qNumEl.style.margin = "0 0 8px 0";
+ // *** KORREKTUR für #question-number Margins ***
+    qNumEl.style.margin = "0 0 8px 0"; // Oben, Rechts, Unten (8px), Links
 }
   if (qEl) qEl.innerText = q.q;
+    // *** KORREKTUR für #question (h2) Margins ***
+    qEl.style.margin = "0"; // Entfernt Standard-H2-Margins
+}
 
   for (let i = 0; i < 4; i++) {
     const btn = document.getElementById(`a${i + 1}`);
@@ -633,16 +637,33 @@ function injectResponsiveStyles() {
   const s = document.createElement("style");
   s.id = "appjs-responsive-styles";
   s.textContent = `
-/* NEU: Fixiert die Mindesthöhe des Fragencontainers, um Springen zu verhindern */
-    #question {
-      min-height: 160px !important; /* <--- DIESEN WERT BEI BEDARF ANPASSEN */
-      display: flex; /* Optional: Stellt sicher, dass der Text vertikal zentriert bleibt */
-      align-items: center; /* Optional: Stellt sicher, dass der Text vertikal zentriert bleibt */
-      justify-content: center;
-      text-align: center;
-      margin: 0 !important;
+/* KORREKTUR 4: Zielt auf den übergeordneten Block, der alle springenden Elemente enthält */
+    #question-container {
+      min-height: 250px !important; /* SEHR HOCH: Muss die höchste Frage + Nummer + Progress-Bar halten */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* Elemente starten oben (Nummer, Frage, Fortschritt) */
+      margin: 0;
       padding: 0;
     }
+
+    /* Optional: #question selbst kann jetzt kleiner sein, sollte aber zentriert bleiben */
+    #question {
+      min-height: 120px !important; /* Bleibt hoch, aber die Gesamtfixierung kommt von oben */
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      text-align: center;
+      margin: 0; 
+      padding: 0;
+    }
+
+    /* Wichtig: Sicherstellen, dass die Frage-Nummerierung keine unnötigen Abstände hat */
+    #question-number {
+        margin: 0 0 8px 0 !important;
+        padding: 0;
+    }
+
     @media (max-width: 900px) {
       #overlay { align-items: flex-start; padding-top: 24px; padding-bottom: 24px; }
     }
@@ -928,6 +949,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
