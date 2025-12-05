@@ -814,7 +814,7 @@ function createBackButton() {
   if (existing) return;
   const btn = document.createElement("div");
   btn.id = "back-button";
-  btn.innerHTML = "&#8592;";
+  btn.innerHTML = "&#8617";
   Object.assign(btn.style, {
     position: "fixed",
     left: "8px",
@@ -822,7 +822,7 @@ function createBackButton() {
     transform: "translateY(-50%)",
     width: "38px",
     height: "38px",
-    background: "rgba(255,255,255,0.9)",
+    background: "rgba(255,255,255,1)",
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
@@ -907,3 +907,4 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
