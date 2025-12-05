@@ -78,6 +78,7 @@ if (qNumEl) {
     // *** Hier die Größe anpassen (z.B. von 1.1rem auf 1.0rem oder 1.2rem) ***
     qNumEl.style.fontSize = "1.1rem"; 
     qNumEl.style.fontWeight = "bold"; // Und fett für mehr Kontrast
+    qNumEl.style.margin = "0 0 8px 0";
 }
   if (qEl) qEl.innerText = q.q;
 
@@ -634,11 +635,13 @@ function injectResponsiveStyles() {
   s.textContent = `
 /* NEU: Fixiert die Mindesthöhe des Fragencontainers, um Springen zu verhindern */
     #question {
-      min-height: 120px !important; /* <--- DIESEN WERT BEI BEDARF ANPASSEN */
+      min-height: 160px !important; /* <--- DIESEN WERT BEI BEDARF ANPASSEN */
       display: flex; /* Optional: Stellt sicher, dass der Text vertikal zentriert bleibt */
       align-items: center; /* Optional: Stellt sicher, dass der Text vertikal zentriert bleibt */
       justify-content: center;
       text-align: center;
+      margin: 0 !important;
+      padding: 0;
     }
     @media (max-width: 900px) {
       #overlay { align-items: flex-start; padding-top: 24px; padding-bottom: 24px; }
@@ -925,6 +928,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
