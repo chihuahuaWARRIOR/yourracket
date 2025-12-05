@@ -14,30 +14,6 @@ body {
   height: 100vh;
 }
 
-/* === Zurück-Button (Blockpfeil) === */
-#back-button {
-    position: absolute;
-    top: 30px; 
-    left: 40px;
-    z-index: 30; /* Höher als die Fragebox */
-    background: #222; /* Dunkler Blockhintergrund */
-    color: #fff;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: background 0.2s;
-    display: none;
-}
-
-#back-button:hover {
-    background: #444;
-}
-
-
 /* === Fragenbox === */
 #question-container {
   position: absolute;
@@ -47,23 +23,14 @@ body {
   text-align: center;
   z-index: 2;
   color: #222;
-  /* Fester weißer Hintergrund */
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
   border-radius: 20px;
   width: 60%;
   min-height: 200px;
   padding: 30px 40px 40px 40px;
   box-sizing: border-box;
 }
-
-/* Stil für die dynamische Frage-Nummer */
-#question-number {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #555;
-    margin: 0 0 10px 0;
-}
-
 
 /* === Fortschrittsanzeige === */
 #progress-container {
@@ -86,13 +53,13 @@ body {
   display: inline-block;
   width: 12px;
   height: 4px;
-  background: #000;
+  background: #000; /* Anfang: schwarz */
   border-radius: 2px;
   transition: background 0.3s ease;
 }
 
 #progress-bar span.active {
-  background: #7CFC00;
+  background: #7CFC00; /* hellgrün bei Fortschritt */
 }
 
 /* === Antwort-Grid === */
@@ -112,47 +79,35 @@ body {
   font-weight: 500;
   color: #fff;
   cursor: pointer;
-  
-  /* NEU: Eigenschaften für die Bildanzeige */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  
-  /* Übergang für Hover und Klick-Feedback */
-  transition: opacity 0.2s, transform 0.05s ease-out; 
+  transition: opacity 0.2s;
 }
 
-/* Hover-Effekt */
 .answer:hover {
-  opacity: 0.85; 
+  opacity: 0.9;
 }
 
-/* Klick-Feedback */
-.answer:active {
-  opacity: 0.7; 
-  transform: scale(0.98); 
-}
-
-/* === Individuelle Hintergrundbilder (Grand Slams) === */
-#a1 { 
-    background-image: url('https://github.com/chihuahuaWARRIOR/yourracket/blob/main/assets/AO.png?raw=true');
-}
-#a2 { 
-    background-image: url('https://github.com/chihuahuaWARRIOR/yourracket/blob/main/assets/RG.png?raw=true');
-}
-#a3 { 
-    background-image: url('https://github.com/chihuahuaWARRIOR/yourracket/blob/main/assets/wimby.png?raw=true'); 
-    color: #222; /* Textfarbe schwarz, da Wimbledon-Bild hell ist */
-}
-#a4 { 
-    background-image: url('https://github.com/chihuahuaWARRIOR/yourracket/blob/main/assets/USO.png?raw=true');
-}
+#a1 { background-color: #5a7dab; }
+#a2 { background-color: #b44b4b; }
+#a3 { background-color: #d8c36a; color: #222; }
+#a4 { background-color: #4c7156; }
 
 .hidden { display: none; }
 
-/* === Branding-Inseln (Fester weißer Hintergrund) === */
+#result-container {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+#result-content img {
+  max-width: 250px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+/* === Branding-Inseln === */
 .brand-island {
-  background: #ffffff; 
+  position: absolute;
+  background: rgba(255, 255, 255, 0.6); /* halbtransparent */
   color: black;
   padding: 8px 20px;
   font-weight: 700;
@@ -161,16 +116,15 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   font-size: 1.4rem;
   text-decoration: none;
-  z-index: 10;
+  backdrop-filter: blur(6px);
 }
 
-/* whichracket.com links oben */
+/* racquelle links oben */
 #brand {
   top: 0;
   left: 50px;
   z-index: 10;
-  background: #ffffff;
-  position: absolute; /* Hinzugefügt, da es in der Original-CSS fehlte */
+  background: rgba(255, 255, 255, 0.6);
 }
 
 /* Kein Unterstrich für Link */
@@ -186,11 +140,33 @@ body {
   display: flex;
   gap: 6px;
   z-index: 10;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.6);
   padding: 6px 12px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  position: absolute; /* Hinzugefügt, da es in der Original-CSS fehlte */
+  backdrop-filter: blur(6px);
+}
+
+#lang-switch button {
+  background: none;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  color: black;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background 0.2s;
+  font-size: 1rem;
+}
+
+#lang-switch button:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* " | " zwischen Sprachen */
+#lang-switch span {
+  color: black;
+  opacity: 0.6;
 }
 
 /* Impressum unten rechts – oben abgerundet, unten eckig */
@@ -198,7 +174,7 @@ body {
   position: fixed;
   bottom: 0;
   right: 30px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.6);
   padding: 8px 20px;
   font-weight: 700;
   font-size: 0.9rem;
@@ -210,79 +186,110 @@ body {
   box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   z-index: 10;
+  backdrop-filter: blur(6px);
 }
 
 /* === Responsives Verhalten === */
 @media (max-width: 768px) {
-  /* Zurück-Button Mobil */
-  #back-button {
-      top: 20px;
-      left: 12px;
-      padding: 6px 10px;
-      font-size: 0.9rem;
+  #question-container {
+    width: 85%;
+    min-height: 160px;
+    padding: 20px;
+    font-size: 0.75rem;
+    transform: translate(-50%, -70%);
   }
-  
-  /* ---------------------------
-    Mobile-Fix: Fragebox und Grid werden responsive
-    --------------------------- */
+
+  .answer {
+    font-size: 1rem;
+  }
+
+  .brand-island {
+    font-size: 1rem;
+    padding: 6px 14px;
+  }
+
+  #brand {
+    left: 20px;
+  }
+
+  #lang-switch {
+    right: 20px;
+    padding: 4px 10px;
+  }
+
+  #footer-island {
+    right: 20px;
+  }
+}
+/* ---------------------------
+   Mobile-Fix: Fragebox nicht überlappen
+   --------------------------- */
+@media (max-width: 768px) {
+  /* Stelle sicher, dass die Seite scrollbar ist, falls nötig */
   html, body {
     height: 100%;
     overflow-y: auto;
   }
 
-  /* Fragebox: Nimmt relativen Platz ein */
+  /* Fragebox kleiner und oben fix, nicht mehr so stark nach oben verschoben */
   #question-container {
-    position: relative;
+    position: relative;               /* relativ, damit sie im Dokumentfluss bleibt */
     top: auto;
     left: auto;
     transform: none;
     width: 92%;
     max-width: 640px;
-    margin: 32px auto;
-    min-height: 160px;
+    margin: 32px auto;                /* oben Abstand, dann normaler Fluss */
+    min-height: 160px;                /* kleiner als Desktop, deckt kurze Fragen */
     padding: 14px 16px 18px 16px;
     box-sizing: border-box;
-    z-index: 5;
-    font-size: 0.8rem;
+    z-index: 5;                        /* bleibt über Grid, aber nicht fixiert */
   }
   
-  /* Antworten-Grid rutscht unter die Fragebox (1 Spalte) */
+  
+  /* Antworten-Grid rutscht unter die Fragebox */
   #answers-grid {
     position: relative;
-    top: auto;
-    height: auto; 
+    top: auto;                         /* vorher war top: 50% absolut */
+    height: calc(100vh - 180px);       /* nimmt Rest des Viewports ein */
     width: 100%;
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, auto);
+    grid-template-rows: repeat(4, 1fr);
     gap: 6px;
-    padding: 0 10px 24px 10px;
+    padding: 0 10px 24px 10px;         /* etwas Innenabstand für Touch */
     box-sizing: border-box;
   }
   
-  /* Antworten auf Mobile mit Radius */
+  /* Antworten etwas kleiner und höherer Padding für Touch */
   .answer {
     font-size: 0.95rem;
     padding: 14px;
     border-radius: 12px;
   }
 
-  /* Branding-Inseln */
+  /* Branding-Inseln etwas kleiner positionieren */
+  .brand-island {
+    font-size: 0.95rem;
+    padding: 6px 12px;
+  }
+
   #brand { left: 12px; top: 8px; }
   #lang-switch { right: 12px; top: 8px; padding: 6px 10px; }
   #footer-island { right: 12px; bottom: 0; padding: 8px 12px; }
-  
-  /* Fortschrittsbar */
+
+  /* Fortschrittsbar: kleiner und zentral unter Frage */
   #progress-bar { gap: 4px; margin-top: 8px; }
   #progress-bar span { width: 10px; height: 4px; }
 }
-/* === Abschlussbildschirm als Overlay (Fester weißer Hintergrund) === */
+/* === Abschlussbildschirm als Overlay (füge ans Ende der CSS) === */
 #result-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #ffffff; 
+  background: rgba(255,255,255,0.4); /* leicht weißes Overlay */
+  backdrop-filter: blur(6px);
   z-index: 50;
   display: flex;
   align-items: center;
@@ -296,16 +303,102 @@ body {
   box-sizing: border-box;
 }
 
-/* ... (Restliche Styles für Result Card, Matrix, etc.) ... */
-#result-container.active { opacity: 1; pointer-events: auto; }
-#result-container .result-card { background: rgba(255,255,255,1); border-radius: 14px; padding: 22px; max-width: 820px; width: 96%; box-shadow: 0 12px 40px rgba(0,0,0,0.12); text-align: center; }
-.matrix { margin-top: 20px; text-align: left; width: 90%; margin-inline: auto; }
-.matrix-row { display: flex; align-items: center; margin-bottom: 6px; }
-.matrix-row span { flex: 0 0 130px; font-size: 0.9rem; color: #333; }
-.matrix-row .bar { flex: 1; height: 8px; background: #d9d9d9; border-radius: 4px; position: relative; }
-.matrix-row .bar::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; background: #4c7156; border-radius: 4px; width: var(--w); }
-.result-card img { max-width: 250px; border-radius: 16px; margin: 15px 0; }
-.mode-select { text-align: center; padding: 40px; }
-.mode-select button { margin: 10px; padding: 10px 20px; background: #4c7156; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1rem; }
-.mode-select button:hover { opacity: 0.9; }
-button.selected { opacity: 0.7; transform: scale(0.98); }
+/* sichtbar / interaktiv */
+#result-container.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Innen-Card im Overlay (zentriert, schöner) */
+#result-container .result-card {
+  background: rgba(255,255,255,1);
+  border-radius: 14px;
+  padding: 22px;
+  max-width: 820px;
+  width: 96%;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  text-align: center;
+}
+
+/* optional: Bild im Ergebnis */
+#result-container .result-card img {
+  max-width: 320px;
+  width: 50%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  margin: 12px auto;
+}
+
+/* Restart-Button */
+#result-container .btn-restart {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+/* === Matrix-Stil für Spielerprofil === */
+.matrix {
+  margin-top: 20px;
+  text-align: left;
+  width: 90%;
+  margin-inline: auto;
+}
+.matrix-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.matrix-row span {
+  flex: 0 0 130px;
+  font-size: 0.9rem;
+  color: #333;
+}
+.matrix-row .bar {
+  flex: 1;
+  height: 8px;
+  background: #d9d9d9;
+  border-radius: 4px;
+  position: relative;
+}
+.matrix-row .bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: #4c7156;
+  border-radius: 4px;
+  width: var(--w);
+}
+
+.result-card img {
+  max-width: 250px;
+  border-radius: 16px;
+  margin: 15px 0;
+}
+.mode-select {
+  text-align: center;
+  padding: 40px;
+}
+.mode-select button {
+  margin: 10px;
+  padding: 10px 20px;
+  background: #4c7156;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.mode-select button:hover {
+  opacity: 0.9;
+}
+/* Optional – falls Tailwind fehlt oder überschrieben wird */
+button.selected {
+  opacity: 0.7;
+  transform: scale(0.98);
+}
