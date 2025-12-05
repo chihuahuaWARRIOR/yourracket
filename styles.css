@@ -23,13 +23,36 @@ body {
   text-align: center;
   z-index: 2;
   color: #222;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(6px);
+  /* NEU: Fester weißer Hintergrund (statt transparent/blur) */
+  background: #ffffff;
   border-radius: 20px;
   width: 60%;
   min-height: 200px;
   padding: 30px 40px 40px 40px;
   box-sizing: border-box;
+}
+
+/* === Zurück-Button (Blockpfeil) === */
+/* NEU: Stil für den dicken Zurück-Button */
+#back-button {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    z-index: 3;
+    background: #222; /* Dunkler Blockhintergrund */
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s;
+    display: none; /* Am Anfang verstecken und in JS anzeigen lassen */
+}
+
+#back-button:hover {
+    background: #444;
 }
 
 /* === Fortschrittsanzeige === */
@@ -77,19 +100,44 @@ body {
   border: none;
   font-size: 1.2rem;
   font-weight: 500;
-  color: #fff;
+  color: #fff; /* Standardtextfarbe weiß */
   cursor: pointer;
-  transition: opacity 0.2s;
+  
+  /* NEU: Eigenschaften für die Bildanzeige */
+  background-size: cover;          /* Bild füllt den Button aus */
+  background-position: center;     /* Bild zentrieren */
+  background-repeat: no-repeat;    /* Verhindert Kachelung */
+  
+  /* Übergang für Hover und Klick-Feedback */
+  transition: opacity 0.2s, transform 0.05s ease-out; 
 }
 
+/* Hover-Effekt (leichtes Abdunkeln/Aufhellen) */
 .answer:hover {
-  opacity: 0.9;
+  opacity: 0.85; 
 }
 
-#a1 { background-color: #5a7dab; }
-#a2 { background-color: #b44b4b; }
-#a3 { background-color: #d8c36a; color: #222; }
-#a4 { background-color: #4c7156; }
+/* Klick-Feedback (Momentanes Einsinken) */
+.answer:active {
+  opacity: 0.7; 
+  transform: scale(0.98); 
+}
+
+/* === Individuelle Hintergrundbilder (Grand Slams) === */
+#a1 { 
+    background-image: url('https://github.com/chihuahuaWARRIOR/yourracket/blob/main/assets/AO.png?raw=true');
+}
+#a2 { 
+    background-image: url('https://github.com/chihuahuaWARRIOR/yourracket/blob/main/assets/RG.png?raw=true');
+}
+#a3 { 
+    background-image: url('https://github.com/chihuahuaWARRIOR/yourracket/blob/main/assets/wimby.png?raw=true'); 
+    /* Textfarbe schwarz, da Wimbledon-Bild hell ist */
+    color: #222; 
+}
+#a4 { 
+    background-image: url('https://github.com/chihuahuaWARRIOR/yourracket/blob/main/assets/USO.png?raw=true');
+}
 
 .hidden { display: none; }
 
@@ -106,8 +154,8 @@ body {
 
 /* === Branding-Inseln === */
 .brand-island {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.6); /* halbtransparent */
+  /* NEU: Fester weißer Hintergrund (statt transparent/blur) */
+  background: #ffffff; 
   color: black;
   padding: 8px 20px;
   font-weight: 700;
@@ -116,7 +164,7 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   font-size: 1.4rem;
   text-decoration: none;
-  backdrop-filter: blur(6px);
+  z-index: 10;
 }
 
 /* racquelle links oben */
@@ -124,7 +172,8 @@ body {
   top: 0;
   left: 50px;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.6);
+  /* NEU: Fester weißer Hintergrund */
+  background: #ffffff;
 }
 
 /* Kein Unterstrich für Link */
@@ -140,11 +189,11 @@ body {
   display: flex;
   gap: 6px;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.6);
+  /* NEU: Fester weißer Hintergrund */
+  background: #ffffff;
   padding: 6px 12px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  backdrop-filter: blur(6px);
 }
 
 #lang-switch button {
@@ -174,7 +223,8 @@ body {
   position: fixed;
   bottom: 0;
   right: 30px;
-  background: rgba(255, 255, 255, 0.6);
+  /* NEU: Fester weißer Hintergrund */
+  background: #ffffff;
   padding: 8px 20px;
   font-weight: 700;
   font-size: 0.9rem;
@@ -186,11 +236,18 @@ body {
   box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   z-index: 10;
-  backdrop-filter: blur(6px);
 }
 
 /* === Responsives Verhalten === */
 @media (max-width: 768px) {
+  /* Zurück-Button Mobil */
+  #back-button {
+      top: 20px;
+      left: 12px;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+  }
+  
   #question-container {
     width: 85%;
     min-height: 160px;
@@ -222,8 +279,8 @@ body {
   }
 }
 /* ---------------------------
-   Mobile-Fix: Fragebox nicht überlappen
-   --------------------------- */
+    Mobile-Fix: Fragebox nicht überlappen
+    --------------------------- */
 @media (max-width: 768px) {
   /* Stelle sicher, dass die Seite scrollbar ist, falls nötig */
   html, body {
@@ -233,30 +290,30 @@ body {
 
   /* Fragebox kleiner und oben fix, nicht mehr so stark nach oben verschoben */
   #question-container {
-    position: relative;               /* relativ, damit sie im Dokumentfluss bleibt */
+    position: relative;
     top: auto;
     left: auto;
     transform: none;
     width: 92%;
     max-width: 640px;
-    margin: 32px auto;                /* oben Abstand, dann normaler Fluss */
-    min-height: 160px;                /* kleiner als Desktop, deckt kurze Fragen */
+    margin: 32px auto;
+    min-height: 160px;
     padding: 14px 16px 18px 16px;
     box-sizing: border-box;
-    z-index: 5;                        /* bleibt über Grid, aber nicht fixiert */
+    z-index: 5;
   }
   
   
   /* Antworten-Grid rutscht unter die Fragebox */
   #answers-grid {
     position: relative;
-    top: auto;                         /* vorher war top: 50% absolut */
-    height: calc(100vh - 180px);       /* nimmt Rest des Viewports ein */
+    top: auto;
+    height: calc(100vh - 180px);
     width: 100%;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(4, 1fr);
     gap: 6px;
-    padding: 0 10px 24px 10px;         /* etwas Innenabstand für Touch */
+    padding: 0 10px 24px 10px;
     box-sizing: border-box;
   }
   
@@ -281,15 +338,15 @@ body {
   #progress-bar { gap: 4px; margin-top: 8px; }
   #progress-bar span { width: 10px; height: 4px; }
 }
-/* === Abschlussbildschirm als Overlay (füge ans Ende der CSS) === */
+/* === Abschlussbildschirm als Overlay (NEU: Fester weißer Hintergrund) === */
 #result-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(255,255,255,0.4); /* leicht weißes Overlay */
-  backdrop-filter: blur(6px);
+  /* NEU: Fester weißer Hintergrund (statt transparent/blur) */
+  background: #ffffff; 
   z-index: 50;
   display: flex;
   align-items: center;
@@ -402,4 +459,3 @@ button.selected {
   opacity: 0.7;
   transform: scale(0.98);
 }
-
