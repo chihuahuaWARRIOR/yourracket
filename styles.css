@@ -28,13 +28,23 @@ body {
   border-radius: 20px;
   width: 60%;
   min-height: 200px;
-  padding: 30px 40px 40px 40px;
+  padding: 30px 40px 70px 40px; /* FIX: extra bottom padding für Progress-Bar */
   box-sizing: border-box;
 }
 
 /* === Fortschrittsanzeige === */
 #progress-container {
   margin-top: 10px;
+}
+
+/* FIX: Desktop-Position für Progressbar */
+#progress-container {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  width: 80%;
+  margin: 0 !important;
 }
 
 #progress-text {
@@ -53,13 +63,13 @@ body {
   display: inline-block;
   width: 12px;
   height: 4px;
-  background: #000; /* Anfang: schwarz */
+  background: #000;
   border-radius: 2px;
   transition: background 0.3s ease;
 }
 
 #progress-bar span.active {
-  background: #7CFC00; /* hellgrün bei Fortschritt */
+  background: #7CFC00;
 }
 
 /* === Antwort-Grid === */
@@ -169,7 +179,7 @@ body {
   opacity: 0.6;
 }
 
-/* Impressum unten rechts – oben abgerundet, unten eckig */
+/* Impressum unten rechts */
 #footer-island {
   position: fixed;
   bottom: 0;
@@ -181,8 +191,6 @@ body {
   color: black;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
   box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   z-index: 10;
@@ -221,53 +229,47 @@ body {
     right: 20px;
   }
 }
-/* ---------------------------
-   Mobile-Fix: Fragebox nicht überlappen
-   --------------------------- */
+
+/* Mobile-Fix */
 @media (max-width: 768px) {
-  /* Stelle sicher, dass die Seite scrollbar ist, falls nötig */
   html, body {
     height: 100%;
     overflow-y: auto;
   }
 
-  /* Fragebox kleiner und oben fix, nicht mehr so stark nach oben verschoben */
   #question-container {
-    position: relative;               /* relativ, damit sie im Dokumentfluss bleibt */
+    position: relative;
     top: auto;
     left: auto;
     transform: none;
     width: 92%;
     max-width: 640px;
-    margin: 32px auto;                /* oben Abstand, dann normaler Fluss */
-    min-height: 160px;                /* kleiner als Desktop, deckt kurze Fragen */
+    margin: 32px auto;
+    min-height: 160px;
     padding: 14px 16px 18px 16px;
     box-sizing: border-box;
-    z-index: 5;                        /* bleibt über Grid, aber nicht fixiert */
+    z-index: 5;
+    padding-bottom: 0; /* FIX: mobile zurücksetzen */
   }
-  
-  
-  /* Antworten-Grid rutscht unter die Fragebox */
+
   #answers-grid {
     position: relative;
-    top: auto;                         /* vorher war top: 50% absolut */
-    height: calc(100vh - 180px);       /* nimmt Rest des Viewports ein */
+    top: auto;
+    height: calc(100vh - 180px);
     width: 100%;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(4, 1fr);
     gap: 6px;
-    padding: 0 10px 24px 10px;         /* etwas Innenabstand für Touch */
+    padding: 0 10px 24px 10px;
     box-sizing: border-box;
   }
-  
-  /* Antworten etwas kleiner und höherer Padding für Touch */
+
   .answer {
     font-size: 0.95rem;
     padding: 14px;
     border-radius: 12px;
   }
 
-  /* Branding-Inseln etwas kleiner positionieren */
   .brand-island {
     font-size: 0.95rem;
     padding: 6px 12px;
@@ -277,18 +279,28 @@ body {
   #lang-switch { right: 12px; top: 8px; padding: 6px 10px; }
   #footer-island { right: 12px; bottom: 0; padding: 8px 12px; }
 
-  /* Fortschrittsbar: kleiner und zentral unter Frage */
   #progress-bar { gap: 4px; margin-top: 8px; }
   #progress-bar span { width: 10px; height: 4px; }
+
+  /* FIX: mobile Progress-Bar wieder normal */
+  #progress-container {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    margin-top: 12px !important;
+  }
 }
-/* === Abschlussbildschirm als Overlay (füge ans Ende der CSS) === */
+
+/* === Abschlussbildschirm Overlay === */
 #result-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(255,255,255,0.4); /* leicht weißes Overlay */
+  background: rgba(255,255,255,0.4);
   backdrop-filter: blur(6px);
   z-index: 50;
   display: flex;
@@ -303,13 +315,11 @@ body {
   box-sizing: border-box;
 }
 
-/* sichtbar / interaktiv */
 #result-container.active {
   opacity: 1;
   pointer-events: auto;
 }
 
-/* Innen-Card im Overlay (zentriert, schöner) */
 #result-container .result-card {
   background: rgba(255,255,255,1);
   border-radius: 14px;
@@ -320,7 +330,6 @@ body {
   text-align: center;
 }
 
-/* optional: Bild im Ergebnis */
 #result-container .result-card img {
   max-width: 320px;
   width: 50%;
@@ -330,7 +339,6 @@ body {
   margin: 12px auto;
 }
 
-/* Restart-Button */
 #result-container .btn-restart {
   margin-top: 12px;
   padding: 10px 16px;
@@ -340,7 +348,7 @@ body {
   border-radius: 8px;
   cursor: pointer;
 }
-/* === Matrix-Stil für Spielerprofil === */
+
 .matrix {
   margin-top: 20px;
   text-align: left;
@@ -380,6 +388,7 @@ body {
   border-radius: 16px;
   margin: 15px 0;
 }
+
 .mode-select {
   text-align: center;
   padding: 40px;
@@ -397,11 +406,8 @@ body {
 .mode-select button:hover {
   opacity: 0.9;
 }
-/* Optional – falls Tailwind fehlt oder überschrieben wird */
+
 button.selected {
   opacity: 0.7;
   transform: scale(0.98);
 }
-
-
-
