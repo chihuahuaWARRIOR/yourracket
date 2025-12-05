@@ -67,6 +67,13 @@ function showQuestion() {
 
   const q = qList[currentQuestion];
   const qEl = document.getElementById("question");
+  
+    // 💡 Hinzugefügt: Element für die Fragen-Nummer finden
+    const qNumEl = document.getElementById("question-number"); 
+
+    // 💡 Hinzugefügt: Fragen-Nummer setzen (z.B. "Frage 1:" oder "Question 1:")
+    if (qNumEl) qNumEl.textContent = `${lang === "de" ? "Frage" : "Question"} ${currentQuestion + 1}:`;
+
   if (qEl) qEl.innerText = q.q;
 
   for (let i = 0; i < 4; i++) {
@@ -474,7 +481,7 @@ function highlightMatchMode() {
 
   // 1. Outline komplett entfernen
   topRow.style.outline = "none";
-  topRow.style.outlineOffset = "0"; 
+  topRow.style.outlineOffset = "0"; 
 
   // 2. Sichtbaren Rand (Border) des Containers verstärken
   topRow.style.border = `3px solid ${color}`; // Jetzt 3px Border in Farbe
@@ -907,4 +914,3 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
-
