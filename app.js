@@ -31,7 +31,7 @@ async function loadData() {
 const brandEl = document.getElementById("brand");
 if (brandEl) {
   // Branding-Text setzen
-  brandEl.innerHTML = `<b>WhichRacket.</b>`;
+  brandEl.innerHTML = `<b>WhichRacket.com</b>`;
   brandEl.style.textDecoration = "none";
   brandEl.style.cursor = "pointer";
 
@@ -919,5 +919,6 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
