@@ -31,71 +31,6 @@ async function loadData() {
 const brandEl = document.getElementById("brand");
 if (brandEl) {
 
-// Kategorien, die zwischen User und Rackets verglichen werden (nur TW-Kategorien)
-const twCategories = [
-  "Power", "Control", "Maneuverability", "Stability",
-  "Comfort", "Touch / Feel", "Topspin", "Slice"
-];
-
-// BASE-SCORES dynamisch aus DB berechnen (nur für TW-Kategorien)
-function computeTwBaseline(rackets) {
-  const baseline = {};
-
-  twCategories.forEach(cat => {
-    const values = rackets.map(r => r.stats[cat]);
-    const avg = values.reduce((a, b) => a + b, 0) / values.length;
-    baseline[cat] = Number(avg.toFixed(3));  // sauber runden
-  });
-
-  return baseline;
-}
-
-// Daten laden und Basis-Score berechnen
-async function loadData() {
-  try {
-    const [qRes, rRes] = await Promise.all([
-      fetch("questions.json", { cache: "no-store" }),
-      fetch("rackets.json", { cache: "no-store" })
-    ]);
-    const qData = await qRes.json();
-    const rData = await rRes.json();
-    questions = qData;
-    rackets = rData;
-
-    // Basis-Score für TW-Kategorien berechnen
-    const twBaseline = computeTwBaseline(rackets);
-
-    // Userprofil mit dem Basis-Score für TW-Kategorien initialisieren
-    let userRacketProfile = {};
-    twCategories.forEach(cat => {
-      userRacketProfile[cat] = twBaseline[cat];
-    });
-
-    // ATP-Kategorien und andere Logik bleiben unverändert
-    // ...
-
-    // UI aktualisieren
-    renderUI();
-
-  } catch (error) {
-    console.error("Fehler beim Laden der Daten:", error);
-  }
-}
-
-// Funktion zum Aktualisieren der UI
-function renderUI() {
-  // Berechnete Scores anzeigen
-  document.getElementById('power-score').textContent = userRacketProfile['Power'];
-  document.getElementById('control-score').textContent = userRacketProfile['Control'];
-  document.getElementById('maneuverability-score').textContent = userRacketProfile['Maneuverability'];
-  document.getElementById('stability-score').textContent = userRacketProfile['Stability'];
-  document.getElementById('comfort-score').textContent = userRacketProfile['Comfort'];
-  document.getElementById('touch-feel-score').textContent = userRacketProfile['Touch / Feel'];
-  document.getElementById('topspin-score').textContent = userRacketProfile['Topspin'];
-  document.getElementById('slice-score').textContent = userRacketProfile['Slice'];
-}
-
-
   // Branding-Text setzen
   brandEl.innerHTML = `<b>WhichRacket.com</b>`;
   brandEl.style.textDecoration = "none";
@@ -1072,6 +1007,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
