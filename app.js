@@ -20,7 +20,7 @@ function getLanguage() {
   return navLang.startsWith("de") ? "de" : "en";
 }
 
-// === Berechnung der User-Basiswerte aus Rackets.json (NEU & ROBUST) ===
+// === Berechnung der User-Basiswerte aus Rackets.json (ROBUST) ===
 function calculateInitialBaseScores() {
   if (rackets.length === 0) return {};
 
@@ -47,43 +47,76 @@ function calculateInitialBaseScores() {
     }
   });
 
-  // Speichere die berechneten Durchschnitte als neue Basis
   return calculatedBaseScores;
 }
 
-// === Daten laden (Aktualisiert) ===
+// === Daten laden (NEU: Verbessertes Error-Handling für JSON-Parsing) ===
 async function loadData() {
+  let qData, rData;
+  
   try {
-    const [qRes, rRes] = await Promise.all([
-      fetch("questions.json", { cache: "no-store" }),
-      fetch("rackets.json", { cache: "no-store" })
-    ]);
-    const qData = await qRes.json();
-    const rData = await rRes.json();
+    // 1. Fragen laden
+    const qRes = await fetch("questions.json", { cache: "no-store" });
+    if (!qRes.ok) throw new Error(`questions.json HTTP Fehler: ${qRes.status}`);
+    qData = await qRes.json();
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      handleCriticalError("questions.json", "Die Datei questions.json ist fehlerhaft formatiert (Syntaxfehler).");
+    } else {
+      handleCriticalError("questions.json", error.message);
+    }
+    return;
+  }
+  
+  try {
+    // 2. Schläger laden
+    const rRes = await fetch("rackets.json", { cache: "no-store" });
+    if (!rRes.ok) throw new Error(`rackets.json HTTP Fehler: ${rRes.status}`);
+    rData = await rRes.json();
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      handleCriticalError("rackets.json", "Die Datei rackets.json ist fehlerhaft formatiert (Syntaxfehler).");
+    } else {
+      handleCriticalError("rackets.json", error.message);
+    }
+    return;
+  }
 
+  // 3. Daten zuweisen und App initialisieren
+  try {
     questions = qData;
     rackets = rData;
 
-    if (Object.keys(questions).length === 0 || rackets.length === 0) {
-      // Wir werfen keinen Fehler mehr, falls die Dateien leer sind, sondern zeigen eine sanftere Meldung.
-      console.warn("Questions or Rackets data is empty. Cannot initialize quiz.");
-    }
-    
     // Setze die Basis-Scores basierend auf den Marktdurchschnitten
     baseScores = calculateInitialBaseScores();
 
     // Initialisierung nach erfolgreichem Laden
     initApp();
-
   } catch (error) {
-    console.error("Fehler beim Laden der Daten:", error);
-    // Zeigt eine Fehlermeldung auf der Seite an
-    document.body.innerHTML = `<div class="p-8 text-center bg-red-100 text-red-800 rounded-lg shadow-xl m-4 md:m-10">
-      <h1 class="text-2xl font-bold">${lang === 'de' ? 'Ein kritischer Fehler ist aufgetreten.' : 'A critical error occurred.'}</h1>
-      <p class="mt-2">${lang === 'de' ? 'Die Anwendung konnte nicht geladen werden. Bitte stellen Sie sicher, dass die Dateien questions.json und rackets.json korrekt formatiert sind (siehe Konsole für Details).' : 'The application could not be loaded. Please ensure questions.json and rackets.json are correctly formatted (check console for details).'}</p>
-    </div>`;
+    // Fängt Fehler in calculateInitialBaseScores oder initApp ab
+    handleCriticalError("App Initialisierung", error.message);
   }
 }
+
+// === Zentrale Fehlerbehandlung ===
+function handleCriticalError(source, message) {
+  const errorMessage = lang === 'de' 
+    ? `Ein kritischer Fehler ist aufgetreten beim Laden von ${source}.` 
+    : `A critical error occurred while loading ${source}.`;
+
+  const detailMessage = lang === 'de'
+    ? `Bitte stellen Sie sicher, dass die Datei(en) korrekt formatiert sind. Details in der Konsole: ${message}`
+    : `Please ensure the file(s) are correctly formatted. Details in console: ${message}`;
+    
+  console.error(`KRITISCHER FEHLER [${source}]:`, message);
+
+  // Zeigt eine spezifische Fehlermeldung auf der Seite an
+  document.body.innerHTML = `<div class="p-8 text-center bg-red-100 text-red-800 rounded-lg shadow-xl m-4 md:m-10">
+    <h1 class="text-2xl font-bold">${errorMessage}</h1>
+    <p class="mt-2 text-left">${detailMessage}</p>
+  </div>`;
+}
+
 
 // === App Initialisierung (Vervollständigt & optimiert) ===
 function initApp() {
@@ -282,6 +315,12 @@ function calculateScores() {
     let totalDifference = 0;
     let attributesCount = 0;
     
+    // Sicherstellen, dass racket.attributes existiert
+    if (!racket.attributes) {
+        console.warn(`Racket ID ${racket.id} missing 'attributes'. Skipping score calculation for this item.`);
+        return { ...racket, matchScore: 0, userAttributes: finalProfile }; // Match 0%
+    }
+    
     // Vergleiche das endgültige Benutzerprofil mit den idealen Racket-Attributen
     Object.entries(racket.attributes).forEach(([attribute, idealValue]) => {
       const userValue = finalProfile[attribute] || baseScores[attribute] || 50; // Fallback zu Marktdurchschnitt
@@ -328,7 +367,7 @@ function showResults() {
 
   const recommendedRackets = calculateScores();
   const titleText = lang === 'de' ? 'Deine persönlichen Racket-Empfehlungen' : 'Your Personal Racket Recommendations';
-  // Check, ob Ergebnisse vorhanden sind, um den Fehler zu vermeiden, wenn das Array leer ist
+  
   const topRacketName = recommendedRackets.length > 0 ? recommendedRackets[0].name : (lang === 'de' ? 'kein Schläger' : 'No Racket');
   const subtitleText = lang === 'de' ? 
     `Basierend auf deinen Antworten sind dies die besten Treffer. Dein bestes Match ist der **${topRacketName}**.` : 
@@ -400,7 +439,10 @@ function showRacketDetails(racketId) {
   let attributeHtml = '';
   const maxAttributeValue = 100; // Da die interne Skala 0-100 ist
   
-  Object.entries(racket.attributes).forEach(([attribute, idealValue]) => {
+  // Prüfen, ob Attribute vorhanden sind
+  const attributes = racket.attributes || {};
+  
+  Object.entries(attributes).forEach(([attribute, idealValue]) => {
     const userValue = userScores[attribute] || baseScores[attribute] || 50;
     
     // Übersetze den Attributnamen (hier: einfache Großschreibung)
