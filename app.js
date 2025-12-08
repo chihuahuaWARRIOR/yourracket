@@ -74,12 +74,25 @@ async function loadData() {
     // ATP-Kategorien und andere Logik bleiben unverändert
     // ...
 
-    // UI aktualisieren oder andere Logik
-    // ...
+    // UI aktualisieren
+    renderUI();
 
   } catch (error) {
     console.error("Fehler beim Laden der Daten:", error);
   }
+}
+
+// Funktion zum Aktualisieren der UI
+function renderUI() {
+  // Berechnete Scores anzeigen
+  document.getElementById('power-score').textContent = userRacketProfile['Power'];
+  document.getElementById('control-score').textContent = userRacketProfile['Control'];
+  document.getElementById('maneuverability-score').textContent = userRacketProfile['Maneuverability'];
+  document.getElementById('stability-score').textContent = userRacketProfile['Stability'];
+  document.getElementById('comfort-score').textContent = userRacketProfile['Comfort'];
+  document.getElementById('touch-feel-score').textContent = userRacketProfile['Touch / Feel'];
+  document.getElementById('topspin-score').textContent = userRacketProfile['Topspin'];
+  document.getElementById('slice-score').textContent = userRacketProfile['Slice'];
 }
 
 
@@ -1059,5 +1072,6 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
