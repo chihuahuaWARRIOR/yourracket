@@ -5,16 +5,74 @@ let userProfile = {};
 let questions = {};
 let rackets = [];
 let lang = localStorage.getItem("language") || getLanguage();
-let averageScores = {};
+let averageScores = {}; // NEU: Global deklariert
 const SCALE_FACTOR = 5;
-let matchMode = "strength"; // "strength" oder "weakness"
+let matchMode = "strength";
 let selectedRacketIndex = 0;
 
 // === Sprache automatisch erkennen ===
 function getLanguage() {
-  const navLang = navigator.language || navigator.userLanguage || "de";
-  return navLang.startsWith("de") ? "de" : "en";
+  const navLang = navigator.language || navigator.userLanguage || "de";
+  return navLang.startsWith("de") ? "de" : "en";
 }
+
+// Hier die Funktionen EINFÜGEN! (Außerhalb von loadData)
+// -------------------------------------------------------------------
+// === Dynamische Mittelwerte berechnen (MUSS HIER PLATZIERT WERDEN) ===
+function calculateAverageScores(rackets) {
+  const categories = [
+    "Groundstrokes", "Volleys", "Serves", "Returns", "Power",
+    "Control", "Maneuverability", "Stability", "Comfort",
+    "Touch / Feel", "Topspin", "Slice"
+  ];
+  const counts = {};
+  const sums = {}; 
+
+  categories.forEach(cat => {
+    sums[cat] = 0;
+    counts[cat] = 0;
+  });
+
+  rackets.forEach(racket => {
+    categories.forEach(cat => {
+      if (racket[cat] !== undefined && typeof racket[cat] === 'number') {
+        sums[cat] += racket[cat];
+        counts[cat]++;
+      }
+    });
+  });
+
+  categories.forEach(cat => {
+    averageScores[cat] = counts[cat] > 0
+      ? Math.round(sums[cat] / counts[cat])
+      : 50;
+  });
+
+  console.log("Dynamische Basiswerte (Mittelwerte):", averageScores);
+}
+
+
+// === Funktion zum Initialisieren des Benutzerprofils (MUSS HIER PLATZIERT WERDEN) ===
+function initializeUserProfile() {
+  const categories = [
+    "Groundstrokes", "Volleys", "Serves", "Returns", "Power",
+    "Control", "Maneuverability", "Stability", "Comfort",
+    "Touch / Feel", "Topspin", "Slice"
+  ];
+
+  userProfile = {}; 
+
+  categories.forEach(cat => {
+    // Setze den Startwert auf den berechneten Mittelwert
+    userProfile[cat] = averageScores[cat] || 50; 
+  });
+  
+  console.log("Benutzerprofil initialisiert:", userProfile);
+}
+// -------------------------------------------------------------------
+
+3. Die loadData-Funktion (Aufrufe der Funktionen)
+JavaScript
 
 // === Daten laden ===
 async function loadData() {
@@ -29,63 +87,23 @@ async function loadData() {
     questions = qData;
     rackets = rData;
 
-    // === Dynamische Mittelwerte berechnen ===
-function calculateAverageScores(rackets) {
-  const categories = [
-    "Groundstrokes", "Volleys", "Serves", "Returns", "Power",
-    "Control", "Maneuverability", "Stability", "Comfort",
-    "Touch / Feel", "Topspin", "Slice"
-  ];
-  const counts = {}; // Zähler für jeden Score
-  const sums = {};   // Summen für jeden Score
+    // 1. AUFRUFE DER GLOBALEN FUNKTIONEN
+    calculateAverageScores(rackets); // Fügt Werte in averageScores ein
+    initializeUserProfile();        // Nutzt averageScores, um userProfile zu füllen
 
-  // 1. Initialisieren
-  categories.forEach(cat => {
-    sums[cat] = 0;
-    counts[cat] = 0;
-  });
+    // 2. BRANDING UND EVENT-LISTENER
+    const brandEl = document.getElementById("brand");
+    if (brandEl) {
+      // Branding-Text setzen
+      brandEl.innerHTML = `<b>WhichRacket.com</b>`;
+      brandEl.style.textDecoration = "none";
+      brandEl.style.cursor = "pointer";
 
-  // 2. Summen über alle Schläger aufaddieren
-  rackets.forEach(racket => {
-    // Gehe alle Kategorien durch, um die entsprechenden Scores im Schläger zu finden
-    categories.forEach(cat => {
-      // Annahme: Die Kategorie-Eigenschaften liegen direkt im Racket-Objekt
-      if (racket[cat] !== undefined && typeof racket[cat] === 'number') {
-        sums[cat] += racket[cat];
-        counts[cat]++;
-      }
-    });
-  });
-
-  // 3. Mittelwert berechnen und speichern
-  categories.forEach(cat => {
-    // Stelle sicher, dass keine Division durch Null passiert
-    averageScores[cat] = counts[cat] > 0
-      ? Math.round(sums[cat] / counts[cat])
-      : 50; // Fallback auf 50, falls Daten fehlen
-  });
-
-  console.log("Dynamische Basiswerte (Mittelwerte):", averageScores);
-}
-      // NEU: Funktion zum Initialisieren des Benutzerprofils
-function initializeUserProfile() {
-  // Die Kategorien, die im Profil gespeichert werden sollen
-  const categories = [
-    "Groundstrokes", "Volleys", "Serves", "Returns", "Power",
-    "Control", "Maneuverability", "Stability", "Comfort",
-    "Touch / Feel", "Topspin", "Slice"
-  ];
-
-  userProfile = {}; // Sicherstellen, dass das Profil leer ist
-
-  categories.forEach(cat => {
-    // Setze den Startwert des Profils auf den berechneten Mittelwert
-    // (Aus dem globalen averageScores Objekt, das in loadData gefüllt wurde)
-    userProfile[cat] = averageScores[cat] || 50; 
-  });
-  
-  console.log("Benutzerprofil initialisiert:", userProfile);
-}
+      // Klick auf Branding-Insel -> Quiz neu starten
+      brandEl.addEventListener("click", () => {
+        restartQuiz();
+      });
+    }
     
   // Branding-Text setzen
   brandEl.innerHTML = `<b>WhichRacket.com</b>`;
@@ -1063,6 +1081,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
