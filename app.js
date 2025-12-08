@@ -20,7 +20,7 @@ function getLanguage() {
   return navLang.startsWith("de") ? "de" : "en";
 }
 
-// === Berechnung der User-Basiswerte aus Rackets.json (NEU) ===
+// === Berechnung der User-Basiswerte aus Rackets.json (NEU & ROBUST) ===
 function calculateInitialBaseScores() {
   if (rackets.length === 0) return {};
 
@@ -29,10 +29,14 @@ function calculateInitialBaseScores() {
   let attributeCounts = {};
 
   rackets.forEach(racket => {
-    Object.entries(racket.attributes).forEach(([attribute, value]) => {
-      attributeTotals[attribute] = (attributeTotals[attribute] || 0) + value;
-      attributeCounts[attribute] = (attributeCounts[attribute] || 0) + 1;
-    });
+    // SICHERHEITS-CHECK: Verhindert Absturz, falls 'attributes' fehlt oder null ist.
+    const attributes = racket.attributes;
+    if (attributes && typeof attributes === 'object') {
+      Object.entries(attributes).forEach(([attribute, value]) => {
+        attributeTotals[attribute] = (attributeTotals[attribute] || 0) + value;
+        attributeCounts[attribute] = (attributeCounts[attribute] || 0) + 1;
+      });
+    }
   });
 
   // 2. Durchschnitt für jedes Attribut berechnen
@@ -61,10 +65,11 @@ async function loadData() {
     rackets = rData;
 
     if (Object.keys(questions).length === 0 || rackets.length === 0) {
-      throw new Error("Questions or Rackets data is empty.");
+      // Wir werfen keinen Fehler mehr, falls die Dateien leer sind, sondern zeigen eine sanftere Meldung.
+      console.warn("Questions or Rackets data is empty. Cannot initialize quiz.");
     }
     
-    // NEU: Setze die Basis-Scores basierend auf den Marktdurchschnitten
+    // Setze die Basis-Scores basierend auf den Marktdurchschnitten
     baseScores = calculateInitialBaseScores();
 
     // Initialisierung nach erfolgreichem Laden
@@ -74,8 +79,8 @@ async function loadData() {
     console.error("Fehler beim Laden der Daten:", error);
     // Zeigt eine Fehlermeldung auf der Seite an
     document.body.innerHTML = `<div class="p-8 text-center bg-red-100 text-red-800 rounded-lg shadow-xl m-4 md:m-10">
-      <h1 class="text-2xl font-bold">${lang === 'de' ? 'Ein Fehler ist aufgetreten.' : 'An error occurred.'}</h1>
-      <p class="mt-2">${lang === 'de' ? 'Die Anwendung konnte nicht geladen werden. Prüfe die Konsolenausgabe für Details.' : 'The application could not be loaded. Check the console for details.'}</p>
+      <h1 class="text-2xl font-bold">${lang === 'de' ? 'Ein kritischer Fehler ist aufgetreten.' : 'A critical error occurred.'}</h1>
+      <p class="mt-2">${lang === 'de' ? 'Die Anwendung konnte nicht geladen werden. Bitte stellen Sie sicher, dass die Dateien questions.json und rackets.json korrekt formatiert sind (siehe Konsole für Details).' : 'The application could not be loaded. Please ensure questions.json and rackets.json are correctly formatted (check console for details).'}</p>
     </div>`;
   }
 }
@@ -323,9 +328,11 @@ function showResults() {
 
   const recommendedRackets = calculateScores();
   const titleText = lang === 'de' ? 'Deine persönlichen Racket-Empfehlungen' : 'Your Personal Racket Recommendations';
+  // Check, ob Ergebnisse vorhanden sind, um den Fehler zu vermeiden, wenn das Array leer ist
+  const topRacketName = recommendedRackets.length > 0 ? recommendedRackets[0].name : (lang === 'de' ? 'kein Schläger' : 'No Racket');
   const subtitleText = lang === 'de' ? 
-    `Basierend auf deinen Antworten sind dies die besten Treffer. Dein bestes Match ist der **${recommendedRackets[0].name}**.` : 
-    `Based on your answers, here are the best matches. Your top match is the **${recommendedRackets[0].name}**.`;
+    `Basierend auf deinen Antworten sind dies die besten Treffer. Dein bestes Match ist der **${topRacketName}**.` : 
+    `Based on your answers, here are the best matches. Your top match is the **${topRacketName}**.`;
 
   let resultsHtml = `<h2 class="text-3xl font-bold mb-2 text-indigo-700">${titleText}</h2>`;
   resultsHtml += `<p class="text-gray-600 mb-8">${subtitleText}</p>`;
