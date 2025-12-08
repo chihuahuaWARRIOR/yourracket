@@ -31,28 +31,57 @@ async function loadData() {
 const brandEl = document.getElementById("brand");
 if (brandEl) {
 
-    // Kategorien, die zwischen User und Rackets verglichen werden
-const racketCategories = [
-  "Groundstrokes", "Volleys", "Serves", "Returns",
+// Kategorien, die zwischen User und Rackets verglichen werden (nur TW-Kategorien)
+const twCategories = [
   "Power", "Control", "Maneuverability", "Stability",
   "Comfort", "Touch / Feel", "Topspin", "Slice"
 ];
 
-// BASE-SCORES dynamisch aus DB berechnen
-function computeBaseline(rackets) {
+// BASE-SCORES dynamisch aus DB berechnen (nur für TW-Kategorien)
+function computeTwBaseline(rackets) {
   const baseline = {};
 
-  racketCategories.forEach(cat => {
+  twCategories.forEach(cat => {
     const values = rackets.map(r => r.stats[cat]);
-    const avg = values.reduce((a,b) => a + b, 0) / values.length;
+    const avg = values.reduce((a, b) => a + b, 0) / values.length;
     baseline[cat] = Number(avg.toFixed(3));  // sauber runden
   });
 
   return baseline;
 }
 
-// beim Start Userprofil auf Mittelwerte setzen
-let userRacketProfile = computeBaseline(rackets);
+// Daten laden und Basis-Score berechnen
+async function loadData() {
+  try {
+    const [qRes, rRes] = await Promise.all([
+      fetch("questions.json", { cache: "no-store" }),
+      fetch("rackets.json", { cache: "no-store" })
+    ]);
+    const qData = await qRes.json();
+    const rData = await rRes.json();
+    questions = qData;
+    rackets = rData;
+
+    // Basis-Score für TW-Kategorien berechnen
+    const twBaseline = computeTwBaseline(rackets);
+
+    // Userprofil mit dem Basis-Score für TW-Kategorien initialisieren
+    let userRacketProfile = {};
+    twCategories.forEach(cat => {
+      userRacketProfile[cat] = twBaseline[cat];
+    });
+
+    // ATP-Kategorien und andere Logik bleiben unverändert
+    // ...
+
+    // UI aktualisieren oder andere Logik
+    // ...
+
+  } catch (error) {
+    console.error("Fehler beim Laden der Daten:", error);
+  }
+}
+
 
   // Branding-Text setzen
   brandEl.innerHTML = `<b>WhichRacket.com</b>`;
@@ -1030,4 +1059,5 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
