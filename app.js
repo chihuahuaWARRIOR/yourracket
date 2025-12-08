@@ -5,7 +5,7 @@ let userProfile = {};
 let questions = {};
 let rackets = [];
 let lang = localStorage.getItem("language") || getLanguage();
-const BASE_SCORE = 50; // neutral (0-100 internal, 50 => 5.0)
+let averageScores = {};
 const SCALE_FACTOR = 5;
 let matchMode = "strength"; // "strength" oder "weakness"
 let selectedRacketIndex = 0;
@@ -18,19 +18,75 @@ function getLanguage() {
 
 // === Daten laden ===
 async function loadData() {
-  try {
-    const [qRes, rRes] = await Promise.all([
-      fetch("questions.json", { cache: "no-store" }),
-      fetch("rackets.json", { cache: "no-store" })
-    ]);
-    const qData = await qRes.json();
-    const rData = await rRes.json();
-    questions = qData;
-    rackets = rData;
+  try {
+    const [qRes, rRes] = await Promise.all([
+      fetch("questions.json", { cache: "no-store" }),
+      fetch("rackets.json", { cache: "no-store" })
+    ]);
+    const qData = await qRes.json();
+    const rData = await rRes.json();
 
-const brandEl = document.getElementById("brand");
-if (brandEl) {
+    questions = qData;
+    rackets = rData;
 
+    // === Dynamische Mittelwerte berechnen ===
+function calculateAverageScores(rackets) {
+  const categories = [
+    "Groundstrokes", "Volleys", "Serves", "Returns", "Power",
+    "Control", "Maneuverability", "Stability", "Comfort",
+    "Touch / Feel", "Topspin", "Slice"
+  ];
+  const counts = {}; // Zähler für jeden Score
+  const sums = {};   // Summen für jeden Score
+
+  // 1. Initialisieren
+  categories.forEach(cat => {
+    sums[cat] = 0;
+    counts[cat] = 0;
+  });
+
+  // 2. Summen über alle Schläger aufaddieren
+  rackets.forEach(racket => {
+    // Gehe alle Kategorien durch, um die entsprechenden Scores im Schläger zu finden
+    categories.forEach(cat => {
+      // Annahme: Die Kategorie-Eigenschaften liegen direkt im Racket-Objekt
+      if (racket[cat] !== undefined && typeof racket[cat] === 'number') {
+        sums[cat] += racket[cat];
+        counts[cat]++;
+      }
+    });
+  });
+
+  // 3. Mittelwert berechnen und speichern
+  categories.forEach(cat => {
+    // Stelle sicher, dass keine Division durch Null passiert
+    averageScores[cat] = counts[cat] > 0
+      ? Math.round(sums[cat] / counts[cat])
+      : 50; // Fallback auf 50, falls Daten fehlen
+  });
+
+  console.log("Dynamische Basiswerte (Mittelwerte):", averageScores);
+}
+      // NEU: Funktion zum Initialisieren des Benutzerprofils
+function initializeUserProfile() {
+  // Die Kategorien, die im Profil gespeichert werden sollen
+  const categories = [
+    "Groundstrokes", "Volleys", "Serves", "Returns", "Power",
+    "Control", "Maneuverability", "Stability", "Comfort",
+    "Touch / Feel", "Topspin", "Slice"
+  ];
+
+  userProfile = {}; // Sicherstellen, dass das Profil leer ist
+
+  categories.forEach(cat => {
+    // Setze den Startwert des Profils auf den berechneten Mittelwert
+    // (Aus dem globalen averageScores Objekt, das in loadData gefüllt wurde)
+    userProfile[cat] = averageScores[cat] || 50; 
+  });
+  
+  console.log("Benutzerprofil initialisiert:", userProfile);
+}
+    
   // Branding-Text setzen
   brandEl.innerHTML = `<b>WhichRacket.com</b>`;
   brandEl.style.textDecoration = "none";
@@ -1007,6 +1063,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
