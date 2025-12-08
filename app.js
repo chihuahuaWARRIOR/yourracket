@@ -5,7 +5,7 @@ let userProfile = {};
 let questions = {};
 let rackets = [];
 let lang = localStorage.getItem("language") || getLanguage();
-const BASE_SCORE = 50; // neutral (0-100 internal, 50 => 5.0)
+const BASE_SCORE = 75; // neutral (0-100 internal, 50 => 5.0)
 const SCALE_FACTOR = 5;
 let matchMode = "strength"; // "strength" oder "weakness"
 let selectedRacketIndex = 0;
@@ -1072,6 +1072,7 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
 
