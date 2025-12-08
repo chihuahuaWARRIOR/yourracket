@@ -30,6 +30,30 @@ async function loadData() {
 
 const brandEl = document.getElementById("brand");
 if (brandEl) {
+
+    // Kategorien, die zwischen User und Rackets verglichen werden
+const racketCategories = [
+  "Groundstrokes", "Volleys", "Serves", "Returns",
+  "Power", "Control", "Maneuverability", "Stability",
+  "Comfort", "Touch / Feel", "Topspin", "Slice"
+];
+
+// BASE-SCORES dynamisch aus DB berechnen
+function computeBaseline(rackets) {
+  const baseline = {};
+
+  racketCategories.forEach(cat => {
+    const values = rackets.map(r => r.stats[cat]);
+    const avg = values.reduce((a,b) => a + b, 0) / values.length;
+    baseline[cat] = Number(avg.toFixed(3));  // sauber runden
+  });
+
+  return baseline;
+}
+
+// beim Start Userprofil auf Mittelwerte setzen
+let userRacketProfile = computeBaseline(rackets);
+
   // Branding-Text setzen
   brandEl.innerHTML = `<b>WhichRacket.com</b>`;
   brandEl.style.textDecoration = "none";
@@ -1006,3 +1030,4 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
