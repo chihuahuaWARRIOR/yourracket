@@ -16,7 +16,7 @@ function getLanguage() {
   return navLang.startsWith("de") ? "de" : "en";
 }
 
-// === Dynamische Mittelwerte berechnen ===
+// === Dynamische Mittelwerte berechnen (ANGEPASST AN DEINE JSON) ===
 function calculateAverageScores(rackets) {
   const categories = [
     "Groundstrokes", "Volleys", "Serves", "Returns", "Power",
@@ -32,15 +32,29 @@ function calculateAverageScores(rackets) {
   });
 
   rackets.forEach(racket => {
+    // Falls das Racket keine Stats hat, überspringen
+    if (!racket.stats) return;
+
     categories.forEach(cat => {
-      if (racket[cat] !== undefined && typeof racket[cat] === 'number') {
-        sums[cat] += racket[cat];
+      // Zugriff auf das verschachtelte stats-Objekt
+      let val = racket.stats[cat];
+
+      // Prüfen, ob val eine Zahl ist
+      if (val !== undefined && typeof val === 'number') {
+        // WICHTIG: Deine JSON nutzt 0-10 (z.B. 8.7), wir brauchen intern 0-100.
+        // Also rechnen wir mal 10.
+        if (val <= 10) { 
+             val = val * 10; 
+        }
+
+        sums[cat] += val;
         counts[cat]++;
       }
     });
   });
 
   categories.forEach(cat => {
+    // Durchschnitt berechnen oder Fallback auf 50
     averageScores[cat] = counts[cat] > 0
       ? Math.round(sums[cat] / counts[cat])
       : 50;
@@ -61,7 +75,6 @@ function initializeUserProfile() {
 
   categories.forEach(cat => {
     // Setze den Startwert auf den berechneten Mittelwert
-    // Falls keine Daten da sind, fallback auf 50
     userProfile[cat] = averageScores[cat] || 50; 
   });
   
@@ -204,10 +217,9 @@ function handleEffects(effects) {
 
     // NORMALE KATEGORIEN: 
     // Wir nutzen hier den berechneten Durchschnitt (averageScores) als Basis.
-    // Falls die Kategorie nicht in averageScores ist (z.B. Spielstile), nutzen wir 50.
     const currentBase = averageScores[key] || 50;
 
-    // Berechnung: (Aktueller Wert ODER Basis) + Veränderung
+    // Berechnung: (Basis) + Veränderung
     userProfile[key] = (userProfile[key] ?? currentBase) + (val * SCALE_FACTOR);
     userProfile[key] = Math.max(0, Math.min(100, userProfile[key]));
   }
@@ -730,7 +742,9 @@ function getTopRackets(profile, mode) {
     ];
     cats.forEach(cat => {
       const p = profile[cat] ?? 0;
-      const rv = r.stats[cat] ?? 0;
+      // WICHTIG: Hier stats aus dem stats-Objekt holen!
+      const rv = (r.stats && r.stats[cat]) ? r.stats[cat] : 0;
+      
       if (mode === "weakness" && p < 6.5) {
         diff += Math.abs(10 - rv);
       } else {
@@ -738,7 +752,7 @@ function getTopRackets(profile, mode) {
       }
     });
 
-    if (r.stats.Weight !== undefined && profile.WeightPref !== undefined) {
+    if (r.stats && r.stats.Weight !== undefined && profile.WeightPref !== undefined) {
       const pref = profile.WeightPref;
       const w = r.stats.Weight;
       const mid = ((pref.min ?? pref.max ?? w) + (pref.max ?? pref.min ?? w)) / 2;
@@ -749,7 +763,7 @@ function getTopRackets(profile, mode) {
       }
     }
 
-    if (r.stats.Headsize !== undefined && profile.HeadsizePref !== undefined) {
+    if (r.stats && r.stats.Headsize !== undefined && profile.HeadsizePref !== undefined) {
       const pref = profile.HeadsizePref;
       const hs = r.stats.Headsize;
       const mid = ((pref.min ?? pref.max ?? hs) + (pref.max ?? pref.min ?? hs)) / 2;
