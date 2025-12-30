@@ -39,10 +39,10 @@
     {
       "q": "Ihr seid in einer Grundlinien-Rallye mit vielen mittigen Bällen und wenig Chancen zum Angriff. Was tust du?",
       "answers": [
-        { "text": "Ich versuche die Rallye schnell mit vollem Risiko zu beenden", "effects": { "Control": 0, "HeadsizeMax": 630, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "Ich komme nach vorne an das Netz und versuche den Punkt zu machen", "effects": { "Control": 0, "Power": 0, "HeadsizeMin": 630, "HeadsizeMax": 645, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "Ich bleibe hinten und attackiere mit harten und platzierten Bällen", "effects": { "Power": 0, "Comfort": 0, "HeadsizeMin": 645, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": -1 } },
-        { "text": "Ich bleibe hinten und spiele den Ball konstant zurück bis der Gegner einen Fehler macht", "effects": { "TheBigServer": 0, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
+        { "text": "Ich versuche die Rallye schnell mit vollem Risiko zu beenden", "effects": { "Groundstrokes": 0.125, "Volleys": 0.125, "Serves": 0.125, "Returns": 0, "Power:": 0.25, "Control": -0.25, "Maneuverability": -0.25, "Stability": -0.125, "Comfort": 0, "Touch / Feel": 0, "Topspin": 0.125, "Slice": -0.25, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": -1, "CounterPuncher": -1 } },
+        { "text": "Ich komme nach vorne an das Netz und versuche den Punkt zu machen", "effects": { "Groundstrokes": -0.125, "Volleys": 0.25, "Serves": 0, "Returns": 0, "Power:": 0, "Control": 0.125, "Maneuverability": 0.25, "Stability": 0.125, "Comfort": 0, "Touch / Feel": 0.25, "Topspin": 0, "Slice": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
+        { "text": "Ich bleibe hinten und attackiere mit harten und platzierten Bällen", "effects": { "Groundstrokes": 0.25, "Volleys": -0.125, "Serves": 0, "Returns": 0, "Power:": 0.125, "Control": 0.125, "Maneuverability": 0, "Stability": -0.125, "Comfort": 0.125, "Touch / Feel": 0.125, "Topspin": 0.25, "Slice": -0.125, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": -1 } },
+        { "text": "Ich bleibe hinten und spiele den Ball konstant zurück bis der Gegner einen Fehler macht", "effects": { "Groundstrokes": 0.125, "Volleys": -0.25, "Serves": 0, "Returns": 0, "Power:": 0, "Control": 0.25, "Maneuverability": 0, "Stability": 0.25, "Comfort": 0.125, "Touch / Feel": 0, "Topspin": -0.125, "Slice": 0.125,"TheBigServer": 0, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
       ]
     },
     {
@@ -292,3 +292,4 @@
     }
   ]
 }
+
