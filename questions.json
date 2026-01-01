@@ -238,24 +238,208 @@
     }
   ]
 },
+{
+  "q": "0:1 nach dem ersten Spiel. Jetzt hast Du Aufschlag!",
+  "answers": [
     {
-      "q": "0:1 nach dem ersten Spiel. Jetzt hast Du Aufschlag!",
-      "answers": [
-        { "text": "Super! Mein Aufschlag ist meine größte Waffe. Ich hau den Ball mit voller Power rüber!", "effects": { "Power": 0, "Serves": 0, "TheBigServer": 1, "ServeAndVolleyer": 1, "AllCourtPlayer": -1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": 0 } },
-        { "text": "Ich mache es taktisch: Den Aufschlag platziere ich weit nach außen und komme sofort ans Netz", "effects": { "Control": 0, "Serves": 0, "Volleys": 0, "Touch / Feel": 0, "TheBigServer": 1, "ServeAndVolleyer": 1, "AllCourtPlayer": 0, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "Ich mache meinen Aufschlag lieber sicher und versuche den Return anzugreifen", "effects": { "Control": 0, "Serves": 0, "Groundstrokes": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "Ich bleibe hinten nach meinem Aufschlag und mache den Punkt im Ballwechsel", "effects": { "Comfort": 0, "Stability": 0, "Groundstrokes": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
+      "text": "Super! Mein Aufschlag ist meine größte Waffe. Ich hau den Ball mit voller Power rüber!",
+      "effects": {
+        "Groundstrokes": -0.125,
+        "Volleys": 0,
+        "Serves": 0.25,
+        "Returns": 0.125,
+        "Power": 0.25,
+        "Control": -0.125,
+        "Maneuverability": -0.125,
+        "Stability": 0,
+        "Comfort": 0,
+        "Touch / Feel": -0.125,
+        "Topspin": 0,
+        "Slice": 0,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": -1,
+        "AttackingBaseliner": -1,
+        "SolidBaseliner": -1,
+        "CounterPuncher": 0
+      }
     },
     {
-      "q": "Puh! Auch die gegnerischen Aufschläge fliegen schnell heute. Wie gehst du damit um?",
-      "answers": [
-        { "text": "Direkte Attacke: Wenn der Aufschlag schnell kommt, nutze ich die Kraft und retuniere ebenso hart", "effects": { "Power": 0, "Returns": 0, "TheBigServer": 1, "ServeAndVolleyer": 1, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "Ich blocke den Ball weit ins Feld und komme ans Netz", "effects": { "Control": 0, "Returns": 0, "Volleys": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "Ich bringe den Ball zurück, bleibe hinten und schaue, dass ich in die Rallye komme", "effects": { "Comfort": 0, "Returns": 0, "Groundstrokes": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": 1, "CounterPuncher": 1 } },
-        { "text": "Ich blocke den Ball zurück und bleibe in der Defensive: Hauptsache keinen Fehler machen", "effects": { "Control": 0, "Stability": 0, "Returns": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": -1, "SolidBaseliner": 0, "CounterPuncher": 1 } }
-      ]
+      "text": "Ich mache es taktisch: Den Aufschlag platziere ich weit nach außen und komme sofort ans Netz",
+      "effects": {
+        "Groundstrokes": -0.25,
+        "Volleys": 0.25,
+        "Serves": 0.25,
+        "Returns": 0,
+        "Power": -0.125,
+        "Control": 0.25,
+        "Maneuverability": 0.25,
+        "Stability": 0.125,
+        "Comfort": 0,
+        "Touch / Feel": 0.25,
+        "Topspin": 0,
+        "Slice": 0,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": -1,
+        "SolidBaseliner": -1,
+        "CounterPuncher": -1
+      }
     },
+    {
+      "text": "Ich mache meinen Aufschlag lieber sicher und versuche den Return anzugreifen",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": 0.125,
+        "Serves": 0.125,
+        "Returns": 0.25,
+        "Power": 0,
+        "Control": 0.125,
+        "Maneuverability": 0.125,
+        "Stability": 0,
+        "Comfort": 0,
+        "Touch / Feel": 0,
+        "Topspin": 0.125,
+        "Slice": 0,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": -1,
+        "CounterPuncher": -1
+      }
+    },
+    {
+      "text": "Ich bleibe hinten nach meinem Aufschlag und mache den Punkt im Ballwechsel",
+      "effects": {
+        "Groundstrokes": 0.25,
+        "Volleys": -0.25,
+        "Serves": 0.125,
+        "Returns": 0.125,
+        "Power": 0,
+        "Control": 0,
+        "Maneuverability": -0.125,
+        "Stability": -0.125,
+        "Comfort": 0,
+        "Touch / Feel": 0,
+        "Topspin": 0.125,
+        "Slice": 0,
+
+        "TheBigServer": 0,
+        "ServeAndVolleyer": 0,
+        "AllCourtPlayer": -1,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 1
+      }
+    }
+  ]
+},
+{
+  "q": "Puh! Auch die gegnerischen Aufschläge fliegen schnell heute. Wie gehst du damit um?",
+  "answers": [
+    {
+      "text": "Direkte Attacke: Wenn der Aufschlag schnell kommt, nutze ich die Kraft und retuniere ebenso hart",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": 0,
+        "Serves": 0.125,
+        "Returns": 0.25,
+        "Power": 0.25,
+        "Control": -0.25,
+        "Maneuverability": 0.125,
+        "Stability": 0.25,
+        "Comfort": -0.125,
+        "Touch/Feel": -0.25,
+        "Topspin": -0.125,
+        "Slice": -0.125,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": -1,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": -1,
+        "CounterPuncher": -1
+      }
+    },
+    {
+      "text": "Ich blocke den Ball weit ins Feld und komme ans Netz",
+      "effects": {
+        "Groundstrokes": 0,
+        "Volleys": 0.25,
+        "Serves": 0,
+        "Returns": 0.125,
+        "Power": -0.25,
+        "Control": 0.125,
+        "Maneuverability": 0.125,
+        "Stability": 0.25,
+        "Comfort": 0,
+        "Touch/Feel": -0.125,
+        "Topspin": -0.25,
+        "Slice": 0.125,
+
+        "TheBigServer": 0,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": -1,
+        "SolidBaseliner": -1,
+        "CounterPuncher": -1
+      }
+    },
+    {
+      "text": "Ich bringe den Ball zurück, bleibe hinten und schaue, dass ich in die Rallye komme",
+      "effects": {
+        "Groundstrokes": 0.25,
+        "Volleys": -0.125,
+        "Serves": 0,
+        "Returns": 0.125,
+        "Power": 0.125,
+        "Control": 0.25,
+        "Maneuverability": 0.125,
+        "Stability": 0.125,
+        "Comfort": 0.125,
+        "Touch/Feel": 0.25,
+        "Topspin": 0.125,
+        "Slice": 0.125,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 1
+      }
+    },
+    {
+      "text": "Ich blocke den Ball zurück und bleibe in der Defensive: Hauptsache keinen Fehler machen",
+      "effects": {
+        "Groundstrokes": 0,
+        "Volleys": -0.25,
+        "Serves": 0,
+        "Returns": -0.125,
+        "Power": -0.125,
+        "Control": 0,
+        "Maneuverability": 0,
+        "Stability": 0.25,
+        "Comfort": 0,
+        "Touch/Feel": -0.25,
+        "Topspin": -0.25,
+        "Slice": 0.125,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": -1,
+        "AttackingBaseliner": -1,
+        "SolidBaseliner": 0,
+        "CounterPuncher": 1
+      }
+    }
+  ]
+},
     {
       "q": "Power ist zentral im modernen Tennis: Wo setzt du sie am meisten ein?",
       "answers": [
@@ -476,5 +660,6 @@
     }
   ]
 }
+
 
 
