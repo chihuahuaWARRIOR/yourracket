@@ -51,7 +51,7 @@
         "Maneuverability": -0.25,
         "Stability": -0.125,
         "Comfort": 0,
-        "Touch/Feel": 0,
+        "Touch / Feel": 0,
         "Topspin": 0.125,
         "Slice": -0.25,
 
@@ -75,7 +75,7 @@
         "Maneuverability": 0.25,
         "Stability": 0.125,
         "Comfort": 0,
-        "Touch/Feel": 0.25,
+        "Touch / Feel": 0.25,
         "Topspin": 0,
         "Slice": 0,
 
@@ -99,7 +99,7 @@
         "Maneuverability": 0,
         "Stability": -0.125,
         "Comfort": 0.125,
-        "Touch/Feel": 0.125,
+        "Touch / Feel": 0.125,
         "Topspin": 0.25,
         "Slice": -0.125,
 
@@ -123,7 +123,7 @@
         "Maneuverability": 0,
         "Stability": 0.25,
         "Comfort": 0.125,
-        "Touch/Feel": 0,
+        "Touch / Feel": 0,
         "Topspin": -0.125,
         "Slice": 0.125,
 
@@ -152,7 +152,7 @@
         "Maneuverability": 0.25,
         "Stability": 0.25,
         "Comfort": -0.125,
-        "Touch/Feel": 0.125,
+        "Touch / Feel": 0.125,
         "Topspin": -0.125,
         "Slice": 0,
 
@@ -176,7 +176,7 @@
         "Maneuverability": 0.125,
         "Stability": 0.125,
         "Comfort": -0.125,
-        "Touch/Feel": 0.25,
+        "Touch / Feel": 0.25,
         "Topspin": 0.125,
         "Slice": 0,
 
@@ -200,7 +200,7 @@
         "Maneuverability": -0.25,
         "Stability": 0,
         "Comfort": 0,
-        "Touch/Feel": -0.125,
+        "Touch / Feel": -0.125,
         "Topspin": 0.25,
         "Slice": -0.125,
 
@@ -224,7 +224,7 @@
         "Maneuverability": 0,
         "Stability": 0.25,
         "Comfort": 0.125,
-        "Touch/Feel": 0,
+        "Touch / Feel": 0,
         "Topspin": 0.125,
         "Slice": 0.125,
 
@@ -354,7 +354,7 @@
         "Maneuverability": 0.125,
         "Stability": 0.25,
         "Comfort": -0.125,
-        "Touch/Feel": -0.25,
+        "Touch  /Feel": -0.25,
         "Topspin": -0.125,
         "Slice": -0.125,
 
@@ -378,7 +378,7 @@
         "Maneuverability": 0.125,
         "Stability": 0.25,
         "Comfort": 0,
-        "Touch/Feel": -0.125,
+        "Touch / Feel": -0.125,
         "Topspin": -0.25,
         "Slice": 0.125,
 
@@ -402,7 +402,7 @@
         "Maneuverability": 0.125,
         "Stability": 0.125,
         "Comfort": 0.125,
-        "Touch/Feel": 0.25,
+        "Touch / Feel": 0.25,
         "Topspin": 0.125,
         "Slice": 0.125,
 
@@ -426,7 +426,7 @@
         "Maneuverability": 0,
         "Stability": 0.25,
         "Comfort": 0,
-        "Touch/Feel": -0.25,
+        "Touch / Feel": -0.25,
         "Topspin": -0.25,
         "Slice": 0.125,
 
@@ -440,51 +440,511 @@
     }
   ]
 },
+{
+  "q": "Power ist zentral im modernen Tennis: Wo setzt du sie am meisten ein?",
+  "answers": [
     {
-      "q": "Power ist zentral im modernen Tennis: Wo setzt du sie am meisten ein?",
-      "answers": [
-        { "text": "Der erste Aufschlag wird voll durchgezogen. Ich habe ja noch einen zweiten", "effects": { "Power": 0, "Serves": 0, "TheBigServer": 1, "ServeAndVolleyer": 1, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Ich greife schon von der Grundlinie aus an: Dafür brauche ich die Power", "effects": { "Power": 0, "Groundstrokes": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": -1, "CounterPuncher": 0 } },
-        { "text": "Der Ball kommt etwas kurz zu mir? Dann gibt es das volle Pfund", "effects": { "Power": 0, "Returns": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": -1 } },
-        { "text": "Power brauche ich auch in der Defensive: Ich kratze gerne noch einen verloren geglaubten Ball heraus", "effects": { "Stability": 0, "Comfort": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": 0, "CounterPuncher": 1 } }
-      ]
+      "text": "Der erste Aufschlag wird voll durchgezogen. Ich habe ja noch einen zweiten",
+      "effects": {
+        "Groundstrokes": -0.125,
+        "Volleys": 0.125,
+        "Serves": 0.25,
+        "Returns": 0.125,
+        "Power": 0.25,
+        "Control": -0.25,
+        "Maneuverability": -0.125,
+        "Stability": 0.125,
+        "Comfort": -0.25,
+        "Touch / Feel": -0.25,
+        "Topspin": 0,
+        "Slice": 0,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 0,
+        "CounterPuncher": 0
+      }
     },
     {
-      "q": "Der Ball kommt ohne viel Geschwindigkeit zu dir. Zeit zum Angriff?",
-      "answers": [
-        { "text": "Ja, ich komme direkt ans Netz!", "effects": { "Volleys": 0, "TheBigServer": -1, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "Ich komme ans Netz – aber erst nach einem platzierten Angriffsball", "effects": { "Control": 0, "Volleys": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 1, "AttackingBaseliner": 1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "Zeit für einen harten und platzierten Ball! Ab jetzt diktiere ich den Ballwechsel", "effects": { "Power": 0, "Control": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Nicht zu viel Risiko gehen: Der Gegner wird schon einen Fehler machen, wenn ich ihn laufen lasse", "effects": { "Stability": 0, "TheBigServer": -1, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
+      "text": "Ich greife schon von der Grundlinie aus an: Dafür brauche ich die Power",
+      "effects": {
+        "Groundstrokes": 0.25,
+        "Volleys": -0.25,
+        "Serves": 0.125,
+        "Returns": 0.125,
+        "Power": 0.25,
+        "Control": 0,
+        "Maneuverability": -0.125,
+        "Stability": 0.125,
+        "Comfort": 0,
+        "Touch / Feel": 0,
+        "Topspin": 0.25,
+        "Slice": -0.125,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": 0,
+        "AllCourtPlayer": -1,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": -1,
+        "CounterPuncher": 0
+      }
     },
     {
-      "q": "Der Gegner spielt sehr platziert in die Ecken. Was tust du?",
-      "answers": [
-        { "text": "Ich erlaube nicht jeden Ball, sondern konzentriere mich auf meine größte Stärke: Mein Aufschlagspiel", "effects": { "Serves": 0, "TheBigServer": 1, "ServeAndVolleyer": 1, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Ich lass es nicht dazu kommen und gehe lieber den schnellen Weg ans Netz", "effects": { "Volleys": 0, "Maneuverability": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": 0 } },
-        { "text": "Ich positioniere mich geschickt und bringe den Gegner auch in Bewegung", "effects": { "Control": 0, "Maneuverability": 0, "TheBigServer": 0, "ServeAndVolleyer": -1, "AllCourtPlayer": 1, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Dafür ist Tennis da! Ich bleibe defensiv und erlaube die Bälle", "effects": { "Stability": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": -1, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
+      "text": "Der Ball kommt etwas kurz zu mir? Dann gibt es das volle Pfund",
+      "effects": {
+        "Groundstrokes": 0,
+        "Volleys": 0.125,
+        "Serves": 0.125,
+        "Returns": 0.25,
+        "Power": 0.125,
+        "Control": 0,
+        "Maneuverability": 0.125,
+        "Stability": -0.125,
+        "Comfort": 0,
+        "Touch / Feel": -0.25,
+        "Topspin": 0.125,
+        "Slice": 0,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": 0,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 1,
+        "CounterPuncher": -1
+      }
     },
     {
-      "q": "Die Bälle kommen dir schnell entgegen. Wie reagierst du auf zu viel Power?",
-      "answers": [
-        { "text": "Ich ziehe komplett durch den Ball durch und bleibe stabil", "effects": { "Power": 0, "Stability": 0, "TheBigServer": 1, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Ich konzentriere mich durch den Ball vor meinem Körper zu treffen - auch am Netz", "effects": { "Control": 0, "Volleys": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Ich bringe die Bälle platziert zurück und nehme im Zweifel etwas Power raus", "effects": { "Control": 0, "Returns": 0, "TheBigServer": -1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": 1, "CounterPuncher": 1 } },
-        { "text": "Wer so drauf haut, macht bald einen Fehler – ich halte den Ball irgendwie im Spiel", "effects": { "Stability": 0, "Comfort": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
+      "text": "Power brauche ich auch in der Defensive: Ich kratze gerne noch einen verloren geglaubten Ball heraus",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": -0.25,
+        "Serves": 0,
+        "Returns": 0.25,
+        "Power": 0.125,
+        "Control": -0.125,
+        "Maneuverability": 0.25,
+        "Stability": 0.125,
+        "Comfort": 0.125,
+        "Touch / Feel": -0.125,
+        "Topspin": -0.125,
+        "Slice": 0.25,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": -1,
+        "SolidBaseliner": 0,
+        "CounterPuncher": 1
+      }
+    }
+  ]
+},
+{
+  "q": "Der Ball kommt ohne viel Geschwindigkeit zu dir. Zeit zum Angriff?",
+  "answers": [
+    {
+      "text": "Ja, ich komme direkt ans Netz!",
+      "effects": {
+        "Groundstrokes": -0.25,
+        "Volleys": 0.25,
+        "Serves": 0.125,
+        "Returns": 0,
+        "Power": 0,
+        "Control": 0.125,
+        "Maneuverability": 0.25,
+        "Stability": 0,
+        "Comfort": -0.125,
+        "Touch / Feel": 0.125,
+        "Topspin": 0,
+        "Slice": 0,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": -1,
+        "SolidBaseliner": -1,
+        "CounterPuncher": -1
+      }
     },
     {
-      "q": "Der Arm wird langsam müde - und tut vielleicht schon etwas weh. Wie machst du das Spiel schnell?",
-      "answers": [
-        { "text": "Ich komme direkt ans Netz - mein Schläger federt den Ball schon gut ab.", "effects": { "Volleys": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "Ich bleibe erst mal hinten - aber sobald sich die Chance ergibt, komme ich nach vorne.", "effects": { "Maneuverability": 0, "Control": 0, "TheBigServer": 0, "ServeAndVolleyer": -1, "AllCourtPlayer": 1, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Mir hilft es etwas Schwung rauszunehmen und von der Grundlinie deinen platzierten Ball zu spielen.", "effects": { "Control": 0, "Stability": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } },
-        { "text": "Ich blocke den Ball lieber zurück - durchziehen geht mit meinem Arm nicht mehr auf Dauer.", "effects": { "Comfort": 0, "Returns": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
+      "text": "Ich komme ans Netz – aber erst nach einem platzierten Angriffsball",
+      "effects": {
+        "Groundstrokes": -0.125,
+        "Volleys": 0.25,
+        "Serves": 0.125,
+        "Returns": 0.125,
+        "Power": 0,
+        "Control": 0.25,
+        "Maneuverability": 0.125,
+        "Stability": 0,
+        "Comfort": -0.125,
+        "Touch / Feel": 0.125,
+        "Topspin": 0.125,
+        "Slice": -0.125,
+
+        "TheBigServer": 0,
+        "ServeAndVolleyer": 0,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": -1,
+        "CounterPuncher": -1
+      }
     },
+    {
+      "text": "Zeit für einen harten und platzierten Ball! Ab jetzt diktiere ich den Ballwechsel",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": 0,
+        "Serves": 0,
+        "Returns": 0.125,
+        "Power": 0.25,
+        "Control": 0.125,
+        "Maneuverability": 0,
+        "Stability": 0,
+        "Comfort": 0,
+        "Touch / Feel": 0.125,
+        "Topspin": 0.25,
+        "Slice": -0.125,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": 0,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 0,
+        "CounterPuncher": 0
+      }
+    },
+    {
+      "text": "Nicht zu viel Risiko gehen: Der Gegner wird schon einen Fehler machen, wenn ich ihn laufen lasse",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": -0.125,
+        "Serves": -0.25,
+        "Returns": -0.25,
+        "Power": -0.25,
+        "Control": 0.125,
+        "Maneuverability": 0,
+        "Stability": 0.125,
+        "Comfort": 0.125,
+        "Touch / Feel": 0,
+        "Topspin": 0,
+        "Slice": 0.25,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": 0,
+        "AllCourtPlayer": -1,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 1
+      }
+    }
+  ]
+},
+{
+  "q": "Der Gegner spielt sehr platziert in die Ecken. Was tust du?",
+  "answers": [
+    {
+      "text": "Ich erlaube nicht jeden Ball, sondern konzentriere mich auf meine größte Stärke: Mein Aufschlagspiel",
+      "effects": {
+        "Groundstrokes": -0.25,
+        "Volleys": 0.125,
+        "Serves": 0.25,
+        "Returns": 0,
+        "Power": 0,
+        "Control": 0,
+        "Maneuverability": -0.25,
+        "Stability": 0,
+        "Comfort": 0,
+        "Touch / Feel": 0,
+        "Topspin": 0,
+        "Slice": 0,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 0,
+        "CounterPuncher": 0
+      }
+    },
+    {
+      "text": "Ich lass es nicht dazu kommen und gehe lieber den schnellen Weg ans Netz",
+      "effects": {
+        "Groundstrokes": -0.25,
+        "Volleys": 0.25,
+        "Serves": 0.125,
+        "Returns": 0,
+        "Power": -0.125,
+        "Control": 0.125,
+        "Maneuverability": 0.25,
+        "Stability": 0.125,
+        "Comfort": 0.125,
+        "Touch / Feel": 0.25,
+        "Topspin": 0,
+        "Slice": 0,
+
+        "TheBigServer": 0,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": -1,
+        "SolidBaseliner": -1,
+        "CounterPuncher": 0
+      }
+    },
+    {
+      "text": "Ich positioniere mich geschickt und bringe den Gegner auch in Bewegung",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": 0.125,
+        "Serves": 0.125,
+        "Returns": 0.125,
+        "Power": -0.125,
+        "Control": 0.25,
+        "Maneuverability": 0.125,
+        "Stability": 0,
+        "Comfort": 0,
+        "Touch / Feel": 0.125,
+        "Topspin": 0.125,
+        "Slice": 0.125,
+
+        "TheBigServer": 0,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 0,
+        "CounterPuncher": 0
+      }
+    },
+    {
+      "text": "Dafür ist Tennis da! Ich bleibe defensiv und erlaube die Bälle",
+      "effects": {
+        "Groundstrokes": 0.25,
+        "Volleys": -0.25,
+        "Serves": 0,
+        "Returns": 0.125,
+        "Power": -0.125,
+        "Control": 0.25,
+        "Maneuverability": 0.125,
+        "Stability": 0.25,
+        "Comfort": 0.125,
+        "Touch / Feel": -0.125,
+        "Topspin": 0.125,
+        "Slice": 0.125,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": -1,
+        "AttackingBaseliner": -1,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 1
+      }
+    }
+  ]
+},
+{
+  "q": "Die Bälle kommen dir schnell entgegen. Wie reagierst du auf zu viel Power?",
+  "answers": [
+    {
+      "text": "Ich ziehe komplett durch den Ball durch und bleibe stabil",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": 0,
+        "Serves": 0,
+        "Returns": 0.125,
+        "Power": 0.125,
+        "Control": 0.125,
+        "Maneuverability": 0,
+        "Stability": 0.25,
+        "Comfort": 0.125,
+        "Touch / Feel": -0.125,
+        "Topspin": -0.125,
+        "Slice": -0.25,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 0,
+        "CounterPuncher": 0
+      }
+    },
+    {
+      "text": "Ich konzentriere mich durch den Ball vor meinem Körper zu treffen - auch am Netz",
+      "effects": {
+        "Groundstrokes": -0.125,
+        "Volleys": 0.125,
+        "Serves": 0,
+        "Returns": 0.125,
+        "Power": -0.125,
+        "Control": 0,
+        "Maneuverability": 0.25,
+        "Stability": 0.25,
+        "Comfort": 0.25,
+        "Touch / Feel": 0.25,
+        "Topspin": -0.25,
+        "Slice": -0.125,
+
+        "TheBigServer": 0,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": -1,
+        "SolidBaseliner": 0,
+        "CounterPuncher": 0
+      }
+    },
+    {
+      "text": "Ich bringe die Bälle platziert zurück und nehme im Zweifel etwas Power raus",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": -0.125,
+        "Serves": 0,
+        "Returns": 0.25,
+        "Power": -0.125,
+        "Control": 0.25,
+        "Maneuverability": 0.125,
+        "Stability": 0.125,
+        "Comfort": 0,
+        "Touch / Feel": 0.125,
+        "Topspin": 0.25,
+        "Slice": 0.25,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": 0,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 1
+      }
+    },
+    {
+      "text": "Wer so drauf haut, macht bald einen Fehler – ich halte den Ball irgendwie im Spiel",
+      "effects": {
+        "Groundstrokes": 0,
+        "Volleys": 0,
+        "Serves": 0,
+        "Returns": 0.25,
+        "Power": -0.25,
+        "Control": 0.25,
+        "Maneuverability": 0.125,
+        "Stability": 0.25,
+        "Comfort": 0.125,
+        "Touch / Feel": 0.125,
+        "Topspin": 0,
+        "Slice": 0.125,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": -1,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 1
+      }
+    }
+  ]
+},
+{
+  "q": "Der Arm wird langsam müde - und tut vielleicht schon etwas weh. Wie machst du das Spiel schnell?",
+  "answers": [
+    {
+      "text": "Ich komme direkt ans Netz - mein Schläger federt den Ball schon gut ab.",
+      "effects": {
+        "Groundstrokes": -0.25,
+        "Volleys": 0.25,
+        "Serves": 0,
+        "Returns": 0.125,
+        "Power": 0,
+        "Control": 0.125,
+        "Maneuverability": 0.25,
+        "Stability": 0.25,
+        "Comfort": 0.25,
+        "Touch / Feel": 0.125,
+        "Topspin": -0.125,
+        "Slice": 0.125,
+
+        "TheBigServer": 0,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": -1,
+        "SolidBaseliner": -1,
+        "CounterPuncher": -1
+      }
+    },
+    {
+      "text": "Ich bleibe erst mal hinten - aber sobald sich die Chance ergibt, komme ich nach vorne.",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": 0.125,
+        "Serves": 0,
+        "Returns": 0,
+        "Power": 0,
+        "Control": 0.125,
+        "Maneuverability": 0.25,
+        "Stability": 0.125,
+        "Comfort": 0.125,
+        "Touch / Feel": 0,
+        "Topspin": 0.125,
+        "Slice": 0.125,
+
+        "TheBigServer": 0,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": 0,
+        "CounterPuncher": 0
+      }
+    },
+    {
+      "text": "Mir hilft es etwas Schwung rauszunehmen und von der Grundlinie deinen platzierten Ball zu spielen.",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": -0.125,
+        "Serves": 0.125,
+        "Returns": 0.125,
+        "Power": -0.125,
+        "Control": 0.25,
+        "Maneuverability": 0.125,
+        "Stability": 0.25,
+        "Comfort": 0.25,
+        "Touch / Feel": 0,
+        "Topspin": -0.125,
+        "Slice": 0.125,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 1
+      }
+    },
+    {
+      "text": "Ich blocke den Ball lieber zurück - durchziehen geht mit meinem Arm nicht mehr auf Dauer.",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": 0,
+        "Serves": 0,
+        "Returns": 0.125,
+        "Power": -0.125,
+        "Control": 0.125,
+        "Maneuverability": 0.125,
+        "Stability": 0.25,
+        "Comfort": 0.25,
+        "Touch / Feel": -0.125,
+        "Topspin": 0.125,
+        "Slice": 0.25,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": -1,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 1
+      }
+    }
+  ]
+},
     {
       "q": "Stoppball, lange und kurze Bälle oder cheeky geschnibbelt - Wann setzt du auf Variation?",
       "answers": [
@@ -660,6 +1120,7 @@
     }
   ]
 }
+
 
 
 
