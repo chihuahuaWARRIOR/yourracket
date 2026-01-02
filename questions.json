@@ -1286,87 +1286,915 @@
         { "text": "Doesn't matter / I don't know", "effects": { "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } }
       ]
     },
-    {
-      "q": "You are in a baseline rally with many central balls and few chances to attack. What do you do?",
-      "answers": [
-        { "text": "I try to end the rally quickly with full risk", "effects": { "Control": 0, "HeadsizeMax": 630, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "I come forward to the net and try to win the point", "effects": { "Control": 0, "Power": 0, "HeadsizeMin": 630, "HeadsizeMax": 645, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "I stay back and attack with hard and well-placed balls", "effects": { "Power": 0, "Comfort": 0, "HeadsizeMin": 645, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": -1 } },
-        { "text": "I stay back and constantly hit the ball back until the opponent makes a mistake", "effects": { "TheBigServer": 0, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
-    },
-    {
-      "q": "You hit a good attack on a short ball from your opponent, but they might still reach it. How do you react?",
-      "answers": [
-        { "text": "Immediately to the net – I finish the point right now!", "effects": { "Serves": 0, "Volleys": 0, "Power": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 0, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "I approach the net and maintain pressure without taking too much risk", "effects": { "Volleys": 0, "Control": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "I stay back but try to finish the point with the next shot", "effects": { "Power": 0, "Groundstrokes": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "I move far back and just bring the ball back – the opponent then has to run a lot", "effects": { "Comfort": 0, "Stability": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": -1, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
-    },
-    {
-      "q": "0-1 after the first game. It's your serve now!",
-      "answers": [
-        { "text": "Great! My serve is my biggest weapon. I hit the ball over with full power!", "effects": { "Power": 0, "Serves": 0, "TheBigServer": 1, "ServeAndVolleyer": 1, "AllCourtPlayer": -1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": 0 } },
-        { "text": "I play tactically: I place the serve wide and immediately come to the net", "effects": { "Control": 0, "Serves": 0, "Volleys": 0, "Touch / Feel": 0, "TheBigServer": 1, "ServeAndVolleyer": 1, "AllCourtPlayer": 0, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "I prefer to play my serve safe and try to attack the return", "effects": { "Control": 0, "Serves": 0, "Groundstrokes": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "I stay back after my serve and win the point in the rally", "effects": { "Comfort": 0, "Stability": 0, "Groundstrokes": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
-    },
-    {
-      "q": "Phew! The opponent's serves are fast today too. How do you handle that?",
-      "answers": [
-        { "text": "Direct attack: If the serve comes fast, I use the power and return just as hard", "effects": { "Power": 0, "Returns": 0, "TheBigServer": 1, "ServeAndVolleyer": 1, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "I block the ball deep into the court and come to the net", "effects": { "Control": 0, "Returns": 0, "Volleys": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "I bring the ball back, stay back, and look to get into the rally", "effects": { "Comfort": 0, "Returns": 0, "Groundstrokes": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": 1, "CounterPuncher": 1 } },
-        { "text": "I block the ball back and stay defensive: The main thing is not to make a mistake", "effects": { "Control": 0, "Stability": 0, "Returns": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": -1, "SolidBaseliner": 0, "CounterPuncher": 1 } }
-      ]
-    },
-    {
-      "q": "Power is central in modern tennis: Where do you use it the most?",
-      "answers": [
-        { "text": "The first serve is hit with full power. I still have a second one", "effects": { "Power": 0, "Serves": 0, "TheBigServer": 1, "ServeAndVolleyer": 1, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "I attack from the baseline already: I need power for that", "effects": { "Power": 0, "Groundstrokes": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": -1, "CounterPuncher": 0 } },
-        { "text": "The ball comes a little short to me? Then I hit it with full force", "effects": { "Power": 0, "Returns": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": -1 } },
-        { "text": "I also need power in defense: I like to scrape out a ball that seemed lost", "effects": { "Stability": 0, "Comfort": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": 0, "CounterPuncher": 1 } }
-      ]
-    },
-    {
-      "q": "The ball comes to you without much speed. Time to attack?",
-      "answers": [
-        { "text": "Yes, I come directly to the net!", "effects": { "Volleys": 0, "TheBigServer": -1, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "I approach the net – but only after a well-placed attacking shot", "effects": { "Control": 0, "Volleys": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 1, "AttackingBaseliner": 1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "Time for a hard and well-placed ball! From now on, I dictate the rally", "effects": { "Power": 0, "Control": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Don't take too much risk: The opponent will make a mistake if I make them run", "effects": { "Stability": 0, "TheBigServer": -1, "ServeAndVolleyer": 0, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
-    },
-    {
-      "q": "The opponent plays very placed into the corners. What do you do?",
-      "answers": [
-        { "text": "I don't allow every ball, but concentrate on my greatest strength: My serving game", "effects": { "Serves": 0, "TheBigServer": 1, "ServeAndVolleyer": 1, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "I don't let it happen and prefer to go the fast route to the net", "effects": { "Volleys": 0, "Maneuverability": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": 0 } },
-        { "text": "I position myself skillfully and also put the opponent in motion", "effects": { "Control": 0, "Maneuverability": 0, "TheBigServer": 0, "ServeAndVolleyer": -1, "AllCourtPlayer": 1, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "That's what tennis is for! I stay defensive and allow the balls", "effects": { "Stability": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": -1, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
-    },
-    {
-      "q": "The balls are coming at you quickly. How do you react to too much power?",
-      "answers": [
-        { "text": "I swing completely through the ball and remain stable", "effects": { "Power": 0, "Stability": 0, "TheBigServer": 1, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "I focus on hitting the ball in front of my body – even at the net", "effects": { "Control": 0, "Volleys": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "I bring the balls back well-placed and reduce power if necessary", "effects": { "Control": 0, "Returns": 0, "TheBigServer": -1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": 1, "CounterPuncher": 1 } },
-        { "text": "Anyone who hits so hard will soon make a mistake – I just keep the ball in play somehow", "effects": { "Stability": 0, "Comfort": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
-    },
-    {
-      "q": "Your arm is getting tired – and maybe already hurting a bit. How do you speed up the game?",
-      "answers": [
-        { "text": "I come directly to the net – my racket already dampens the ball well.", "effects": { "Volleys": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "I stay back for a bit – but as soon as the chance arises, I come forward.", "effects": { "Maneuverability": 0, "Control": 0, "TheBigServer": 0, "ServeAndVolleyer": -1, "AllCourtPlayer": 1, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "It helps me to reduce my swing and play my well-placed ball from the baseline.", "effects": { "Control": 0, "Stability": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } },
-        { "text": "I prefer to block the ball back – swinging through won't work consistently with my arm anymore.", "effects": { "Comfort": 0, "Returns": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
-    },
+  {
+    "q": "You are in a baseline rally with many balls down the middle and few chances to attack. What do you do?",
+    "answers": [
+      {
+        "text": "I try to end the rally quickly with full risk",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0.125,
+          "Serves": 0.125,
+          "Returns": 0,
+          "Power": 0.25,
+          "Control": -0.25,
+          "Maneuverability": -0.25,
+          "Stability": -0.125,
+          "Comfort": 0,
+          "Touch / Feel": 0,
+          "Topspin": 0.125,
+          "Slice": -0.25,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": -1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "I move forward to the net and try to finish the point",
+        "effects": {
+          "Groundstrokes": -0.125,
+          "Volleys": 0.25,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": 0,
+          "Control": 0.125,
+          "Maneuverability": 0.25,
+          "Stability": 0.125,
+          "Comfort": 0,
+          "Touch / Feel": 0.25,
+          "Topspin": 0,
+          "Slice": 0,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "I stay back and attack with hard, well-placed shots",
+        "effects": {
+          "Groundstrokes": 0.25,
+          "Volleys": -0.125,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": 0.125,
+          "Control": 0.125,
+          "Maneuverability": 0,
+          "Stability": -0.125,
+          "Comfort": 0.125,
+          "Touch / Feel": 0.125,
+          "Topspin": 0.25,
+          "Slice": -0.125,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": 0,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "I stay back and consistently return the ball until my opponent makes a mistake",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": -0.25,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": 0,
+          "Control": 0.25,
+          "Maneuverability": 0,
+          "Stability": 0.25,
+          "Comfort": 0.125,
+          "Touch / Feel": 0,
+          "Topspin": -0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      }
+    ]
+  },
+  {
+    "q": "You attacked a short ball well, but your opponent will probably reach it. How do you react?",
+    "answers": [
+      {
+        "text": "Straight to the net – I finish the point immediately!",
+        "effects": {
+          "Groundstrokes": -0.25,
+          "Volleys": 0.25,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": 0,
+          "Control": 0.125,
+          "Maneuverability": 0.25,
+          "Stability": 0.25,
+          "Comfort": -0.125,
+          "Touch / Feel": 0.125,
+          "Topspin": -0.125,
+          "Slice": 0,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "I move closer to the net and keep the pressure without taking too much risk",
+        "effects": {
+          "Groundstrokes": -0.25,
+          "Volleys": 0.125,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": 0,
+          "Control": 0.25,
+          "Maneuverability": 0.125,
+          "Stability": 0.125,
+          "Comfort": -0.125,
+          "Touch / Feel": 0.25,
+          "Topspin": 0.125,
+          "Slice": 0,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "I stay back but try to finish the point with the next shot",
+        "effects": {
+          "Groundstrokes": 0.25,
+          "Volleys": -0.125,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": 0.125,
+          "Control": 0.125,
+          "Maneuverability": -0.25,
+          "Stability": 0,
+          "Comfort": 0,
+          "Touch / Feel": -0.125,
+          "Topspin": 0.25,
+          "Slice": -0.125,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "I move far back and just get the ball over – my opponent has to do a lot of running",
+        "effects": {
+          "Groundstrokes": 0,
+          "Volleys": -0.25,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": -0.125,
+          "Control": 0,
+          "Maneuverability": 0,
+          "Stability": 0.25,
+          "Comfort": 0.125,
+          "Touch / Feel": 0,
+          "Topspin": 0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      }
+    ]
+  },
+  {
+    "q": "0–1 after the first game. Now you are serving!",
+    "answers": [
+      {
+        "text": "Great! My serve is my biggest weapon. I blast the ball with full power!",
+        "effects": {
+          "Groundstrokes": -0.125,
+          "Volleys": 0,
+          "Serves": 0.25,
+          "Returns": 0.125,
+          "Power": 0.25,
+          "Control": -0.125,
+          "Maneuverability": -0.125,
+          "Stability": 0,
+          "Comfort": 0,
+          "Touch / Feel": -0.125,
+          "Topspin": 0,
+          "Slice": 0,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "I play it tactically: I place the serve wide and come straight to the net",
+        "effects": {
+          "Groundstrokes": -0.25,
+          "Volleys": 0.25,
+          "Serves": 0.25,
+          "Returns": 0,
+          "Power": -0.125,
+          "Control": 0.25,
+          "Maneuverability": 0.25,
+          "Stability": 0.125,
+          "Comfort": 0,
+          "Touch / Feel": 0.25,
+          "Topspin": 0,
+          "Slice": 0,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "I prefer a safe serve and try to attack the return",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0.125,
+          "Serves": 0.125,
+          "Returns": 0.25,
+          "Power": 0,
+          "Control": 0.125,
+          "Maneuverability": 0.125,
+          "Stability": 0,
+          "Comfort": 0,
+          "Touch / Feel": 0,
+          "Topspin": 0.125,
+          "Slice": 0,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "I stay back after my serve and win the point in the rally",
+        "effects": {
+          "Groundstrokes": 0.25,
+          "Volleys": -0.25,
+          "Serves": 0.125,
+          "Returns": 0.125,
+          "Power": 0,
+          "Control": 0,
+          "Maneuverability": -0.125,
+          "Stability": -0.125,
+          "Comfort": 0,
+          "Touch / Feel": 0,
+          "Topspin": 0.125,
+          "Slice": 0,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      }
+    ]
+  },
+     {
+    "q": "Phew! The opponent’s serves are flying fast today as well. How do you deal with it?",
+    "answers": [
+      {
+        "text": "Direct attack: When the serve comes fast, I use the pace and return just as hard",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0,
+          "Serves": 0.125,
+          "Returns": 0.25,
+          "Power": 0.25,
+          "Control": -0.25,
+          "Maneuverability": 0.125,
+          "Stability": 0.25,
+          "Comfort": -0.125,
+          "Touch  /Feel": -0.25,
+          "Topspin": -0.125,
+          "Slice": -0.125,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "I block the ball deep into the court and move to the net",
+        "effects": {
+          "Groundstrokes": 0,
+          "Volleys": 0.25,
+          "Serves": 0,
+          "Returns": 0.125,
+          "Power": -0.25,
+          "Control": 0.125,
+          "Maneuverability": 0.125,
+          "Stability": 0.25,
+          "Comfort": 0,
+          "Touch / Feel": -0.125,
+          "Topspin": -0.25,
+          "Slice": 0.125,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "I get the ball back, stay behind the baseline and try to get into the rally",
+        "effects": {
+          "Groundstrokes": 0.25,
+          "Volleys": -0.125,
+          "Serves": 0,
+          "Returns": 0.125,
+          "Power": 0.125,
+          "Control": 0.25,
+          "Maneuverability": 0.125,
+          "Stability": 0.125,
+          "Comfort": 0.125,
+          "Touch / Feel": 0.25,
+          "Topspin": 0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      },
+      {
+        "text": "I block the ball back and stay defensive: the main thing is not to make a mistake",
+        "effects": {
+          "Groundstrokes": 0,
+          "Volleys": -0.25,
+          "Serves": 0,
+          "Returns": -0.125,
+          "Power": -0.125,
+          "Control": 0,
+          "Maneuverability": 0,
+          "Stability": 0.25,
+          "Comfort": 0,
+          "Touch / Feel": -0.25,
+          "Topspin": -0.25,
+          "Slice": 0.125,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 1
+        }
+      }
+    ]
+  },
+  {
+    "q": "Power is central in modern tennis: where do you use it the most?",
+    "answers": [
+      {
+        "text": "I go all out on the first serve. I still have a second one",
+        "effects": {
+          "Groundstrokes": -0.125,
+          "Volleys": 0.125,
+          "Serves": 0.25,
+          "Returns": 0.125,
+          "Power": 0.25,
+          "Control": -0.25,
+          "Maneuverability": -0.125,
+          "Stability": 0.125,
+          "Comfort": -0.25,
+          "Touch / Feel": -0.25,
+          "Topspin": 0,
+          "Slice": 0,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "I attack already from the baseline – that’s where I need the power",
+        "effects": {
+          "Groundstrokes": 0.25,
+          "Volleys": -0.25,
+          "Serves": 0.125,
+          "Returns": 0.125,
+          "Power": 0.25,
+          "Control": 0,
+          "Maneuverability": -0.125,
+          "Stability": 0.125,
+          "Comfort": 0,
+          "Touch / Feel": 0,
+          "Topspin": 0.25,
+          "Slice": -0.125,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "The ball comes a bit short? Then I unload full power",
+        "effects": {
+          "Groundstrokes": 0,
+          "Volleys": 0.125,
+          "Serves": 0.125,
+          "Returns": 0.25,
+          "Power": 0.125,
+          "Control": 0,
+          "Maneuverability": 0.125,
+          "Stability": -0.125,
+          "Comfort": 0,
+          "Touch / Feel": -0.25,
+          "Topspin": 0.125,
+          "Slice": 0,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "I also need power in defense: I like to scrape back balls that seemed already lost",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": -0.25,
+          "Serves": 0,
+          "Returns": 0.25,
+          "Power": 0.125,
+          "Control": -0.125,
+          "Maneuverability": 0.25,
+          "Stability": 0.125,
+          "Comfort": 0.125,
+          "Touch / Feel": -0.125,
+          "Topspin": -0.125,
+          "Slice": 0.25,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 1
+        }
+      }
+    ]
+  },
+  {
+    "q": "The ball comes to you without much pace. Time to attack?",
+    "answers": [
+      {
+        "text": "Yes, I move straight to the net!",
+        "effects": {
+          "Groundstrokes": -0.25,
+          "Volleys": 0.25,
+          "Serves": 0.125,
+          "Returns": 0,
+          "Power": 0,
+          "Control": 0.125,
+          "Maneuverability": 0.25,
+          "Stability": 0,
+          "Comfort": -0.125,
+          "Touch / Feel": 0.125,
+          "Topspin": 0,
+          "Slice": 0,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "I come to the net – but only after a well-placed attacking shot",
+        "effects": {
+          "Groundstrokes": -0.125,
+          "Volleys": 0.25,
+          "Serves": 0.125,
+          "Returns": 0.125,
+          "Power": 0,
+          "Control": 0.25,
+          "Maneuverability": 0.125,
+          "Stability": 0,
+          "Comfort": -0.125,
+          "Touch / Feel": 0.125,
+          "Topspin": 0.125,
+          "Slice": -0.125,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "Time for a hard and well-placed shot! From now on I dictate the rally",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0,
+          "Serves": 0,
+          "Returns": 0.125,
+          "Power": 0.25,
+          "Control": 0.125,
+          "Maneuverability": 0,
+          "Stability": 0,
+          "Comfort": 0,
+          "Touch / Feel": 0.125,
+          "Topspin": 0.25,
+          "Slice": -0.125,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "I don’t take too much risk: the opponent will make a mistake if I keep them running",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": -0.125,
+          "Serves": -0.25,
+          "Returns": -0.25,
+          "Power": -0.25,
+          "Control": 0.125,
+          "Maneuverability": 0,
+          "Stability": 0.125,
+          "Comfort": 0.125,
+          "Touch / Feel": 0,
+          "Topspin": 0,
+          "Slice": 0.25,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      }
+    ]
+  },
+      {
+    "q": "The opponent is playing very precisely into the corners. What do you do?",
+    "answers": [
+      {
+        "text": "I don’t chase every ball and focus on my biggest strength: my service game",
+        "effects": {
+          "Groundstrokes": -0.25,
+          "Volleys": 0.125,
+          "Serves": 0.25,
+          "Returns": 0,
+          "Power": 0,
+          "Control": 0,
+          "Maneuverability": -0.25,
+          "Stability": 0,
+          "Comfort": 0,
+          "Touch / Feel": 0,
+          "Topspin": 0,
+          "Slice": 0,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "I don’t let it get that far and choose the quick way to the net",
+        "effects": {
+          "Groundstrokes": -0.25,
+          "Volleys": 0.25,
+          "Serves": 0.125,
+          "Returns": 0,
+          "Power": -0.125,
+          "Control": 0.125,
+          "Maneuverability": 0.25,
+          "Stability": 0.125,
+          "Comfort": 0.125,
+          "Touch / Feel": 0.25,
+          "Topspin": 0,
+          "Slice": 0,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "I position myself smartly and make sure to move my opponent as well",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0.125,
+          "Serves": 0.125,
+          "Returns": 0.125,
+          "Power": -0.125,
+          "Control": 0.25,
+          "Maneuverability": 0.125,
+          "Stability": 0,
+          "Comfort": 0,
+          "Touch / Feel": 0.125,
+          "Topspin": 0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "That’s what tennis is for! I stay defensive and allow the balls",
+        "effects": {
+          "Groundstrokes": 0.25,
+          "Volleys": -0.25,
+          "Serves": 0,
+          "Returns": 0.125,
+          "Power": -0.125,
+          "Control": 0.25,
+          "Maneuverability": 0.125,
+          "Stability": 0.25,
+          "Comfort": 0.125,
+          "Touch / Feel": -0.125,
+          "Topspin": 0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      }
+    ]
+  },
+  {
+    "q": "The balls are coming at you fast. How do you react to too much power?",
+    "answers": [
+      {
+        "text": "I swing fully through the ball and stay solid",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0,
+          "Serves": 0,
+          "Returns": 0.125,
+          "Power": 0.125,
+          "Control": 0.125,
+          "Maneuverability": 0,
+          "Stability": 0.25,
+          "Comfort": 0.125,
+          "Touch / Feel": -0.125,
+          "Topspin": -0.125,
+          "Slice": -0.25,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "I focus on hitting the ball in front of my body – even at the net",
+        "effects": {
+          "Groundstrokes": -0.125,
+          "Volleys": 0.125,
+          "Serves": 0,
+          "Returns": 0.125,
+          "Power": -0.125,
+          "Control": 0,
+          "Maneuverability": 0.25,
+          "Stability": 0.25,
+          "Comfort": 0.25,
+          "Touch / Feel": 0.25,
+          "Topspin": -0.25,
+          "Slice": -0.125,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "I return the balls with placement and, if necessary, take a bit of power off",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": -0.125,
+          "Serves": 0,
+          "Returns": 0.25,
+          "Power": -0.125,
+          "Control": 0.25,
+          "Maneuverability": 0.125,
+          "Stability": 0.125,
+          "Comfort": 0,
+          "Touch / Feel": 0.125,
+          "Topspin": 0.25,
+          "Slice": 0.25,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      },
+      {
+        "text": "Anyone hitting that hard will make a mistake soon – I just keep the ball in play somehow",
+        "effects": {
+          "Groundstrokes": 0,
+          "Volleys": 0,
+          "Serves": 0,
+          "Returns": 0.25,
+          "Power": -0.25,
+          "Control": 0.25,
+          "Maneuverability": 0.125,
+          "Stability": 0.25,
+          "Comfort": 0.125,
+          "Touch / Feel": 0.125,
+          "Topspin": 0,
+          "Slice": 0.125,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      }
+    ]
+  },
+  {
+    "q": "Your arm is getting tired – and maybe already hurts a bit. How do you shorten the points?",
+    "answers": [
+      {
+        "text": "I move straight to the net – my racket absorbs the ball well enough",
+        "effects": {
+          "Groundstrokes": -0.25,
+          "Volleys": 0.25,
+          "Serves": 0,
+          "Returns": 0.125,
+          "Power": 0,
+          "Control": 0.125,
+          "Maneuverability": 0.25,
+          "Stability": 0.25,
+          "Comfort": 0.25,
+          "Touch / Feel": 0.125,
+          "Topspin": -0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "I stay back for now – but as soon as I get the chance, I move forward",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0.125,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": 0,
+          "Control": 0.125,
+          "Maneuverability": 0.25,
+          "Stability": 0.125,
+          "Comfort": 0.125,
+          "Touch / Feel": 0,
+          "Topspin": 0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "It helps me to take some pace off and play a well-placed ball from the baseline",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": -0.125,
+          "Serves": 0.125,
+          "Returns": 0.125,
+          "Power": -0.125,
+          "Control": 0.25,
+          "Maneuverability": 0.125,
+          "Stability": 0.25,
+          "Comfort": 0.25,
+          "Touch / Feel": 0,
+          "Topspin": -0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      },
+      {
+        "text": "I prefer to block the ball back – swinging through is no longer sustainable for my arm",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0,
+          "Serves": 0,
+          "Returns": 0.125,
+          "Power": -0.125,
+          "Control": 0.125,
+          "Maneuverability": 0.125,
+          "Stability": 0.25,
+          "Comfort": 0.25,
+          "Touch / Feel": -0.125,
+          "Topspin": 0.125,
+          "Slice": 0.25,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      }
+    ]
+  },
     {
       "q": "Drop shot, deep and short balls, or cheeky slices – When do you rely on variation?",
       "answers": [
@@ -1396,6 +2224,7 @@
     }
   ]
 }
+
 
 
 
