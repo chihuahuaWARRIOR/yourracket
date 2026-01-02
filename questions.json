@@ -945,33 +945,309 @@
     }
   ]
 },
+{
+  "q": "Stoppball, lange und kurze Bälle oder cheeky geschnibbelt - Wann setzt du auf Variation?",
+  "answers": [
     {
-      "q": "Stoppball, lange und kurze Bälle oder cheeky geschnibbelt - Wann setzt du auf Variation?",
-      "answers": [
-        { "text": "Möglichst nie - ich versuche mit Aufschlag und Kraft den Punkt zu holen.", "effects": { "Power": 0, "Serves": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Wenn ich vorne am Netz bin, lasse ich den Ball auch gerne mal abtropfen.", "effects": { "Touch / Feel": 0, "Volleys": 0, "TheBigServer": -1, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": 0 } },
-        { "text": "Ich bin viel unterwegs und muss den Ball auch mal aus dem Halbfeld gut treffen.", "effects": { "Maneuverability": 0, "Touch / Feel": 0, "TheBigServer": -1, "ServeAndVolleyer": 0, "AllCourtPlayer": 1, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Stoppball von der Grundlinie? Warum nicht!", "effects": { "Control": 0, "Slice": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": -1 } }
-      ]
+      "text": "Möglichst nie - ich versuche mit Aufschlag und Kraft den Punkt zu holen.",
+      "effects": {
+        "Groundstrokes": 0,
+        "Volleys": -0.125,
+        "Serves": 0.25,
+        "Returns": 0.125,
+        "Power": 0.125,
+        "Control": 0,
+        "Maneuverability": -0.25,
+        "Stability": -0.125,
+        "Comfort": 0.125,
+        "Touch / Feel": -0.125,
+        "Topspin": -0.125,
+        "Slice": -0.125,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": 0,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": 0,
+        "CounterPuncher": 0
+      }
     },
     {
-      "q": "Der Ball kommt auf deine Vorhand: Was ist deine Priorität?",
-      "answers": [
-        { "text": "Kraft! Ich versuche einen flachen Schlag mit viel Geschwindigkeit zu landen", "effects": { "Power": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "Eine gute Mischung aus Kraft und Spin - auch gerne mit etwas Risiko.", "effects": { "Power": 0, "Topspin": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": -1 } },
-        { "text": "Ein tiefer Ball mit viel Spin, um den Gegner zurückzudrängen.", "effects": { "Topspin": 0, "TheBigServer": 0, "ServeAndVolleyer": -1, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": 1, "CounterPuncher": 0 } },
-        { "text": "Ich falle etwas zurück und versuche mit höheren Bällen den Rhythmus zu ändern.", "effects": { "Stability": 0, "Topspin": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
+      "text": "Wenn ich vorne am Netz bin, lasse ich den Ball auch gerne mal abtropfen.",
+      "effects": {
+        "Groundstrokes": -0.125,
+        "Volleys": 0.125,
+        "Serves": 0,
+        "Returns": -0.125,
+        "Power": -0.25,
+        "Control": 0.125,
+        "Maneuverability": 0.25,
+        "Stability": 0.125,
+        "Comfort": 0,
+        "Touch / Feel": 0.25,
+        "Topspin": -0.125,
+        "Slice": -0.125,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": -1,
+        "SolidBaseliner": -1,
+        "CounterPuncher": 0
+      }
     },
     {
-      "q": "Nun kommt der Ball auf deine Rückhand - was tun?",
-      "answers": [
-        { "text": "Ich bringe den Ball flach zurück und suche den Weg ans Netz.", "effects": { "Volleys": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Ein ordentlicher Topspin mit guter Kraft von der Grundlinie", "effects": { "Power": 0, "Topspin": 0, "TheBigServer": 1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": 1, "CounterPuncher": 1 } },
-        { "text": "Ich ändere mit einem Slice die Richtung des Balles, um etwas Druck zu machen.", "effects": { "Control": 0, "Slice": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } },
-        { "text": "Ich slice zurück und bleibe hinten. Der Gegner wird den Fehler machen.", "effects": { "Stability": 0, "Slice": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
+      "text": "Ich bin viel unterwegs und muss den Ball auch mal aus dem Halbfeld gut treffen.",
+      "effects": {
+        "Groundstrokes": -0.125,
+        "Volleys": 0.125,
+        "Serves": 0,
+        "Returns": 0.25,
+        "Power": -0.125,
+        "Control": 0.25,
+        "Maneuverability": 0.25,
+        "Stability": 0.125,
+        "Comfort": 0.125,
+        "Touch / Feel": 0.125,
+        "Topspin": -0.125,
+        "Slice": 0.125,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": 0,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 0,
+        "CounterPuncher": 0
+      }
+    },
+    {
+      "text": "Stoppball von der Grundlinie? Warum nicht!",
+      "effects": {
+        "Groundstrokes": -0.25,
+        "Volleys": -0.125,
+        "Serves": 0,
+        "Returns": 0,
+        "Power": -0.25,
+        "Control": 0.125,
+        "Maneuverability": -0.125,
+        "Stability": 0,
+        "Comfort": 0,
+        "Touch / Feel": 0.25,
+        "Topspin": -0.125,
+        "Slice": 0.125,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": 0,
+        "CounterPuncher": -1
+      }
     }
+  ]
+},
+{
+  "q": "Der Ball kommt auf deine Vorhand: Was ist deine Priorität?",
+  "answers": [
+    {
+      "text": "Kraft! Ich versuche einen flachen Schlag mit viel Geschwindigkeit zu landen",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": 0,
+        "Serves": 0.125,
+        "Returns": 0,
+        "Power": 0.25,
+        "Control": -0.125,
+        "Maneuverability": -0.125,
+        "Stability": 0,
+        "Comfort": -0.125,
+        "Touch / Feel": -0.25,
+        "Topspin": -0.125,
+        "Slice": -0.25,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": 0,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": -1,
+        "CounterPuncher": -1
+      }
+    },
+    {
+      "text": "Eine gute Mischung aus Kraft und Spin - auch gerne mit etwas Risiko.",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": -0.125,
+        "Serves": 0,
+        "Returns": 0.125,
+        "Power": 0.125,
+        "Control": -0.125,
+        "Maneuverability": 0,
+        "Stability": 0,
+        "Comfort": 0,
+        "Touch / Feel": 0,
+        "Topspin": 0.25,
+        "Slice": 0.125,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": 0,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": 0,
+        "CounterPuncher": -1
+      }
+    },
+    {
+      "text": "Ein tiefer Ball mit viel Spin, um den Gegner zurückzudrängen.",
+      "effects": {
+        "Groundstrokes": 0.25,
+        "Volleys": 0,
+        "Serves": 0,
+        "Returns": 0,
+        "Power": -0.125,
+        "Control": 0.25,
+        "Maneuverability": 0.125,
+        "Stability": 0.125,
+        "Comfort": 0,
+        "Touch / Feel": 0,
+        "Topspin": 0.125,
+        "Slice": 0,
+
+        "TheBigServer": 0,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 0
+      }
+    },
+    {
+      "text": "Ich falle etwas zurück und versuche mit höheren Bällen den Rhythmus zu ändern.",
+      "effects": {
+        "Groundstrokes": 0,
+        "Volleys": -0.125,
+        "Serves": 0,
+        "Returns": 0,
+        "Power": -0.125,
+        "Control": 0.125,
+        "Maneuverability": 0,
+        "Stability": 0.25,
+        "Comfort": 0,
+        "Touch / Feel": 0.125,
+        "Topspin": 0.125,
+        "Slice": 0,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": -1,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 1
+      }
+    }
+  ]
+},
+{
+  "q": "Nun kommt der Ball auf deine Rückhand - was tun?",
+  "answers": [
+    {
+      "text": "Ich bringe den Ball flach zurück und suche den Weg ans Netz.",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": 0.25,
+        "Serves": 0,
+        "Returns": 0.125,
+        "Power": 0.125,
+        "Control": -0.125,
+        "Maneuverability": 0.25,
+        "Stability": 0.125,
+        "Comfort": 0,
+        "Touch / Feel": -0.125,
+        "Topspin": -0.125,
+        "Slice": 0.125,
+
+        "TheBigServer": 0,
+        "ServeAndVolleyer": 1,
+        "AllCourtPlayer": 1,
+        "AttackingBaseliner": -1,
+        "SolidBaseliner": 0,
+        "CounterPuncher": 0
+      }
+    },
+    {
+      "text": "Ein ordentlicher Topspin mit guter Kraft von der Grundlinie",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": 0,
+        "Serves": 0,
+        "Returns": 0.125,
+        "Power": 0.125,
+        "Control": -0.125,
+        "Maneuverability": -0.125,
+        "Stability": 0.125,
+        "Comfort": 0,
+        "Touch / Feel": -0.125,
+        "Topspin": 0.25,
+        "Slice": -0.125,
+
+        "TheBigServer": 1,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": -1,
+        "AttackingBaseliner": 1,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 1
+      }
+    },
+    {
+      "text": "Ich ändere mit einem Slice die Richtung des Balles, um etwas Druck zu machen.",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": 0,
+        "Serves": 0,
+        "Returns": 0,
+        "Power": -0.125,
+        "Control": 0.25,
+        "Maneuverability": 0.125,
+        "Stability": 0.25,
+        "Comfort": 0.125,
+        "Touch / Feel": 0.125,
+        "Topspin": 0.125,
+        "Slice": 0.125,
+
+        "TheBigServer": 0,
+        "ServeAndVolleyer": 0,
+        "AllCourtPlayer": 0,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 1
+      }
+    },
+    {
+      "text": "Ich slice zurück und bleibe hinten. Der Gegner wird den Fehler machen.",
+      "effects": {
+        "Groundstrokes": 0.125,
+        "Volleys": 0,
+        "Serves": 0,
+        "Returns": 0,
+        "Power": -0.125,
+        "Control": 0.125,
+        "Maneuverability": 0.125,
+        "Stability": 0.25,
+        "Comfort": 0.125,
+        "Touch / Feel": 0.125,
+        "Topspin": 0.125,
+        "Slice": 0.125,
+
+        "TheBigServer": -1,
+        "ServeAndVolleyer": -1,
+        "AllCourtPlayer": -1,
+        "AttackingBaseliner": 0,
+        "SolidBaseliner": 1,
+        "CounterPuncher": 1
+      }
+    }
+  ]
+}
   ],
   "en": [
     {
@@ -1120,6 +1396,7 @@
     }
   ]
 }
+
 
 
 
