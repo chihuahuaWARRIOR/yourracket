@@ -6,8 +6,8 @@ let questions = {};
 let rackets = [];
 let lang = localStorage.getItem("language") || getLanguage();
 let averageScores = {};
-const SCALE_FACTOR = 4;
-let matchMode = "neutral";
+const SCALE_FACTOR = 1;
+let matchMode = "strength"; // strength | weakness | match
 let selectedRacketIndex = 0;
 
 // === Sprache automatisch erkennen ===
@@ -23,14 +23,8 @@ function calculateAverageScores(rackets) {
     "Control","Maneuverability","Stability","Comfort",
     "Touch / Feel","Topspin","Slice"
   ];
-
-  const sums = {};
-  const counts = {};
-
-  categories.forEach(c => {
-    sums[c] = 0;
-    counts[c] = 0;
-  });
+  const sums = {}, counts = {};
+  categories.forEach(c => { sums[c] = 0; counts[c] = 0; });
 
   rackets.forEach(r => {
     if (!r.stats) return;
@@ -45,153 +39,212 @@ function calculateAverageScores(rackets) {
   });
 
   categories.forEach(c => {
-    averageScores[c] = counts[c] > 0
-      ? Math.round(sums[c] / counts[c])
-      : 50;
+    averageScores[c] = counts[c] ? Math.round(sums[c] / counts[c]) : 50;
   });
 }
 
-// === Profil initialisieren (BLEIBT SO!) ===
+// === Profil initialisieren ===
 function initializeUserProfile() {
+  const cats = [
+    "Groundstrokes","Volleys","Serves","Returns","Power",
+    "Control","Maneuverability","Stability","Comfort",
+    "Touch / Feel","Topspin","Slice"
+  ];
   userProfile = {};
-  Object.keys(averageScores).forEach(k => {
-    userProfile[k] = averageScores[k];
-  });
+  cats.forEach(c => userProfile[c] = averageScores[c] || 50);
 }
 
-// === Effekte verarbeiten ===
-function handleEffects(effects) {
-  if (!effects) return;
+// === Daten laden ===
+async function loadData() {
+  try {
+    const [qRes, rRes] = await Promise.all([
+      fetch("questions.json", { cache: "no-store" }),
+      fetch("rackets.json", { cache: "no-store" })
+    ]);
+    questions = await qRes.json();
+    rackets = await rRes.json();
 
-  for (const [key, val] of Object.entries(effects)) {
+    calculateAverageScores(rackets);
+    initializeUserProfile();
 
-    if (key === "WeightMin" || key === "WeightMax") {
-      userProfile.WeightPref = userProfile.WeightPref || {};
-      if (key === "WeightMin") userProfile.WeightPref.min = val;
-      if (key === "WeightMax") userProfile.WeightPref.max = val;
-      continue;
+    const brand = document.getElementById("brand");
+    if (brand) {
+      brand.innerHTML = "<b>WhichRacket.com</b>";
+      brand.onclick = restartQuiz;
+      brand.style.cursor = "pointer";
     }
 
-    if (key === "HeadsizeMin" || key === "HeadsizeMax") {
-      userProfile.HeadsizePref = userProfile.HeadsizePref || {};
-      if (key === "HeadsizeMin") userProfile.HeadsizePref.min = val;
-      if (key === "HeadsizeMax") userProfile.HeadsizePref.max = val;
-      continue;
-    }
+    createImpressumHook();
+    createBackButton();
+    attachLangSwitchHandlers();
+    showQuestion();
+    renderProgress();
 
-    const base = averageScores[key] ?? 50;
-    userProfile[key] = (userProfile[key] ?? base) + val * SCALE_FACTOR;
-    userProfile[key] = Math.max(0, Math.min(100, userProfile[key]));
+  } catch (e) {
+    console.error(e);
   }
 }
 
-// === Matching ===
-function getTopRackets(profile, mode) {
-  const cats = [
-    "Groundstrokes","Volleys","Serves","Returns","Power","Control",
-    "Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice"
-  ];
+// === Frage anzeigen ===
+function showQuestion() {
+  const qList = questions[lang];
+  if (!qList) return;
+  if (currentQuestion >= qList.length) {
+    showResults();
+    return;
+  }
 
-  const scored = rackets.map(r => {
-    let diff = 0;
+  const q = qList[currentQuestion];
+  document.getElementById("question").innerText = q.q;
+  document.getElementById("question-number").innerText =
+    `${lang === "de" ? "Frage" : "Question"} ${currentQuestion + 1}`;
 
-    cats.forEach(c => {
-      const p = profile[c] ?? 0;
-      const rv = r.stats?.[c] ?? 0;
-
-      if (mode === "neutral") {
-        diff += Math.pow(p - rv, 2);
-      } else if (mode === "weakness" && p < 6.5) {
-        diff += Math.abs(10 - rv);
-      } else {
-        diff += Math.abs(p - rv);
-      }
-    });
-
-    return { r, diff };
+  q.answers.forEach((a, i) => {
+    const btn = document.getElementById(`a${i + 1}`);
+    btn.innerText = a.text;
+    btn.onclick = () => {
+      handleEffects(a.effects);
+      currentQuestion++;
+      showQuestion();
+      renderProgress();
+    };
   });
-
-  scored.sort((a, b) => a.diff - b.diff);
-  return { bestRackets: scored.slice(0, 3).map(s => s.r) };
 }
 
-// === Ergebnisse anzeigen ===
-function showResults() {
-  const existing = document.getElementById("overlay");
-  if (existing) existing.remove();
+// === Effekte anwenden ===
+function handleEffects(effects) {
+  Object.entries(effects).forEach(([k, v]) => {
+    const base = averageScores[k] || 50;
+    userProfile[k] = Math.max(0, Math.min(100, (userProfile[k] ?? base) + v));
+  });
+}
 
+// === Progress ===
+function renderProgress() {
+  const bar = document.getElementById("progress-bar");
+  bar.innerHTML = "";
+  const total = questions[lang].length;
+  for (let i = 0; i < total; i++) {
+    const s = document.createElement("span");
+    if (i < currentQuestion) s.classList.add("active");
+    bar.appendChild(s);
+  }
+}
+
+// === Ergebnisse ===
+function showResults() {
   const overlay = document.createElement("div");
   overlay.id = "overlay";
-  overlay.style.cssText = `
-    position:fixed; inset:0; background:rgba(255,255,255,.96);
-    z-index:3000; overflow:auto; padding:30px;
-  `;
-
-  const normalized = {};
-  Object.entries(userProfile).forEach(([k,v]) => {
-    if (typeof v === "number") {
-      normalized[k] = [
-        "Groundstrokes","Volleys","Serves","Returns","Power","Control",
-        "Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice"
-      ].includes(k) ? Math.round(v) / 10 : v;
-    }
-  });
-
-  const { bestRackets } = getTopRackets(normalized, matchMode);
-  const best = bestRackets[0];
-  selectedRacketIndex = 0;
+  overlay.style.cssText = "position:fixed;inset:0;background:#fff;z-index:3000;overflow:auto;padding:30px";
 
   const card = document.createElement("div");
-  card.className = "results-card";
+  card.style.cssText = "max-width:1200px;margin:auto";
 
-  // === MODE BUTTONS ===
-  const modeWrap = document.createElement("div");
+  const title = document.createElement("h2");
+  title.innerText = "Your Racket";
+  card.appendChild(title);
 
-  const makeBtn = (id, label, mode, color) => {
+  // === Mode Buttons ===
+  const modes = document.createElement("div");
+  modes.style.display = "flex";
+  modes.style.gap = "10px";
+
+  const makeBtn = (id, label, mode) => {
     const b = document.createElement("button");
     b.id = id;
     b.innerText = label;
-    b.style.background = color;
-    b.style.opacity = matchMode === mode ? "0.7" : "1";
     b.onclick = () => { matchMode = mode; refreshOverlay(); };
     return b;
   };
 
-  modeWrap.appendChild(
-    makeBtn("mode-neutral", "Perfect Match", "neutral", "#111")
-  );
-  modeWrap.appendChild(
-    makeBtn("mode-strength", "Enhance Strengths", "strength", "#2ea44f")
-  );
-  modeWrap.appendChild(
-    makeBtn("mode-weakness", "Balance Weaknesses", "weakness", "#c92a2a")
-  );
+  modes.appendChild(makeBtn("mode-strength","Strength","strength"));
+  modes.appendChild(makeBtn("mode-weakness","Weakness","weakness"));
+  modes.appendChild(makeBtn("mode-match","Best Match","match"));
+  card.appendChild(modes);
 
-  card.appendChild(modeWrap);
+  const best = getTopRackets(getNormalizedProfile(), matchMode).bestRackets;
+
+  best.forEach(r => {
+    const d = document.createElement("div");
+    d.innerHTML = `<h3>${r.name}</h3>`;
+    card.appendChild(d);
+  });
 
   overlay.appendChild(card);
   document.body.appendChild(overlay);
 }
 
-// === Overlay Refresh ===
+// === Normalisieren ===
+function getNormalizedProfile() {
+  const out = {};
+  Object.entries(userProfile).forEach(([k,v]) => {
+    out[k] = ["Groundstrokes","Volleys","Serves","Returns","Power","Control","Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice"]
+      .includes(k) ? Math.round(v) / 10 : v;
+  });
+  return out;
+}
+
+// === Matching ===
+function getTopRackets(profile, mode) {
+  const scores = rackets.map(r => {
+    let diff = 0;
+    Object.entries(profile).forEach(([k,p]) => {
+      const rv = r.stats?.[k];
+      if (typeof rv === "number") {
+        if (mode === "weakness" && p < 6.5) diff += Math.abs(10 - rv);
+        else diff += Math.abs(p - rv);
+      }
+    });
+    return { r, diff };
+  });
+  scores.sort((a,b) => a.diff - b.diff);
+  return { bestRackets: scores.slice(0,3).map(s => s.r) };
+}
+
+// === Overlay neu ===
 function refreshOverlay() {
-  const o = document.getElementById("overlay");
-  if (o) o.remove();
+  document.getElementById("overlay")?.remove();
   showResults();
 }
 
-// === Daten laden ===
-async function loadData() {
-  const [qRes, rRes] = await Promise.all([
-    fetch("questions.json", { cache: "no-store" }),
-    fetch("rackets.json", { cache: "no-store" })
-  ]);
-  questions = await qRes.json();
-  rackets = await rRes.json();
+// === Back ===
+function createBackButton() {
+  const b = document.createElement("div");
+  b.innerHTML = "↩";
+  b.style.cssText = "position:fixed;left:10px;top:50%;cursor:pointer;z-index:1000";
+  b.onclick = () => { if (currentQuestion > 0) { currentQuestion--; showQuestion(); } };
+  document.body.appendChild(b);
+}
 
-  calculateAverageScores(rackets);
+// === Sprache ===
+function attachLangSwitchHandlers() {
+  document.getElementById("lang-en")?.addEventListener("click",()=>switchLang("en"));
+  document.getElementById("lang-de")?.addEventListener("click",()=>switchLang("de"));
+}
+function switchLang(l) {
+  lang = l;
+  localStorage.setItem("language", l);
+  restartQuiz();
+}
+
+// === Impressum ===
+function createImpressumHook() {
+  const f = document.getElementById("footer-island");
+  if (!f) return;
+  const a = document.createElement("a");
+  a.href = "impressum.html";
+  a.target = "_blank";
+  a.innerText = lang === "de" ? "Impressum" : "Imprint";
+  f.appendChild(a);
+}
+
+// === Restart ===
+function restartQuiz() {
+  document.getElementById("overlay")?.remove();
+  currentQuestion = 0;
   initializeUserProfile();
   showQuestion();
+  renderProgress();
 }
 
 // === Init ===
