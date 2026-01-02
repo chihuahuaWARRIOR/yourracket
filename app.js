@@ -6,7 +6,7 @@ let questions = {};
 let rackets = [];
 let lang = localStorage.getItem("language") || getLanguage();
 let averageScores = {}; // Container für die berechneten Mittelwerte
-const SCALE_FACTOR = 1;
+const SCALE_FACTOR = 4;
 let matchMode = "strength";
 let selectedRacketIndex = 0;
 
@@ -940,3 +940,4 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
