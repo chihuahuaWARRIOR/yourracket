@@ -1,257 +1,942 @@
-// app.js - 1:1 Original Design mit neuer Matching-Logik
+// app.js (vanilla JS)
+
 let currentQuestion = 0;
 let userProfile = {};
 let questions = {};
 let rackets = [];
 let lang = localStorage.getItem("language") || getLanguage();
-let averageScores = {}; 
-const SCALE_FACTOR = 10; 
-let matchMode = "neutral"; 
+let averageScores = {}; // Container für die berechneten Mittelwerte
+const SCALE_FACTOR = 5;
+let matchMode = "strength";
 let selectedRacketIndex = 0;
 
-const CATEGORIES = [
-  "Groundstrokes", "Volleys", "Serves", "Returns", "Power",
-  "Control", "Maneuverability", "Stability", "Comfort",
-  "Touch / Feel", "Topspin", "Slice"
-];
-
-const STYLES = ["TheBigServer", "ServeAndVolleyer", "AllCourtPlayer", "AttackingBaseliner", "SolidBaseliner", "CounterPuncher"];
-
+// === Sprache automatisch erkennen ===
 function getLanguage() {
   const navLang = navigator.language || navigator.userLanguage || "de";
   return navLang.startsWith("de") ? "de" : "en";
 }
 
-// === LOGIK: Balancer & Mittelwerte ===
-function balanceProfile(profile, targetMean = 85) {
-  const currentSum = CATEGORIES.reduce((sum, cat) => sum + (profile[cat] || 85), 0);
-  const currentMean = currentSum / CATEGORIES.length;
-  const diff = currentMean - targetMean;
-  CATEGORIES.forEach(cat => {
-    profile[cat] = Math.max(10, Math.min(100, (profile[cat] || targetMean) - diff));
-  });
-  return profile;
-}
-
+// === Dynamische Mittelwerte berechnen (ANGEPASST AN DEINE JSON) ===
 function calculateAverageScores(rackets) {
-  const sums = {}; const counts = {};
-  CATEGORIES.forEach(cat => { sums[cat] = 0; counts[cat] = 0; });
-  rackets.forEach(r => {
-    if (!r.stats) return;
-    CATEGORIES.forEach(cat => {
-      let val = r.stats[cat];
-      if (val !== undefined) {
-        val = val <= 10 ? val * 10 : val;
-        sums[cat] += val; counts[cat]++;
+  const categories = [
+    "Groundstrokes", "Volleys", "Serves", "Returns", "Power",
+    "Control", "Maneuverability", "Stability", "Comfort",
+    "Touch / Feel", "Topspin", "Slice"
+  ];
+  const counts = {};
+  const sums = {}; 
+
+  categories.forEach(cat => {
+    sums[cat] = 0;
+    counts[cat] = 0;
+  });
+
+  rackets.forEach(racket => {
+    // Falls das Racket keine Stats hat, überspringen
+    if (!racket.stats) return;
+
+    categories.forEach(cat => {
+      // Zugriff auf das verschachtelte stats-Objekt
+      let val = racket.stats[cat];
+
+      // Prüfen, ob val eine Zahl ist
+      if (val !== undefined && typeof val === 'number') {
+        // WICHTIG: Deine JSON nutzt 0-10 (z.B. 8.7), wir brauchen intern 0-100.
+        // Also rechnen wir mal 10.
+        if (val <= 10) { 
+             val = val * 10; 
+        }
+
+        sums[cat] += val;
+        counts[cat]++;
       }
     });
   });
-  CATEGORIES.forEach(cat => { averageScores[cat] = counts[cat] > 0 ? sums[cat]/counts[cat] : 85; });
+
+  categories.forEach(cat => {
+    // Durchschnitt berechnen oder Fallback auf 50
+    averageScores[cat] = counts[cat] > 0
+      ? Math.round(sums[cat] / counts[cat])
+      : 50;
+  });
+
+  console.log("Dynamische Basiswerte (Mittelwerte):", averageScores);
 }
 
+// === Funktion zum Initialisieren des Benutzerprofils ===
 function initializeUserProfile() {
-  userProfile = {};
-  CATEGORIES.forEach(cat => { userProfile[cat] = averageScores[cat] || 85; });
-  STYLES.forEach(s => { userProfile[s] = 50; });
+  const categories = [
+    "Groundstrokes", "Volleys", "Serves", "Returns", "Power",
+    "Control", "Maneuverability", "Stability", "Comfort",
+    "Touch / Feel", "Topspin", "Slice"
+  ];
+
+  userProfile = {}; 
+
+  categories.forEach(cat => {
+    // Setze den Startwert auf den berechneten Mittelwert
+    userProfile[cat] = averageScores[cat] || 50; 
+  });
+  
+  console.log("Benutzerprofil initialisiert:", userProfile);
 }
 
+// === Daten laden ===
 async function loadData() {
   try {
     const [qRes, rRes] = await Promise.all([
       fetch("questions.json", { cache: "no-store" }),
       fetch("rackets.json", { cache: "no-store" })
     ]);
-    questions = await qRes.json();
-    rackets = await rRes.json();
+    const qData = await qRes.json();
+    const rData = await rRes.json();
+
+    questions = qData;
+    rackets = rData;
+
+    // 1. DYNAMISCHE WERTE BERECHNEN & PROFIL INITIALISIEREN
     calculateAverageScores(rackets);
     initializeUserProfile();
-    const b = document.getElementById("brand");
-    if(b) { b.onclick=()=>restartQuiz(); }
+
+    // 2. BRANDING UND EVENT-LISTENER
+    const brandEl = document.getElementById("brand");
+    if (brandEl) {
+      brandEl.innerHTML = `<b>WhichRacket.com</b>`;
+      brandEl.style.textDecoration = "none";
+      brandEl.style.cursor = "pointer";
+
+      // Klick auf Branding-Insel -> Quiz neu starten
+      brandEl.addEventListener("click", () => {
+        restartQuiz();
+      });
+    }
+
+    // 3. START DES QUIZ-ABLAUFS
+    createImpressumHook();
     showQuestion();
     renderProgress();
     createBackButton();
     attachLangSwitchHandlers();
-  } catch (e) { console.error(e); }
+
+  } catch (err) {
+    console.error("Fehler beim Laden:", err);
+    const q = document.getElementById("question");
+    if (q) q.innerText = "Fehler beim Laden 😕";
+  }
 }
 
+// === Frage anzeigen ===
 function showQuestion() {
   const qList = questions[lang];
-  if (!qList || currentQuestion >= qList.length) { showResults(); return; }
-  const q = qList[currentQuestion];
-  document.getElementById("question-number").textContent = `${lang==="de"?"Frage":"Question"} ${currentQuestion+1}:`;
-  document.getElementById("question").innerText = q.q;
-  for (let i=0; i<4; i++) {
-    const btn = document.getElementById(`a${i+1}`);
-    if (btn && q.answers[i]) {
-      btn.innerText = q.answers[i].text;
-      btn.onclick = () => { handleEffects(q.answers[i].effects); currentQuestion++; showQuestion(); };
-    }
+  if (!qList || qList.length === 0) return;
+
+  if (currentQuestion >= qList.length) {
+    showResults();
+    return;
   }
+
+  const q = qList[currentQuestion];
+  const qEl = document.getElementById("question");
+  
+  // Element für die Fragen-Nummer finden
+  const qNumEl = document.getElementById("question-number");
+  if (qNumEl) {
+    qNumEl.textContent = `${lang === "de" ? "Frage" : "Question"} ${currentQuestion + 1}:`;
+    qNumEl.style.fontSize = "1.1rem";
+    qNumEl.style.fontWeight = "bold";
+    qNumEl.style.margin = "0 0 8px 0";
+  }
+
+  if (qEl) {
+      qEl.innerText = q.q;
+      qEl.style.margin = "0";
+  }
+
+  for (let i = 0; i < 4; i++) {
+    const btn = document.getElementById(`a${i + 1}`);
+    const answer = q.answers[i];
+    if (!btn || !answer) continue;
+    btn.innerText = answer.text;
+    
+    btn.style.opacity = "";
+    btn.onclick = () => {
+      handleEffects(answer.effects);
+      // visuelles kurzes drücken
+      btn.style.opacity = "0.95";
+      setTimeout(() => {
+        btn.style.opacity = "";
+        currentQuestion++;
+        showQuestion();
+      }, 120);
+    };
+  }
+
+  const pText = document.getElementById("progress-text");
+  if (pText) {
+    pText.innerText =
+      lang === "de"
+        ? `Frage ${currentQuestion + 1} von ${qList.length}`
+        : `Question ${currentQuestion + 1} of ${qList.length}`;
+  }
+
   renderProgress();
 }
 
-function handleEffects(eff) {
-  if (!eff) return;
-  for (const [k, v] of Object.entries(eff)) {
-    if (k.includes("Weight") || k.includes("Headsize")) {
-      const t = k.includes("Weight") ? "WeightPref" : "HeadsizePref";
-      userProfile[t] = userProfile[t] || {};
-      if (k.endsWith("Min")) userProfile[t].min = v;
-      if (k.endsWith("Max")) userProfile[t].max = v;
-    } else if (CATEGORIES.includes(k) || STYLES.includes(k)) {
-      userProfile[k] = (userProfile[k] || 85) + (v * SCALE_FACTOR);
+// === Fortschrittsanzeige ===
+function renderProgress() {
+  const bar = document.getElementById("progress-bar");
+  const qList = questions[lang] || [];
+  if (!bar) return;
+  bar.innerHTML = "";
+  for (let i = 0; i < qList.length; i++) {
+    const span = document.createElement("span");
+    if (i < currentQuestion) span.classList.add("active");
+    if (i === currentQuestion) span.style.background = "#000";
+    bar.appendChild(span);
+  }
+}
+
+// === Effekte verarbeiten ===
+function handleEffects(effects) {
+  if (!effects) return;
+  
+  for (const [key, val] of Object.entries(effects)) {
+    // WeightPref / HeadsizePref logic
+    if (key === "WeightMin" || key === "WeightMax") {
+      userProfile.WeightPref = userProfile.WeightPref || {};
+      if (key === "WeightMin") userProfile.WeightPref.min = val;
+      if (key === "WeightMax") userProfile.WeightPref.max = val;
+      continue;
     }
+    if (key === "HeadsizeMin" || key === "HeadsizeMax") {
+      userProfile.HeadsizePref = userProfile.HeadsizePref || {};
+      if (key === "HeadsizeMin") userProfile.HeadsizePref.min = val;
+      if (key === "HeadsizeMax") userProfile.HeadsizePref.max = val;
+      continue;
+    }
+
+    // NORMALE KATEGORIEN: 
+    // Wir nutzen hier den berechneten Durchschnitt (averageScores) als Basis.
+    const currentBase = averageScores[key] || 50;
+
+    // Berechnung: (Basis) + Veränderung
+    userProfile[key] = (userProfile[key] ?? currentBase) + (val * SCALE_FACTOR);
+    userProfile[key] = Math.max(0, Math.min(100, userProfile[key]));
   }
-  userProfile = balanceProfile(userProfile, 85);
 }
 
-// === Matching mit Quadratischer Abweichung ===
-function getTopRackets(profile, mode) {
-  const scores = rackets.map(r => {
-    let diff = 0;
-    const sorted = [...CATEGORIES].sort((a,b) => profile[b] - profile[a]);
-    const top3 = sorted.slice(0,3);
-    const bottom3 = sorted.slice(-3);
-    CATEGORIES.forEach(cat => {
-      const p = profile[cat];
-      const rv = r.stats[cat] * 10;
-      let d;
-      if (mode === "strength" && top3.includes(cat)) d = 100 - rv;
-      else if (mode === "weakness" && bottom3.includes(cat)) d = 100 - rv;
-      else d = p - rv;
-      diff += Math.pow(d, 2);
-    });
-    return { r, diff };
-  });
-  scores.sort((a,b) => a.diff - b.diff);
-  return scores.slice(0,3).map(s => s.r);
-}
-
-// === Hybrid Spielstil Logik ===
-function getHybridDescription(profile) {
-  let sorted = STYLES.map(s => ({ name: s, val: profile[s] || 0 })).sort((a,b) => b.val - a.val);
-  const top = sorted[0];
-  const second = sorted[1];
-  if (second && (top.val - second.val) < 10) {
-    return lang === "de" ? `Hybrid: ${top.name} & ${second.name}` : `Hybrid: ${top.name} & ${second.name}`;
-  }
-  return top.name;
-}
-
-// === ENDKARTE 1:1 WIE VORHER ===
+// === Ergebnisse anzeigen (Overlay) ===
 function showResults() {
   const existing = document.getElementById("overlay");
   if (existing) existing.remove();
 
-  const uiProfile = {};
-  CATEGORIES.forEach(c => uiProfile[c] = Math.round(userProfile[c])/10);
-  const bestRackets = getTopRackets(userProfile, matchMode);
-  
   const overlay = document.createElement("div");
   overlay.id = "overlay";
-  overlay.className = "overlay"; // Nutzt deine CSS Klasse
+  Object.assign(overlay.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%",
+    background: "rgba(255,255,255,0.96)",
+    backdropFilter: "blur(6px)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "30px",
+    zIndex: "3000",
+    overflowY: "auto",
+    boxSizing: "border-box"
+  });
 
-  const card = document.createElement("div");
-  card.className = "results-card"; // Nutzt deine CSS Klasse
+  // Spielerprofil normalisieren auf 0-10 für Anzeige
+  const normalizedProfile = {};
+  const categories = [
+    "Groundstrokes","Volleys","Serves","Returns","Power","Control",
+    "Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice",
+    "TheBigServer", "ServeAndVolleyer", "AllCourtPlayer", "AttackingBaseliner", "SolidBaseliner", "CounterPuncher"
+  ];
   
-  card.innerHTML = `
-    <h2>${lang==='de'?'DEIN ERGEBNIS':'YOUR RESULT'}</h2>
-    
-    <div class="style-box" style="background:#f4f4f4; padding:15px; border-radius:10px; margin-bottom:20px; text-align:center;">
-        <small>${lang==='de'?'Dein Spielstil:':'Your Playstyle:'}</small>
-        <div style="font-weight:800; font-size:1.2rem;">${getHybridDescription(userProfile)}</div>
-    </div>
+  categories.forEach(cat => {
+    const raw = userProfile[cat] ?? null;
+    if (raw === null) normalizedProfile[cat] = 0;
+    else {
+        // Racket-Kats auf 0-10 normalisieren
+        if (["Groundstrokes","Volleys","Serves","Returns","Power","Control","Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice"].includes(cat)) {
+            normalizedProfile[cat] = Math.round((raw / 10) * 10) / 10;
+        } else {
+            // Spielstil-Kats bleiben intern 0-100
+            normalizedProfile[cat] = raw;
+        }
+    }
+  });
 
-    <div class="mode-selector" style="display:flex; gap:5px; margin-bottom:20px;">
-        <button id="m-neu" style="flex:1; padding:10px; font-size:0.8rem; border:none; border-radius:5px; font-weight:700; cursor:pointer; background:${matchMode==='neutral'?'#ffd700':'#eee'}">MATCHING</button>
-        <button id="m-str" style="flex:1; padding:10px; font-size:0.8rem; border:none; border-radius:5px; font-weight:700; cursor:pointer; background:${matchMode==='strength'?'#2ea44f':'#eee'}; color:${matchMode==='strength'?'#fff':'#333'}">STÄRKEN</button>
-        <button id="m-wek" style="flex:1; padding:10px; font-size:0.8rem; border:none; border-radius:5px; font-weight:700; cursor:pointer; background:${matchMode==='weakness'?'#c92a2a':'#eee'}; color:${matchMode==='weakness'?'#fff':'#333'}">SCHWÄCHEN</button>
-    </div>
+  if (userProfile.WeightPref) normalizedProfile.WeightPref = userProfile.WeightPref;
+  if (userProfile.HeadsizePref) normalizedProfile.HeadsizePref = userProfile.HeadsizePref;
 
-    <div class="racket-grid" id="r-grid"></div>
+  const topResult = getTopRackets(normalizedProfile, matchMode);
+  const bestRackets = topResult.bestRackets;
+  const best = bestRackets[0] || rackets[0];
+  selectedRacketIndex = 0;
 
-    <div class="stats-container" style="margin-top:20px;">
-        <table style="width:100%; border-collapse:collapse;" id="res-table">
-            <thead>
-                <tr style="border-bottom:2px solid #000">
-                    <th style="text-align:left; padding:8px">Stats</th>
-                    <th style="text-align:center">You</th>
-                    <th style="text-align:center">Racket</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
+  // Card Container
+  const card = document.createElement("div");
+  Object.assign(card.style, {
+    width: "min(1200px, 98%)",
+    borderRadius: "16px",
+    background: "#fff",
+    padding: "22px",
+    boxSizing: "border-box",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.12)",
+    maxHeight: "90vh",
+    overflowY: "auto"
+  });
 
-    <button class="restart-btn" onclick="restartQuiz()" style="width:100%; margin-top:20px; padding:15px; background:#000; color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer;">
-        ${lang==='de'?'NEU STARTEN':'RESTART QUIZ'}
-    </button>
-  `;
+  // 1. Überschrift "Your Game"
+  const styleTitle = document.createElement("h3");
+  styleTitle.innerText = "Your Game";
+  Object.assign(styleTitle.style, {
+    margin: "0 0 12px 0",
+    fontSize: "1.6rem",
+    fontStyle: "italic",
+    fontWeight: "700"
+  });
+  card.appendChild(styleTitle);
+
+  // 2. Spielstil Box
+  const styleDesc = getPlayStyleDescription(normalizedProfile);
+  const styleDiv = document.createElement("div");
+  Object.assign(styleDiv.style, {
+      margin: "0 0 18px 0",
+      padding: "16px", 
+      borderRadius: "12px",
+      border: "1px solid #ddd", 
+      background: "#f9f9f9",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
+  });
+  styleDiv.innerHTML = `<div style="font-size:1.0rem;">${styleDesc}</div>`;
+  card.appendChild(styleDiv);
+
+  // 3. Überschrift "Your Racket"
+  const racketTitle = document.createElement("h3");
+  racketTitle.innerText = "Your Racket";
+  Object.assign(racketTitle.style, {
+    margin: "24px 0 12px 0",
+    fontSize: "1.6rem",
+    fontStyle: "italic", 
+    fontWeight: "700"
+  });
+  card.appendChild(racketTitle);
+
+  // 4. Mode Selection
+  const modeSelectionWrap = document.createElement("div");
+  Object.assign(modeSelectionWrap.style, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: "12px",
+    marginBottom: "18px"
+  });
+
+  const modeLeft = document.createElement("div");
+  modeLeft.style.flex = "1 1 300px";
+  modeLeft.innerHTML = `<p style="margin:0; color:#444;">${lang === "de" ? "Möchtest du " : "Would you like to "}<span style="font-weight:700; color:#2ea44f;">${lang === "de" ? "Deine Stärken ausbauen" : "enhance strengths"}</span>${lang === "de" ? " oder " : " or "}<span style="font-weight:700; color:#c92a2a;">${lang === "de" ? "Schwächen ausgleichen" : "balance weaknesses"}</span>?</p>`;
+
+  const modeRight = document.createElement("div");
+  modeRight.style.display = "flex";
+  modeRight.style.gap = "10px";
+  modeRight.style.alignItems = "center";
+
+  const btnStrength = document.createElement("button");
+  btnStrength.id = "mode-strength";
+  btnStrength.innerText = lang === "de" ? "Stärken ausbauen" : "Enhance strengths";
+  Object.assign(btnStrength.style, {
+    minWidth: "150px",
+    padding: "10px 14px",
+    borderRadius: "10px",
+    border: "none",
+    cursor: "pointer",
+    fontWeight: "700",
+    background: "#2ea44f",
+    color: "#fff",
+    opacity: matchMode === "strength" ? "0.7" : "1"
+  });
+
+  const btnWeak = document.createElement("button");
+  btnWeak.id = "mode-weakness";
+  btnWeak.innerText = lang === "de" ? "Schwächen ausgleichen" : "Balance weaknesses";
+  Object.assign(btnWeak.style, {
+    minWidth: "150px",
+    padding: "10px 14px",
+    borderRadius: "10px",
+    border: "none",
+    cursor: "pointer",
+    fontWeight: "700",
+    background: "#c92a2a",
+    color: "#fff",
+    opacity: matchMode === "weakness" ? "0.7" : "1"
+  });
+
+  btnStrength.onclick = () => { matchMode = "strength"; refreshOverlay(); };
+  btnWeak.onclick = () => { matchMode = "weakness"; refreshOverlay(); };
+
+  modeRight.appendChild(btnStrength);
+  modeRight.appendChild(btnWeak);
+  modeSelectionWrap.appendChild(modeLeft);
+  modeSelectionWrap.appendChild(modeRight);
+  card.appendChild(modeSelectionWrap);
+
+  // 5. Racket Cards Container
+  const topRow = document.createElement("div");
+  topRow.id = "racket-cards-container";
+  Object.assign(topRow.style, {
+    display: "flex",
+    gap: "14px",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    marginTop: "0px",
+    marginBottom: "18px",
+    padding: "18px",
+    borderRadius: "14px",
+  });
+
+  const makeRacketCard = (r, idx) => {
+    const div = document.createElement("div");
+    Object.assign(div.style, {
+      flex: "1 1 30%",
+      minWidth: "220px",
+      maxWidth: "360px",
+      borderRadius: "12px",
+      padding: "12px",
+      boxSizing: "border-box",
+      border: "1px solid #ddd", 
+      background: "#fff", 
+      cursor: "pointer",
+      transition: "border 0.2s, box-shadow 0.2s" 
+    });
+    div.dataset.index = idx;
+    div.onclick = () => updateRacketDisplay(idx);
+
+    const img = document.createElement("img");
+    img.src = r.img;
+    img.alt = r.name;
+    Object.assign(img.style, { 
+      width: "50%", 
+      borderRadius: "8px", 
+      display: "block", 
+      marginBottom: "8px",
+      margin: "0 auto 8px auto",
+      border: "1px solid transparent"
+    });
+
+    const h = document.createElement("div");
+    h.innerText = r.name;
+    h.style.fontWeight = "800";
+    h.style.marginBottom = "6px";
+
+    const link = document.createElement("a");
+    link.href = r.url;
+    link.target = "_blank";
+    link.innerText = lang === "de" ? "Mehr erfahren" : "Learn more";
+    link.style.fontSize = "0.9rem";
+    link.style.color = "#0066cc";
+    link.style.textDecoration = "none";
+
+    const tech = document.createElement("div");
+    tech.style.marginTop = "8px";
+    tech.style.fontSize = "0.9rem";
+    tech.innerHTML = `
+      ${r.stats.Weight !== undefined ? `<div>Gewicht: ${r.stats.Weight} g</div>` : ""}
+      ${r.stats.Headsize !== undefined ? `<div>Headsize: ${r.stats.Headsize} cm²</div>` : ""}
+    `;
+
+    div.appendChild(img);
+    div.appendChild(h);
+    div.appendChild(link);
+    div.appendChild(tech);
+
+    return div;
+  };
+
+  bestRackets.forEach((r, i) => {
+    topRow.appendChild(makeRacketCard(r, i));
+  });
+  card.appendChild(topRow);
+
+  // 6. Tabelle
+  const tableWrap = document.createElement("div");
+  tableWrap.style.overflowX = "auto";
+  const table = document.createElement("table");
+  table.id = "profile-table";
+  table.style.width = "100%";
+  table.style.borderCollapse = "collapse";
+  table.style.minWidth = "640px";
+
+  const thead = document.createElement("thead");
+  thead.innerHTML = `<tr style="background:transparent">
+    <th style="text-align:left; padding:10px 12px; width:40%;">${lang === "de" ? "Kategorie" : "Category"}</th>
+    <th style="text-align:center; padding:10px 12px; width:30%;">${lang === "de" ? "Dein Spielerprofil" : "Your Player Profile"}</th>
+    <th style="text-align:center; padding:10px 12px; width:30%;">${lang === "de" ? "Schlägerprofil" : "Racket Profile"}</th>
+  </tr>`;
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  const profileForTable = {};
+  Object.entries(normalizedProfile).forEach(([key, val]) => {
+      if (typeof val === 'number' && val <= 10.00001) {
+          profileForTable[key] = val;
+      }
+      if (key.endsWith("Pref")) {
+          profileForTable[key] = val;
+      }
+  });
+  tbody.innerHTML = buildProfileTableRows(profileForTable, best.stats);
+  table.appendChild(tbody);
+  tableWrap.appendChild(table);
+  card.appendChild(tableWrap);
+
+  // Restart Button
+  const restartWrap = document.createElement("div");
+  restartWrap.style.display = "flex";
+  restartWrap.style.justifyContent = "center";
+  restartWrap.style.marginTop = "18px";
+
+  const restartBtn = document.createElement("button");
+  restartBtn.innerText = lang === "de" ? "Quiz neu starten" : "Restart Quiz";
+  Object.assign(restartBtn.style, {
+    background: "#111",
+    color: "#fff",
+    fontWeight: "700",
+    padding: "14px 26px",
+    borderRadius: "12px",
+    border: "none",
+    fontSize: "1.05rem",
+    cursor: "pointer"
+  });
+  restartBtn.onclick = () => restartQuiz();
+  restartWrap.appendChild(restartBtn);
+  card.appendChild(restartWrap);
 
   overlay.appendChild(card);
   document.body.appendChild(overlay);
 
-  document.getElementById("m-neu").onclick = () => { matchMode="neutral"; showResults(); };
-  document.getElementById("m-str").onclick = () => { matchMode="strength"; showResults(); };
-  document.getElementById("m-wek").onclick = () => { matchMode="weakness"; showResults(); };
+  createRestartFloatingButton();
+  highlightMatchMode(); 
+  highlightSelectedRacket(0);
+  injectResponsiveStyles();
+}
 
-  const grid = document.getElementById("r-grid");
-  bestRackets.forEach((r, idx) => {
-    const rDiv = document.createElement("div");
-    rDiv.className = "racket-card"; 
-    if(idx === selectedRacketIndex) rDiv.style.borderColor = "#000";
-    
-    rDiv.innerHTML = `
-        <img src="${r.img}" class="racket-img">
-        <div class="racket-name">${r.name}</div>
-        <div class="racket-specs">${r.stats.Weight}g | ${r.stats.Headsize}in²</div>
-    `;
-    rDiv.onclick = () => { selectedRacketIndex=idx; updateTable(r, uiProfile); highlightRacket(idx); };
-    grid.appendChild(rDiv);
+// === Match Mode Highlighting ===
+function highlightMatchMode() {
+  const topRow = document.getElementById("racket-cards-container");
+  if (!topRow) return;
+
+  const color = matchMode === "strength" ? "#2ea44f" : "#c92a2a";
+
+  topRow.style.outline = "none";
+  topRow.style.outlineOffset = "0";
+  topRow.style.border = `3px solid ${color}`;
+  topRow.style.boxShadow = `0 0 16px 2px ${color}80`;
+
+  highlightSelectedRacket(selectedRacketIndex);
+}
+
+// === Tabellen-Zeilen ===
+function buildProfileTableRows(player, racketStats) {
+  const order = [
+    "Groundstrokes", "Volleys", "Serves", "Returns", "Power", "Control",
+    "Maneuverability", "Stability", "Comfort", "Touch / Feel", "Topspin", "Slice"
+  ];
+  return order.map((key, idx) => {
+    const pVal = (player[key] ?? 0).toFixed(1);
+    const rVal = racketStats[key];
+    const bg = idx % 2 === 0 ? "#ffffff" : "#f6f6f6";
+    return `<tr style="background:${bg}"><td style="padding:10px 12px; text-align:left;">${key}</td><td style="padding:10px 12px; text-align:center;">${pVal}</td><td style="padding:10px 12px; text-align:center;">${(typeof rVal === 'number') ? rVal.toFixed(1) : '-'}</td></tr>`;
+  }).join("");
+}
+
+// === Update Racket Display ===
+function updateRacketDisplay(index) {
+  const normalized = {};
+  const categories = [
+    "Groundstrokes","Volleys","Serves","Returns","Power","Control",
+    "Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice",
+    "TheBigServer", "ServeAndVolleyer", "AllCourtPlayer", "AttackingBaseliner", "SolidBaseliner", "CounterPuncher"
+  ];
+  categories.forEach(cat => {
+    const raw = userProfile[cat] ?? null;
+    if (raw === null) normalized[cat] = 0;
+    else {
+        if (["Groundstrokes","Volleys","Serves","Returns","Power","Control","Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice"].includes(cat)) {
+            normalized[cat] = Math.round((raw / 10) * 10) / 10;
+        } else {
+            normalized[cat] = raw;
+        }
+    }
+  });
+  if (userProfile.WeightPref) normalized.WeightPref = userProfile.WeightPref;
+  if (userProfile.HeadsizePref) normalized.HeadsizePref = userProfile.HeadsizePref;
+
+  const top = getTopRackets(normalized, matchMode).bestRackets;
+  const racket = top[index] || top[0];
+  const tbody = document.querySelector("#profile-table tbody");
+
+  const profileForTable = {};
+  Object.entries(normalized).forEach(([key, val]) => {
+      if (typeof val === 'number' && val <= 10.00001) {
+          profileForTable[key] = val;
+      }
+      if (key.endsWith("Pref")) {
+          profileForTable[key] = val;
+      }
   });
 
-  updateTable(bestRackets[selectedRacketIndex], uiProfile);
+  if (tbody && racket) tbody.innerHTML = buildProfileTableRows(profileForTable, racket.stats);
+  selectedRacketIndex = index;
+  highlightSelectedRacket(index);
+  
+  const overlay = document.getElementById("overlay");
+  if (overlay) overlay.scrollTop = 0;
 }
 
-function highlightRacket(idx) {
-    const cards = document.getElementById("r-grid").children;
-    for(let i=0; i<cards.length; i++) cards[i].style.borderColor = (i===idx) ? "#000" : "#eee";
+// === Karten Highlighten ===
+function highlightSelectedRacket(index) {
+  const overlay = document.getElementById("overlay");
+  if (!overlay) return;
+  const cards = overlay.querySelectorAll("div[data-index]");
+  cards.forEach(c => {
+    const idx = parseInt(c.dataset.index, 10);
+    const modeColor = matchMode === "strength" ? "#2ea44f" : "#c92a2a";
+
+    if (idx === index) {
+      c.style.background = "#fff"; 
+      c.style.border = "3px solid #111"; 
+      c.style.boxShadow = "0 6px 18px rgba(0,0,0,0.1)"; 
+    } else {
+      c.style.background = "#fff";
+      c.style.border = `1px solid ${modeColor}`; 
+      c.style.boxShadow = "0 1px 4px rgba(0,0,0,0.05)"; 
+    }
+  });
 }
 
-function updateTable(r, p) {
-  const tbody = document.querySelector("#res-table tbody");
-  tbody.innerHTML = CATEGORIES.map(cat => `
-    <tr style="border-bottom:1px solid #eee">
-        <td style="padding:8px; font-size:0.9rem;">${cat}</td>
-        <td style="text-align:center; font-weight:700">${p[cat].toFixed(1)}</td>
-        <td style="text-align:center; font-weight:700">${r.stats[cat].toFixed(1)}</td>
-    </tr>`).join("");
+// === Restart Floating Button ===
+function createRestartFloatingButton() {
+  const existing = document.getElementById("restart-floating");
+  if (existing) return;
+  const btn = document.createElement("button");
+  btn.id = "restart-floating";
+  btn.innerText = lang === "de" ? "Quiz neu starten" : "Restart Quiz";
+  Object.assign(btn.style, {
+    position: "fixed",
+    left: "8px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    zIndex: 4000,
+    background: "#111",
+    color: "#fff",
+    border: "none",
+    borderRadius: "20px",
+    padding: "12px 14px",
+    cursor: "pointer",
+    fontWeight: "700",
+    boxShadow: "0 4px 14px rgba(0,0,0,0.15)"
+  });
+  btn.onclick = () => restartQuiz();
+  document.body.appendChild(btn);
 }
 
-function renderProgress() {
-  const b = document.getElementById("progress-bar"); if(!b) return; b.innerHTML = "";
-  const total = (questions[lang] || []).length;
-  for(let i=0; i<total; i++) {
-    const s = document.createElement("span");
-    if(i < currentQuestion) s.classList.add("active");
-    if(i === currentQuestion) s.style.background = "#000";
-    b.appendChild(s);
+// === Overlay Refresh ===
+function refreshOverlay() {
+  const overlay = document.getElementById("overlay");
+  if (overlay) overlay.remove();
+  showResults();
+}
+
+// === Responsive Styles ===
+function injectResponsiveStyles() {
+  if (document.getElementById("appjs-responsive-styles")) return;
+  const s = document.createElement("style");
+  s.id = "appjs-responsive-styles";
+  s.textContent = `
+    body {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        min-height: 100vh !important;
+        flex-direction: column !important; 
+        padding: 0;
+        margin: 0;
+        overflow: auto !important;
+    }
+    #quiz-container {
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: auto !important;
+        margin: 0;
+        padding: 0;
+    }
+    #question-container {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        min-height: 250px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start;
+        margin: 0 auto !important;
+        padding: 20px 40px 20px 40px !important;
+        width: 60% !important; 
+    }
+    #question {
+      min-height: 120px !important;
+      flex-grow: 1 !important;
+      display: flex !important; 
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center;
+      margin: 0 !important; 
+      padding: 0 !important;
+    }
+    #progress-container {
+        margin-top: 20px !important;
+        padding-bottom: 20px !important;
+        position: relative !important;
+        flex-grow: 0 !important;
+        flex-shrink: 0 !important;
+    }
+    #question-number {
+        margin: 0 0 8px 0 !important;
+        padding: 0 !important;
+    }
+    @media (max-width: 768px) {
+        #question-container {
+            width: 92% !important;
+            margin: 32px auto !important;
+            padding: 14px 16px 18px 16px !important;
+        }
+        #quiz-container {
+            height: auto !important;
+        }
+    }
+    @media (max-width: 900px) {
+      #overlay { align-items: flex-start; padding-top: 24px; padding-bottom: 24px; }
+    }
+    @media (max-width: 640px) {
+      #profile-table { min-width: 100% !important; }
+      #restart-floating { display: none; }
+    }
+  `;
+  document.head.appendChild(s);
+}
+
+// === Matching Logic ===
+function getTopRackets(profile, mode) {
+  const scores = rackets.map(r => {
+    let diff = 0;
+    const cats = [
+      "Groundstrokes","Volleys","Serves","Returns","Power","Control",
+      "Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice"
+    ];
+    cats.forEach(cat => {
+      const p = profile[cat] ?? 0;
+      // WICHTIG: Hier stats aus dem stats-Objekt holen!
+      const rv = (r.stats && r.stats[cat]) ? r.stats[cat] : 0;
+      
+      if (mode === "weakness" && p < 6.5) {
+        diff += Math.abs(10 - rv);
+      } else {
+        diff += Math.abs(p - rv);
+      }
+    });
+
+    if (r.stats && r.stats.Weight !== undefined && profile.WeightPref !== undefined) {
+      const pref = profile.WeightPref;
+      const w = r.stats.Weight;
+      const mid = ((pref.min ?? pref.max ?? w) + (pref.max ?? pref.min ?? w)) / 2;
+      if ((pref.min === undefined || w >= pref.min) && (pref.max === undefined || w <= pref.max)) {
+        diff -= 3;
+      } else {
+        diff += Math.abs(w - mid) / 30;
+      }
+    }
+
+    if (r.stats && r.stats.Headsize !== undefined && profile.HeadsizePref !== undefined) {
+      const pref = profile.HeadsizePref;
+      const hs = r.stats.Headsize;
+      const mid = ((pref.min ?? pref.max ?? hs) + (pref.max ?? pref.min ?? hs)) / 2;
+      if ((pref.min === undefined || hs >= pref.min) && (pref.max === undefined || hs <= pref.max)) {
+        diff -= 2.5;
+      } else {
+        diff += Math.abs(hs - mid) / 80;
+      }
+    }
+
+    return { r, diff };
+  });
+
+  scores.sort((a, b) => a.diff - b.diff);
+  return { bestRackets: scores.slice(0, 3).map(s => s.r) };
+}
+
+// === Spielstil Beschreibung ===
+function getPlayStyleDescription(profile) {
+  const playStyles = {
+    TheBigServer: {
+      de: { name: "The Big Server", desc: "Du bist ein Spieler mit einem <b>schnellen ersten Aufschlag</b>, der oft Punkte innerhalb seiner ersten zwei Schläge gewinnt." },
+      en: { name: "The Big Server", desc: "A player with a <b>fast first serve</b>, who will often win points within their first two shots." }
+    },
+    ServeAndVolleyer: {
+      de: { name: "Serve and Volleyer", desc: "Du nutzt <b>Aufschlag und Volley als deine primäre Taktik</b>." },
+      en: { name: "Serve and Volleyer", desc: "A player who uses <b>serve and volley as their primary tactic</b>." }
+    },
+    AllCourtPlayer: {
+      de: { name: "All-Court Player", desc: "Du fühlst dich in <b>allen Bereichen des Platzes wohl</b> und nutzt deine Fähigkeit am Netz oft zu deinem Vorteil." },
+      en: { name: "All-Court Player", desc: "A player who is <b>comfortable in all areas of the court</b>, and often utilises their ability at the net to their advantage." }
+    },
+    AttackingBaseliner: {
+      de: { name: "Attacking Baseliner", desc: "Du versuchst, das Spiel von der Grundlinie aus zu <b>diktieren</b>." },
+      en: { name: "Attacking Baseliner", desc: "A player who looks to <b>dictate play from the baseline</b>." }
+    },
+    SolidBaseliner: {
+      de: { name: "Solid Baseliner", desc: "Du <b>balancierst Angriff und Verteidigung</b> von der Grundlinie aus." },
+      en: { name: "Solid Baseliner", desc: "A player who <b>balances attacking and defending from the baseline</b>." }
+    },
+    CounterPuncher: {
+      de: { name: "Counter Puncher", desc: "Du fühlst dich in der <b>Defensive wohl</b>. Du nutzt diese Fähigkeit, um deine Gegner zu frustrieren." },
+      en: { name: "Counter Puncher", desc: "A player who is <b>comfortable playing in defence</b>. They use this ability to frustrate their opponent." }
+      }
+  };
+
+  const styleScores = {};
+  const BASE_CALC = 50; // Festwert für Spielstile
+  Object.keys(playStyles).forEach(style => {
+    const raw = userProfile[style] ?? BASE_CALC; 
+    const score = Math.round(((raw - BASE_CALC) / BASE_CALC) * 16);
+    styleScores[style] = score;
+  });
+
+  const sortedStyles = Object.entries(styleScores)
+    .map(([name, score]) => ({ name, score }))
+    .sort((a, b) => b.score - a.score);
+  const bestStyle = sortedStyles[0];
+
+  if (sortedStyles.length > 1) {
+    const secondBest = sortedStyles[1];
+    if (bestStyle.score - secondBest.score <= 3 && bestStyle.score >= 0 && secondBest.score >= 0) {
+        const style1 = playStyles[bestStyle.name][lang];
+        const style2 = playStyles[secondBest.name][lang];
+        const hybridName = lang === "de"
+          ? `Hybrid: <strong>${style1.name}</strong> & <strong>${style2.name}</strong>`
+          : `Hybrid: <strong>${style1.name}</strong> & <strong>${style2.name}</strong>`;
+        const hybridDesc = lang === "de"
+          ? `<span style="font-weight:700;">${style1.name}</span>: ${style1.desc} <br><br> <span style="font-weight:700;">${style2.name}</span>: ${style2.desc}`
+          : `<span style="font-weight:700;">${style1.name}</span>: ${style1.desc} <br><br> <span style="font-weight:700;">${style2.name}</span>: ${style2.desc}`;
+        return `${hybridName}<br><span style="font-weight:400; font-size:0.95em; line-height:1.4;"><br>${hybridDesc}</span>`;
+      }
+  }
+
+  const style = playStyles[bestStyle.name][lang];
+  const singleDesc = `<span style="font-weight:700;">${style.name}</span>: ${style.desc}`;
+  return `${style.name}<br><span style="font-weight:400; font-size:0.95em;"><br>${singleDesc}</span>`;
+}
+
+// === Zurück-Button ===
+function createBackButton() {
+  const existing = document.getElementById("back-button");
+  if (existing) return;
+  const btn = document.createElement("div");
+  btn.id = "back-button";
+  btn.innerHTML = "&#8617";
+  Object.assign(btn.style, {
+    position: "fixed",
+    left: "8px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    width: "38px",
+    height: "38px",
+    background: "rgba(255,255,255,1)",
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "1.2rem",
+    fontWeight: "bold",
+    cursor: "pointer",
+    userSelect: "none",
+    zIndex: "1000",
+    backdropFilter: "blur(4px)",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.2)"
+  });
+  btn.onclick = () => goBack();
+  document.body.appendChild(btn);
+}
+
+function goBack() {
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    showQuestion();
   }
 }
 
-function restartQuiz() { const o=document.getElementById("overlay"); if(o) o.remove(); currentQuestion=0; matchMode="neutral"; initializeUserProfile(); showQuestion(); }
-
-function createBackButton() {
-  const b = document.createElement("div"); b.id="back-button"; b.innerHTML="&#8617;";
-  Object.assign(b.style, { position:"fixed", left:"15px", bottom:"15px", width:"40px", height:"40px", background:"#fff", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", boxShadow:"0 2px 8px rgba(0,0,0,0.2)", zIndex:1000 });
-  b.onclick = () => { if(currentQuestion>0) { currentQuestion--; showQuestion(); } };
-  document.body.appendChild(b);
-}
-
+// === Sprachumschaltung ===
 function attachLangSwitchHandlers() {
-  const d = document.getElementById("lang-de"); const e = document.getElementById("lang-en");
-  if(d) d.onclick=() => { lang="de"; restartQuiz(); };
-  if(e) e.onclick=() => { lang="en"; restartQuiz(); };
+  const en = document.getElementById("lang-en");
+  const de = document.getElementById("lang-de");
+
+  if (en) en.onclick = () => switchLang("en");
+  if (de) de.onclick = () => switchLang("de");
+
+  const langSwitch = document.getElementById("lang-switch");
+  if (langSwitch && !en && !de) {
+    const btns = langSwitch.getElementsByTagName("button");
+    for (const b of btns) {
+      if (/en/i.test(b.innerText)) b.onclick = () => switchLang("en");
+      if (/de/i.test(b.innerText)) b.onclick = () => switchLang("de");
+    }
+  }
 }
 
+function switchLang(newLang) {
+  lang = newLang;
+  localStorage.setItem("language", newLang);
+  currentQuestion = 0;
+  // Profil resetten und neu initialisieren mit den bereits berechneten Averages
+  initializeUserProfile(); 
+  showQuestion();
+  renderProgress();
+}
+
+// === Impressum Hook ===
+function createImpressumHook() {
+  const footer = document.getElementById("footer-island");
+  if (!footer) return;
+  if (document.getElementById("impressum-anchor")) return;
+  const a = document.createElement("a");
+  a.id = "impressum-anchor";
+  a.href = "impressum.html";
+  a.target = "_blank";
+  a.innerText = lang === "de" ? "Impressum" : "Imprint";
+  a.style.textDecoration = "none";
+  a.style.color = "inherit";
+  footer.appendChild(a);
+}
+
+// === Quiz neu starten ===
+function restartQuiz() {
+  const overlay = document.getElementById("overlay");
+  if (overlay) overlay.remove();
+  const rf = document.getElementById("restart-floating");
+  if (rf) rf.remove();
+  currentQuestion = 0;
+  // Profil resetten und mit Averages neu füllen
+  initializeUserProfile();
+  selectedRacketIndex = 0;
+  showQuestion();
+  renderProgress();
+}
+
+// === Init ===
 loadData();
