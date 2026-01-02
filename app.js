@@ -1,4 +1,4 @@
-// app.js - WhichRacket Full Version (Hybrid Logic + Multi-Mode Matching)
+// app.js - 1:1 Original Design mit neuer Matching-Logik
 let currentQuestion = 0;
 let userProfile = {};
 let questions = {};
@@ -22,7 +22,7 @@ function getLanguage() {
   return navLang.startsWith("de") ? "de" : "en";
 }
 
-// === Balancer: Hält den Durchschnitt bei 8.5 (85), damit das Profil dynamisch bleibt ===
+// === LOGIK: Balancer & Mittelwerte ===
 function balanceProfile(profile, targetMean = 85) {
   const currentSum = CATEGORIES.reduce((sum, cat) => sum + (profile[cat] || 85), 0);
   const currentMean = currentSum / CATEGORIES.length;
@@ -52,7 +52,7 @@ function calculateAverageScores(rackets) {
 function initializeUserProfile() {
   userProfile = {};
   CATEGORIES.forEach(cat => { userProfile[cat] = averageScores[cat] || 85; });
-  STYLES.forEach(s => { userProfile[s] = 50; }); // Startwert für Spielstile
+  STYLES.forEach(s => { userProfile[s] = 50; });
 }
 
 async function loadData() {
@@ -66,11 +66,10 @@ async function loadData() {
     calculateAverageScores(rackets);
     initializeUserProfile();
     const b = document.getElementById("brand");
-    if(b) { b.innerHTML=`<b>WhichRacket.com</b>`; b.style.cursor="pointer"; b.onclick=()=>restartQuiz(); }
+    if(b) { b.onclick=()=>restartQuiz(); }
     showQuestion();
     renderProgress();
     createBackButton();
-    createImpressumHook();
     attachLangSwitchHandlers();
   } catch (e) { console.error(e); }
 }
@@ -122,10 +121,6 @@ function getTopRackets(profile, mode) {
       else d = p - rv;
       diff += Math.pow(d, 2);
     });
-    if (r.stats.Weight && profile.WeightPref) {
-      const {min, max} = profile.WeightPref;
-      if ((min && r.stats.Weight < min) || (max && r.stats.Weight > max)) diff += 2000;
-    }
     return { r, diff };
   });
   scores.sort((a,b) => a.diff - b.diff);
@@ -137,52 +132,60 @@ function getHybridDescription(profile) {
   let sorted = STYLES.map(s => ({ name: s, val: profile[s] || 0 })).sort((a,b) => b.val - a.val);
   const top = sorted[0];
   const second = sorted[1];
-  // Wenn der zweite Stil innerhalb von 10% des ersten liegt -> Hybrid
   if (second && (top.val - second.val) < 10) {
-    return lang === "de" 
-      ? `Du bist ein <strong>Hybrid: ${top.name} & ${second.name}</strong>. Deine Spielweise vereint zwei Stile fast perfekt.`
-      : `You are a <strong>Hybrid: ${top.name} & ${second.name}</strong>. Your game perfectly blends two styles.`;
+    return lang === "de" ? `Hybrid: ${top.name} & ${second.name}` : `Hybrid: ${top.name} & ${second.name}`;
   }
-  return lang === "de" 
-    ? `Dein Spielstil: <strong>${top.name}</strong>.` 
-    : `Your Playing Style: <strong>${top.name}</strong>.`;
+  return top.name;
 }
 
+// === ENDKARTE 1:1 WIE VORHER ===
 function showResults() {
-  const ex = document.getElementById("overlay"); if(ex) ex.remove();
-  const uiProfile = {}; CATEGORIES.forEach(c => uiProfile[c] = Math.round(userProfile[c])/10);
+  const existing = document.getElementById("overlay");
+  if (existing) existing.remove();
+
+  const uiProfile = {};
+  CATEGORIES.forEach(c => uiProfile[c] = Math.round(userProfile[c])/10);
   const bestRackets = getTopRackets(userProfile, matchMode);
   
   const overlay = document.createElement("div");
   overlay.id = "overlay";
-  Object.assign(overlay.style, { position:"fixed", top:0, left:0, width:"100%", height:"100%", background:"rgba(255,255,255,0.98)", zIndex:4000, overflowY:"auto", padding:"20px", display:"flex", justifyContent:"center" });
+  overlay.className = "overlay"; // Nutzt deine CSS Klasse
 
   const card = document.createElement("div");
-  card.style = "width:min(1100px, 95%); background:#fff; border-radius:20px; padding:25px; box-shadow:0 15px 40px rgba(0,0,0,0.1); height:fit-content; margin-bottom:50px;";
+  card.className = "results-card"; // Nutzt deine CSS Klasse
   
   card.innerHTML = `
-    <h2 style="font-style:italic; font-weight:800; margin-top:0;">YOUR GAME</h2>
-    <div style="background:#f8f9fa; padding:20px; border-radius:12px; border-left:5px solid #ffd700; margin-bottom:30px;">
-        ${getHybridDescription(userProfile)}
-    </div>
-
-    <h2 style="font-style:italic; font-weight:800;">YOUR RACKET</h2>
-    <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
-        <button id="m-neu" style="flex:1; min-width:120px; padding:12px; border-radius:10px; border:none; font-weight:700; cursor:pointer; background:${matchMode==='neutral'?'#ffd700':'#eee'}">MATCHING</button>
-        <button id="m-str" style="flex:1; min-width:120px; padding:12px; border-radius:10px; border:none; font-weight:700; cursor:pointer; background:${matchMode==='strength'?'#2ea44f':'#eee'}; color:${matchMode==='strength'?'#fff':'#333'}">STÄRKEN</button>
-        <button id="m-wek" style="flex:1; min-width:120px; padding:12px; border-radius:10px; border:none; font-weight:700; cursor:pointer; background:${matchMode==='weakness'?'#c92a2a':'#eee'}; color:${matchMode==='weakness'?'#fff':'#333'}">SCHWÄCHEN</button>
-    </div>
-
-    <div id="r-cont" style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center; margin-bottom:30px; padding:15px; border:2px dashed #ddd; border-radius:15px;"></div>
+    <h2>${lang==='de'?'DEIN ERGEBNIS':'YOUR RESULT'}</h2>
     
-    <div style="overflow-x:auto;">
-        <table id="res-table" style="width:100%; border-collapse:collapse; font-size:0.95rem;">
-            <thead><tr style="border-bottom:2px solid #111"><th style="text-align:left; padding:12px">Kategorie</th><th style="text-align:center">Dein Profil</th><th style="text-align:center">Schläger</th></tr></thead>
+    <div class="style-box" style="background:#f4f4f4; padding:15px; border-radius:10px; margin-bottom:20px; text-align:center;">
+        <small>${lang==='de'?'Dein Spielstil:':'Your Playstyle:'}</small>
+        <div style="font-weight:800; font-size:1.2rem;">${getHybridDescription(userProfile)}</div>
+    </div>
+
+    <div class="mode-selector" style="display:flex; gap:5px; margin-bottom:20px;">
+        <button id="m-neu" style="flex:1; padding:10px; font-size:0.8rem; border:none; border-radius:5px; font-weight:700; cursor:pointer; background:${matchMode==='neutral'?'#ffd700':'#eee'}">MATCHING</button>
+        <button id="m-str" style="flex:1; padding:10px; font-size:0.8rem; border:none; border-radius:5px; font-weight:700; cursor:pointer; background:${matchMode==='strength'?'#2ea44f':'#eee'}; color:${matchMode==='strength'?'#fff':'#333'}">STÄRKEN</button>
+        <button id="m-wek" style="flex:1; padding:10px; font-size:0.8rem; border:none; border-radius:5px; font-weight:700; cursor:pointer; background:${matchMode==='weakness'?'#c92a2a':'#eee'}; color:${matchMode==='weakness'?'#fff':'#333'}">SCHWÄCHEN</button>
+    </div>
+
+    <div class="racket-grid" id="r-grid"></div>
+
+    <div class="stats-container" style="margin-top:20px;">
+        <table style="width:100%; border-collapse:collapse;" id="res-table">
+            <thead>
+                <tr style="border-bottom:2px solid #000">
+                    <th style="text-align:left; padding:8px">Stats</th>
+                    <th style="text-align:center">You</th>
+                    <th style="text-align:center">Racket</th>
+                </tr>
+            </thead>
             <tbody></tbody>
         </table>
     </div>
 
-    <button onclick="restartQuiz()" style="display:block; margin:40px auto 0; padding:15px 35px; background:#111; color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer;">NEU STARTEN</button>
+    <button class="restart-btn" onclick="restartQuiz()" style="width:100%; margin-top:20px; padding:15px; background:#000; color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer;">
+        ${lang==='de'?'NEU STARTEN':'RESTART QUIZ'}
+    </button>
   `;
 
   overlay.appendChild(card);
@@ -192,33 +195,42 @@ function showResults() {
   document.getElementById("m-str").onclick = () => { matchMode="strength"; showResults(); };
   document.getElementById("m-wek").onclick = () => { matchMode="weakness"; showResults(); };
 
-  const cont = document.getElementById("r-cont");
+  const grid = document.getElementById("r-grid");
   bestRackets.forEach((r, idx) => {
-    const d = document.createElement("div");
-    d.style = `flex:1; min-width:240px; border:3px solid ${idx===selectedRacketIndex?'#111':'#eee'}; padding:15px; border-radius:12px; cursor:pointer; text-align:center; transition:0.2s; background:#fff`;
-    d.innerHTML = `<img src="${r.img}" style="height:120px; object-fit:contain; margin-bottom:10px"><div style="font-weight:800">${r.name}</div><div style="font-size:0.8rem; color:#666">${r.stats.Weight}g | ${r.stats.Headsize}cm²</div>`;
-    d.onclick = () => { selectedRacketIndex=idx; updateTable(r, uiProfile); highlightRacket(idx); };
-    cont.appendChild(d);
+    const rDiv = document.createElement("div");
+    rDiv.className = "racket-card"; 
+    if(idx === selectedRacketIndex) rDiv.style.borderColor = "#000";
+    
+    rDiv.innerHTML = `
+        <img src="${r.img}" class="racket-img">
+        <div class="racket-name">${r.name}</div>
+        <div class="racket-specs">${r.stats.Weight}g | ${r.stats.Headsize}in²</div>
+    `;
+    rDiv.onclick = () => { selectedRacketIndex=idx; updateTable(r, uiProfile); highlightRacket(idx); };
+    grid.appendChild(rDiv);
   });
+
   updateTable(bestRackets[selectedRacketIndex], uiProfile);
 }
 
 function highlightRacket(idx) {
-    Array.from(document.getElementById("r-cont").children).forEach((c, i) => c.style.borderColor = i===idx?"#111":"#eee");
+    const cards = document.getElementById("r-grid").children;
+    for(let i=0; i<cards.length; i++) cards[i].style.borderColor = (i===idx) ? "#000" : "#eee";
 }
 
 function updateTable(r, p) {
-  document.querySelector("#res-table tbody").innerHTML = CATEGORIES.map((cat, i) => `
-    <tr style="border-bottom:1px solid #eee; background:${i%2===0?'#fff':'#fafafa'}">
-        <td style="padding:12px">${cat}</td>
-        <td style="text-align:center; font-weight:700; color:#444">${p[cat].toFixed(1)}</td>
-        <td style="text-align:center; font-weight:700; color:#000">${r.stats[cat].toFixed(1)}</td>
+  const tbody = document.querySelector("#res-table tbody");
+  tbody.innerHTML = CATEGORIES.map(cat => `
+    <tr style="border-bottom:1px solid #eee">
+        <td style="padding:8px; font-size:0.9rem;">${cat}</td>
+        <td style="text-align:center; font-weight:700">${p[cat].toFixed(1)}</td>
+        <td style="text-align:center; font-weight:700">${r.stats[cat].toFixed(1)}</td>
     </tr>`).join("");
 }
 
 function renderProgress() {
   const b = document.getElementById("progress-bar"); if(!b) return; b.innerHTML = "";
-  const total = questions[lang]?.length || 0;
+  const total = (questions[lang] || []).length;
   for(let i=0; i<total; i++) {
     const s = document.createElement("span");
     if(i < currentQuestion) s.classList.add("active");
@@ -230,15 +242,10 @@ function renderProgress() {
 function restartQuiz() { const o=document.getElementById("overlay"); if(o) o.remove(); currentQuestion=0; matchMode="neutral"; initializeUserProfile(); showQuestion(); }
 
 function createBackButton() {
-  const b = document.createElement("div"); b.innerHTML="&#8617;";
-  Object.assign(b.style, { position:"fixed", left:"20px", bottom:"20px", width:"45px", height:"45px", background:"#fff", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", boxShadow:"0 4px 10px rgba(0,0,0,0.1)", zIndex:1000 });
+  const b = document.createElement("div"); b.id="back-button"; b.innerHTML="&#8617;";
+  Object.assign(b.style, { position:"fixed", left:"15px", bottom:"15px", width:"40px", height:"40px", background:"#fff", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", boxShadow:"0 2px 8px rgba(0,0,0,0.2)", zIndex:1000 });
   b.onclick = () => { if(currentQuestion>0) { currentQuestion--; showQuestion(); } };
   document.body.appendChild(b);
-}
-
-function createImpressumHook() {
-  const f = document.getElementById("footer-island");
-  if(f) f.innerHTML = `<a href="impressum.html" target="_blank" style="color:#888; text-decoration:none; font-size:0.8rem">${lang==='de'?'Impressum':'Imprint'}</a>`;
 }
 
 function attachLangSwitchHandlers() {
