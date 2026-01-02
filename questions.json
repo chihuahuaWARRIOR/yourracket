@@ -2195,35 +2195,312 @@
       }
     ]
   },
-    {
-      "q": "Drop shot, deep and short balls, or cheeky slices – When do you rely on variation?",
-      "answers": [
-        { "text": "Preferably never – I try to win the point with my serve and power.", "effects": { "Power": 0, "Serves": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "When I'm at the net, I like to let the ball drop short (drop volley).", "effects": { "Touch / Feel": 0, "Volleys": 0, "TheBigServer": -1, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": -1, "CounterPuncher": 0 } },
-        { "text": "I move around a lot and sometimes have to hit the ball well from the mid-court.", "effects": { "Maneuverability": 0, "Touch / Feel": 0, "TheBigServer": -1, "ServeAndVolleyer": 0, "AllCourtPlayer": 1, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Drop shot from the baseline? Why not!", "effects": { "Control": 0, "Slice": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": -1 } }
-      ]
-    },
-    {
-      "q": "The ball comes to your forehand: What is your priority?",
-      "answers": [
-        { "text": "Power! I try to land a flat shot with a lot of speed.", "effects": { "Power": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": -1, "CounterPuncher": -1 } },
-        { "text": "A good mix of power and spin – even with a little risk.", "effects": { "Power": 0, "Topspin": 0, "TheBigServer": 1, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": 0, "CounterPuncher": -1 } },
-        { "text": "A deep ball with a lot of spin to push the opponent back.", "effects": { "Topspin": 0, "TheBigServer": 0, "ServeAndVolleyer": -1, "AllCourtPlayer": 0, "AttackingBaseliner": 1, "SolidBaseliner": 1, "CounterPuncher": 0 } },
-        { "text": "I fall back a little and try to change the rhythm with higher balls.", "effects": { "Stability": 0, "Topspin": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
-    },
-    {
-      "q": "Now the ball comes to your backhand – what to do?",
-      "answers": [
-        { "text": "I hit the ball back flat and look for the way to the net.", "effects": { "Volleys": 0, "TheBigServer": 0, "ServeAndVolleyer": 1, "AllCourtPlayer": 1, "AttackingBaseliner": -1, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "A decent topspin with good power from the baseline", "effects": { "Power": 0, "Topspin": 0, "TheBigServer": 1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 1, "SolidBaseliner": 1, "CounterPuncher": 1 } },
-        { "text": "I change the ball's direction with a slice to create some pressure.", "effects": { "Control": 0, "Slice": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } },
-        { "text": "I slice back and stay back. The opponent will make the mistake.", "effects": { "Stability": 0, "Slice": 0, "TheBigServer": -1, "ServeAndVolleyer": -1, "AllCourtPlayer": -1, "AttackingBaseliner": 0, "SolidBaseliner": 1, "CounterPuncher": 1 } }
-      ]
-    }
+  {
+    "q": "Drop shot, deep and short balls, or cheeky slices – When do you rely on variation?",
+    "answers": [
+      {
+        "text": "Preferably never – I try to win the point with my serve and power.",
+        "effects": {
+          "Groundstrokes": 0,
+          "Volleys": -0.125,
+          "Serves": 0.25,
+          "Returns": 0.125,
+          "Power": 0.125,
+          "Control": 0,
+          "Maneuverability": -0.25,
+          "Stability": -0.125,
+          "Comfort": 0.125,
+          "Touch / Feel": -0.125,
+          "Topspin": -0.125,
+          "Slice": -0.125,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "When I'm at the net, I like to let the ball drop short (drop volley).",
+        "effects": {
+          "Groundstrokes": -0.125,
+          "Volleys": 0.125,
+          "Serves": 0,
+          "Returns": -0.125,
+          "Power": -0.25,
+          "Control": 0.125,
+          "Maneuverability": 0.25,
+          "Stability": 0.125,
+          "Comfort": 0,
+          "Touch / Feel": 0.25,
+          "Topspin": -0.125,
+          "Slice": -0.125,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "I move around a lot and sometimes have to hit the ball well from the mid-court.",
+        "effects": {
+          "Groundstrokes": -0.125,
+          "Volleys": 0.125,
+          "Serves": 0,
+          "Returns": 0.25,
+          "Power": -0.125,
+          "Control": 0.25,
+          "Maneuverability": 0.25,
+          "Stability": 0.125,
+          "Comfort": 0.125,
+          "Touch / Feel": 0.125,
+          "Topspin": -0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "Drop shot from the baseline? Why not!",
+        "effects": {
+          "Groundstrokes": -0.25,
+          "Volleys": -0.125,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": -0.25,
+          "Control": 0.125,
+          "Maneuverability": -0.125,
+          "Stability": 0,
+          "Comfort": 0,
+          "Touch / Feel": 0.25,
+          "Topspin": -0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": 0,
+          "CounterPuncher": -1
+        }
+      }
+    ]
+  },
+  {
+    "q": "The ball comes to your forehand: What is your priority?",
+    "answers": [
+      {
+        "text": "Power! I try to land a flat shot with a lot of speed.",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0,
+          "Serves": 0.125,
+          "Returns": 0,
+          "Power": 0.25,
+          "Control": -0.125,
+          "Maneuverability": -0.125,
+          "Stability": 0,
+          "Comfort": -0.125,
+          "Touch / Feel": -0.25,
+          "Topspin": -0.125,
+          "Slice": -0.25,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": -1,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "A good mix of power and spin – even with a little risk.",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": -0.125,
+          "Serves": 0,
+          "Returns": 0.125,
+          "Power": 0.125,
+          "Control": -0.125,
+          "Maneuverability": 0,
+          "Stability": 0,
+          "Comfort": 0,
+          "Touch / Feel": 0,
+          "Topspin": 0.25,
+          "Slice": 0.125,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": 0,
+          "CounterPuncher": -1
+        }
+      },
+      {
+        "text": "A deep ball with a lot of spin to push the opponent back.",
+        "effects": {
+          "Groundstrokes": 0.25,
+          "Volleys": 0,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": -0.125,
+          "Control": 0.25,
+          "Maneuverability": 0.125,
+          "Stability": 0.125,
+          "Comfort": 0,
+          "Touch / Feel": 0,
+          "Topspin": 0.125,
+          "Slice": 0,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "I fall back a little and try to change the rhythm with higher balls.",
+        "effects": {
+          "Groundstrokes": 0,
+          "Volleys": -0.125,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": -0.125,
+          "Control": 0.125,
+          "Maneuverability": 0,
+          "Stability": 0.25,
+          "Comfort": 0,
+          "Touch / Feel": 0.125,
+          "Topspin": 0.125,
+          "Slice": 0,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      }
+    ]
+  },
+  {
+    "q": "Now the ball comes to your backhand – what to do?",
+    "answers": [
+      {
+        "text": "I hit the ball back flat and look for the way to the net.",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0.25,
+          "Serves": 0,
+          "Returns": 0.125,
+          "Power": 0.125,
+          "Control": -0.125,
+          "Maneuverability": 0.25,
+          "Stability": 0.125,
+          "Comfort": 0,
+          "Touch / Feel": -0.125,
+          "Topspin": -0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": 1,
+          "AllCourtPlayer": 1,
+          "AttackingBaseliner": -1,
+          "SolidBaseliner": 0,
+          "CounterPuncher": 0
+        }
+      },
+      {
+        "text": "A decent topspin with good power from the baseline",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0,
+          "Serves": 0,
+          "Returns": 0.125,
+          "Power": 0.125,
+          "Control": -0.125,
+          "Maneuverability": -0.125,
+          "Stability": 0.125,
+          "Comfort": 0,
+          "Touch / Feel": -0.125,
+          "Topspin": 0.25,
+          "Slice": -0.125,
+
+          "TheBigServer": 1,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": 1,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      },
+      {
+        "text": "I change the ball's direction with a slice to create some pressure.",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": -0.125,
+          "Control": 0.25,
+          "Maneuverability": 0.125,
+          "Stability": 0.25,
+          "Comfort": 0.125,
+          "Touch / Feel": 0.125,
+          "Topspin": 0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": 0,
+          "ServeAndVolleyer": 0,
+          "AllCourtPlayer": 0,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      },
+      {
+        "text": "I slice back and stay back. The opponent will make the mistake.",
+        "effects": {
+          "Groundstrokes": 0.125,
+          "Volleys": 0,
+          "Serves": 0,
+          "Returns": 0,
+          "Power": -0.125,
+          "Control": 0.125,
+          "Maneuverability": 0.125,
+          "Stability": 0.25,
+          "Comfort": 0.125,
+          "Touch / Feel": 0.125,
+          "Topspin": 0.125,
+          "Slice": 0.125,
+
+          "TheBigServer": -1,
+          "ServeAndVolleyer": -1,
+          "AllCourtPlayer": -1,
+          "AttackingBaseliner": 0,
+          "SolidBaseliner": 1,
+          "CounterPuncher": 1
+        }
+      }
+    ]
+  }
   ]
 }
+
 
 
 
