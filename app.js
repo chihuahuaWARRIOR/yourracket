@@ -980,14 +980,7 @@ function renderRadarChart(profile) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  const labels = [
-    "Big Server", 
-    ["Serve &", "Volley"], 
-    "All-Court", 
-    ["Attacking", "Baseliner"], 
-    ["Solid", "Baseliner"], 
-    ["Counter", "Puncher"]
-  ];
+  const labels = ["Big Server", ["Serve &", "Volley"], "All-Court", ["Attacking", "Baseliner"], ["Solid", "Baseliner"], ["Counter", "Puncher"]];
   
   const descriptions = {
     de: [
@@ -1009,43 +1002,41 @@ function renderRadarChart(profile) {
   };
 
   const activeLang = (typeof lang !== 'undefined' && lang === 'en') ? 'en' : 'de';
+  const dataValues = [profile.TheBigServer || 0, profile.ServeAndVolleyer || 0, profile.AllCourtPlayer || 0, profile.AttackingBaseliner || 0, profile.SolidBaseliner || 0, profile.CounterPuncher || 0];
 
-  const dataValues = [
-    profile.TheBigServer || 0,
-    profile.ServeAndVolleyer || 0,
-    profile.AllCourtPlayer || 0,
-    profile.AttackingBaseliner || 0,
-    profile.SolidBaseliner || 0,
-    profile.CounterPuncher || 0
-  ];
+  if (window.myRadarChart instanceof Chart) { window.myRadarChart.destroy(); }
 
-  if (window.myRadarChart instanceof Chart) {
-    window.myRadarChart.destroy();
+  // Hilfsfunktion: Text in Zeilen brechen (ca. 25 Zeichen pro Zeile)
+  function splitText(text, maxLen) {
+    const words = text.split(' ');
+    const lines = [];
+    let currentLine = "";
+    words.forEach(word => {
+      if ((currentLine + word).length > maxLen) {
+        lines.push(currentLine.trim());
+        currentLine = word + " ";
+      } else {
+        currentLine += word + " ";
+      }
+    });
+    lines.push(currentLine.trim());
+    return lines;
   }
 
   const labelHoverPlugin = {
     id: 'labelHoverPlugin',
     afterEvent(chart, args) {
       const {event} = args;
-      // Nur auf Bewegung oder Tap reagieren
       if (event.type !== 'mousemove' && event.type !== 'touchstart') return;
-
       const scale = chart.scales.r;
       let hoveredIndex = -1;
-
       scale._pointLabelItems.forEach((item, index) => {
         if (event.x >= item.left && event.x <= item.right && event.y >= item.top && event.y <= item.bottom) {
           hoveredIndex = index;
         }
       });
-
       if (hoveredIndex !== -1) {
-        // Tooltip manuell triggern
         chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }], {x: event.x, y: event.y});
-        chart.update();
-      } else {
-        // Tooltip verstecken, wenn man nicht über einem Label ist
-        chart.tooltip.setActiveElements([], {x: 0, y: 0});
         chart.update();
       }
     }
@@ -1057,37 +1048,25 @@ function renderRadarChart(profile) {
     data: {
       labels: labels,
       datasets: [{
-        label: 'Match %',
         data: dataValues,
         backgroundColor: 'rgba(54, 162, 235, 0.2)', 
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
-        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
         pointRadius: 5,
-        pointHitRadius: 0, // WICHTIG: Punkt reagiert nicht auf Maus/Touch
-        pointHoverRadius: 0
+        pointHitRadius: 0 // Punkte ignorieren
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      interaction: {
-        mode: 'none' // Deaktiviert die Standard-Punkt-Erkennung komplett
-      },
       scales: {
         r: {
-          min: 0,
-          max: 100,
-          beginAtZero: true,
-          ticks: { display: false, stepSize: 20 },
+          min: 0, max: 100, beginAtZero: true,
+          ticks: { display: false },
           pointLabels: {
             display: true,
-            padding: 20, // Mehr Platz für Finger-Taps
-            font: { 
-              size: window.innerWidth < 500 ? 11 : 12, 
-              weight: 'bold' 
-            },
-            color: '#333'
+            padding: 15,
+            font: { size: window.innerWidth < 500 ? 10 : 12, weight: 'bold' }
           }
         }
       },
@@ -1096,22 +1075,16 @@ function renderRadarChart(profile) {
         tooltip: {
           enabled: true,
           displayColors: false,
-          backgroundColor: 'rgba(0, 0, 0, 0.85)',
-          titleFont: { size: 14, weight: 'bold' },
-          bodyFont: { size: 12 },
-          padding: 12,
-          cornerRadius: 8,
-          position: 'nearest', // Hilft gegen Abschneiden am Rand
           callbacks: {
             title: (items) => {
-              const label = labels[items[0].dataIndex];
-              return Array.isArray(label) ? label.join(' ') : label;
+               const l = labels[items[0].dataIndex];
+               return Array.isArray(l) ? l.join(' ') : l;
             },
             label: function(context) {
-              const index = context.dataIndex;
-              const value = context.raw.toFixed(1);
-              const text = descriptions[activeLang][index];
-              return `${value}%: ${text}`;
+              const fullText = descriptions[activeLang][context.dataIndex];
+              const score = context.raw.toFixed(1) + "%";
+              // Gibt ein Array zurück -> Chart.js macht daraus mehrere Zeilen
+              return [score, ...splitText(fullText, 25)]; 
             }
           }
         }
@@ -1122,6 +1095,7 @@ function renderRadarChart(profile) {
 
 // === Init ===
 loadData();
+
 
 
 
