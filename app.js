@@ -993,6 +993,7 @@ function renderRadarChart(profile) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
+  // 1. Labels als Arrays (WICHTIG: Jedes Element im Array ist eine neue Zeile)
   const labels = [
     "Big Server", 
     ["Serve &", "Volley"], 
@@ -1036,37 +1037,34 @@ function renderRadarChart(profile) {
     window.myRadarChart.destroy();
   }
 
-  // --- DAS PLUGIN FÜR HOVER AUF LABELS ---
+  // verbesserte Plugin-Logik für Label-Hover
   const labelHoverPlugin = {
     id: 'labelHoverPlugin',
     afterEvent(chart, args) {
-      const event = args.event;
+      const {event} = args;
       if (event.type !== 'mousemove' && event.type !== 'touchstart') return;
 
-      // Wir suchen, ob die Maus über einem Point-Label (Text) ist
-      const { x, y } = event;
       const scale = chart.scales.r;
       let hoveredIndex = -1;
 
-      // Chart.js speichert die Positionen der Labels intern
+      // Wir prüfen die Distanz zum Label-Zentrum, falls die Box-Suche scheitert
       scale._pointLabelItems.forEach((item, index) => {
-        if (x >= item.left && x <= item.right && y >= item.top && y <= item.bottom) {
+        if (event.x >= item.left && event.x <= item.right && event.y >= item.top && event.y <= item.bottom) {
           hoveredIndex = index;
         }
       });
 
       if (hoveredIndex !== -1) {
-        // Wenn wir über einem Label sind, Tooltip für diesen Punkt erzwingen
         chart.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }]);
         chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }]);
-        chart.render();
+        chart.update(); // Update erzwingt das Zeichnen des Tooltips
       }
     }
   };
 
   window.myRadarChart = new Chart(ctx, {
     type: 'radar',
-    plugins: [labelHoverPlugin], // Plugin hier aktivieren
+    plugins: [labelHoverPlugin],
     data: {
       labels: labels,
       datasets: [{
@@ -1076,7 +1074,7 @@ function renderRadarChart(profile) {
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
         pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-        pointRadius: 5,
+        pointRadius: 5
       }]
     },
     options: {
@@ -1090,12 +1088,16 @@ function renderRadarChart(profile) {
           ticks: { display: false, stepSize: 20 },
           pointLabels: {
             display: true,
-            padding: 15, // Mehr Platz zum Hovern
+            padding: 15,
             font: { 
               size: window.innerWidth < 500 ? 10 : 12, 
-              weight: '700' 
+              weight: 'bold' 
             },
-            color: '#333'
+            color: '#333',
+            // Erzwingt zweizeilige Darstellung
+            callback: function(label) {
+              return label; 
+            }
           }
         }
       },
@@ -1104,13 +1106,17 @@ function renderRadarChart(profile) {
         tooltip: {
           enabled: true,
           displayColors: false,
-          position: 'nearest',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleFont: { size: 13 },
+          bodyFont: { size: 12 },
+          padding: 10,
           callbacks: {
+            title: (items) => labels[items[0].dataIndex].toString().replace(',', ' '),
             label: function(context) {
               const index = context.dataIndex;
               const value = context.raw.toFixed(1);
               const text = descriptions[activeLang][index];
-              return ` ${value}%: ${text}`;
+              return `${value}%: ${text}`;
             }
           }
         }
@@ -1121,6 +1127,7 @@ function renderRadarChart(profile) {
 
 // === Init ===
 loadData();
+
 
 
 
