@@ -554,34 +554,6 @@ function showResults() {
   highlightMatchMode(); 
   highlightSelectedRacket(0);
   injectResponsiveStyles();
-  function injectResponsiveStyles() {
-
-  // Mobil Fix für das Radar
-    const s = document.createElement("style");
-  s.id = styleId;
-  s.textContent = `
-    canvas#playingStyleChart {
-        -webkit-tap-highlight-color: transparent !important;
-        -webkit-touch-callout: none !important;
-        -webkit-user-select: none !important;
-        user-select: none !important;
-        outline: none !important;
-    }
-
-    #overlay, .card {
-        overflow-y: auto !important;
-    }
-
-    @media (max-width: 600px) {
-        #profile-table {
-            font-size: 0.85rem;
-        }
-        #profile-table th, #profile-table td {
-            padding: 6px !important;
-        }
-    }
-  `;
-  document.head.appendChild(s);
 
   // WICHTIG: Kurz warten, bis das Overlay sichtbar ist, dann zeichnen
   setTimeout(() => {
@@ -1150,6 +1122,7 @@ function renderRadarChart(profile) {
 
 // === Init ===
 loadData();
+
 
 
 
