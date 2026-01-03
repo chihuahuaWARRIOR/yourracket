@@ -1023,30 +1023,30 @@ function renderRadarChart(profile) {
   }
 
   // DAS HIER IST DIE BOX-LOGIK:
-  const labelHoverPlugin = {
+ const labelHoverPlugin = {
     id: 'labelHoverPlugin',
     afterEvent(chart, args) {
       const {event} = args;
-      // Nur reagieren, wenn die Maus sich bewegt oder getippt wird
       if (event.type !== 'mousemove' && event.type !== 'touchstart' && event.type !== 'touchmove') return;
       
       const scale = chart.scales.r;
       let hoveredIndex = -1;
 
-      // Wir suchen die "Boxen" der Labels
       if (scale._pointLabelItems) {
         scale._pointLabelItems.forEach((item, index) => {
-          // Wir ziehen die Box 15px größer, damit man sie leicht trifft
-          if (event.x >= item.left - 15 && event.x <= item.right + 15 && 
-              event.y >= item.top - 15 && event.y <= item.bottom + 15) {
+          // Die Box um den Text
+          if (event.x >= item.left - 20 && event.x <= item.right + 20 && 
+              event.y >= item.top - 20 && event.y <= item.bottom + 20) {
             hoveredIndex = index;
           }
         });
       }
 
-      // Wenn wir in einer Box sind, Tooltip erzwingen
       if (hoveredIndex !== -1) {
-        chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }], {x: event.x, y: event.y});
+        // Wir setzen den Tooltip MANUELL auf die Maus-Position
+        chart.tooltip.setActiveElements([
+          { datasetIndex: 0, index: hoveredIndex }
+        ], { x: event.x, y: event.y });
         chart.update();
       }
     }
@@ -1063,17 +1063,17 @@ function renderRadarChart(profile) {
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
         pointRadius: 5,
-        pointHitRadius: 0,      // Punkte sind für Klicks unsichtbar
-        pointHoverRadius: 0     // Punkte reagieren nicht auf Hover
+        pointHitRadius: 0, // Punkt-Kollision aus
+        pointHoverRadius: 0 // Punkt-Hover aus
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      // Die "Ohren" des Charts: Höre auf die Maus!
       events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+      // DAS HIER IST NEU: Wir schalten JEDE automatische Interaktion aus
       interaction: {
-        mode: 'none' // Standard-Suche nach Punkten AUS
+        mode: null 
       },
       scales: {
         r: {
@@ -1091,8 +1091,9 @@ function renderRadarChart(profile) {
         tooltip: {
           enabled: true,
           displayColors: false,
-          // Der Tooltip soll genau da aufploppen, wo das Label ist
-          position: 'nearest',
+          // Wir zwingen den Tooltip, NICHT zu den Punkten zu springen
+          external: null,
+          position: 'nearest', 
           callbacks: {
             title: (items) => {
                const l = labels[items[0].dataIndex];
@@ -1108,11 +1109,11 @@ function renderRadarChart(profile) {
       }
     }
   });
-}
 
 
 // === Init ===
 loadData();
+
 
 
 
