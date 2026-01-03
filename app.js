@@ -980,76 +980,62 @@ function renderRadarChart(profile) {
   const ctx = canvas.getContext('2d');
 
   const labels = ["Big Server", ["Serve &", "Volley"], "All-Court", ["Attacking", "Baseliner"], ["Solid", "Baseliner"], ["Counter", "Puncher"]];
+  const activeLang = (typeof lang !== 'undefined' && lang === 'en') ? 'en' : 'de';
   
   const descriptions = {
-    de: [
-      "Fokussiert auf Asse und kurze Punkte mit hartem Aufschlag.",
-      "Rückt ständig ans Netz vor, um Punkte schnell zu beenden.",
-      "In allen Bereichen sicher, passt sich jeder Situation an.",
-      "Diktiert Ballwechsel mit aggressiven Schlägen.",
-      "Konstant, macht sehr wenige unforced errors.",
-      "Exzellente Defensive, lebt vom Tempo des Gegners."
-    ],
-    en: [
-      "Focuses on aces and short points with a powerful serve.",
-      "Rushes the net to finish points quickly.",
-      "Comfortable from all areas, adapts to every situation.",
-      "Dictates points with aggressive groundstrokes.",
-      "Consistent, rarely makes unforced errors.",
-      "Excellent defense, lives on the opponent's pace."
-    ]
+    de: ["Fokussiert auf Asse und kurze Punkte mit hartem Aufschlag.", "Rückt ständig ans Netz vor, um Punkte schnell zu beenden.", "In allen Bereichen sicher, passt sich jeder Situation an.", "Diktiert Ballwechsel mit aggressiven Schlägen.", "Konstant, macht sehr wenige unforced errors.", "Exzellente Defensive, lebt vom Tempo des Gegners."],
+    en: ["Focuses on aces and short points with a powerful serve.", "Rushes the net to finish points quickly.", "Comfortable from all areas, adapts to every situation.", "Dictates points with aggressive groundstrokes.", "Consistent, rarely makes unforced errors.", "Excellent defense, lives on the opponent's pace."]
   };
 
-  const activeLang = (typeof lang !== 'undefined' && lang === 'en') ? 'en' : 'de';
   const dataValues = [profile.TheBigServer || 0, profile.ServeAndVolleyer || 0, profile.AllCourtPlayer || 0, profile.AttackingBaseliner || 0, profile.SolidBaseliner || 0, profile.CounterPuncher || 0];
 
   if (window.myRadarChart instanceof Chart) { window.myRadarChart.destroy(); }
 
   function splitText(text, maxLen) {
     const words = text.split(' ');
-    const lines = [];
-    let currentLine = "";
+    let lines = [], currentLine = "";
     words.forEach(word => {
-      if ((currentLine + word).length > maxLen) {
-        lines.push(currentLine.trim());
-        currentLine = word + " ";
-      } else {
-        currentLine += word + " ";
-      }
+      if ((currentLine + word).length > maxLen) { lines.push(currentLine.trim()); currentLine = word + " "; }
+      else { currentLine += word + " "; }
     });
     lines.push(currentLine.trim());
     return lines;
   }
 
-  // Diese Logik funktioniert jetzt für Touch UND Maus identisch
+  // SCHNELLES PLUGIN
   const labelHoverPlugin = {
     id: 'labelHoverPlugin',
     afterEvent(chart, args) {
       const {event} = args;
-      // Wir reagieren auf jede Bewegung (Maus oder Finger)
-      if (!event || (event.type !== 'mousemove' && event.type !== 'touchstart' && event.type !== 'touchmove')) return;
+      if (event.type !== 'mousemove' && event.type !== 'touchstart') return;
       
       const scale = chart.scales.r;
       let hoveredIndex = -1;
-
+      
       if (scale._pointLabelItems) {
-        scale._pointLabelItems.forEach((item, index) => {
-          // Wir bauen eine großzügige "Fang-Zone" um den Text
-          const buffer = 30; 
-          if (event.x >= item.left - buffer && event.x <= item.right + buffer && 
-              event.y >= item.top - buffer && event.y <= item.bottom + buffer) {
-            hoveredIndex = index;
+        for (let i = 0; i < scale._pointLabelItems.length; i++) {
+          const item = scale._pointLabelItems[i];
+          if (event.x >= item.left - 10 && event.x <= item.right + 10 && event.y >= item.top - 10 && event.y <= item.bottom + 10) {
+            hoveredIndex = i;
+            break; 
           }
-        });
+        }
       }
 
-      // Tooltip erzwingen oder löschen
-      if (hoveredIndex !== -1) {
-        chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }], { x: event.x, y: event.y });
-      } else {
-        chart.tooltip.setActiveElements([], { x: event.x, y: event.y });
+      // Nur updaten, wenn sich der Status wirklich ändert
+      const currentActive = chart.tooltip.getActiveElements();
+      const newActiveId = hoveredIndex !== -1 ? hoveredIndex : null;
+      const oldActiveId = currentActive.length > 0 ? currentActive[0].index : null;
+
+      if (newActiveId !== oldActiveId) {
+        if (hoveredIndex !== -1) {
+          chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }], {x: event.x, y: event.y});
+        } else {
+          chart.tooltip.setActiveElements([], {x: event.x, y: event.y});
+        }
+        // 'none' ist der Schlüssel für Speed!
+        chart.update('none'); 
       }
-      chart.update();
     }
   };
 
@@ -1064,26 +1050,24 @@ function renderRadarChart(profile) {
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
         pointRadius: 5,
-        pointHitRadius: 0, 
-        pointHoverRadius: 0 
+        pointHitRadius: 0 // Ignoriert Punkte komplett
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      // Schaltet die Standard-Interaktion komplett ab, damit NUR unser Plugin steuert
+      animation: false, // Schaltet Start-Animationen aus für sofortigen Speed
       interaction: {
-        mode: null
+        mode: 'none' // Überlässt dem Plugin die Arbeit
       },
-      events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
       scales: {
         r: {
-          min: 0, max: 100, beginAtZero: true,
+          min: 0, max: 100,
           ticks: { display: false },
           pointLabels: {
             display: true,
-            padding: 20,
-            font: { size: window.innerWidth < 500 ? 11 : 13, weight: 'bold' }
+            padding: 15,
+            font: { size: window.innerWidth < 500 ? 10 : 12, weight: 'bold' }
           }
         }
       },
@@ -1092,15 +1076,15 @@ function renderRadarChart(profile) {
         tooltip: {
           enabled: true,
           displayColors: false,
+          animation: { duration: 0 }, // Tooltip ploppt sofort auf
           callbacks: {
             title: (items) => {
                const l = labels[items[0].dataIndex];
                return Array.isArray(l) ? l.join(' ') : l;
             },
-            label: function(context) {
+            label: (context) => {
               const fullText = descriptions[activeLang][context.dataIndex];
-              const score = context.raw.toFixed(1) + "%";
-              return [score, ...splitText(fullText, 25)]; 
+              return [context.raw.toFixed(1) + "%", ...splitText(fullText, 25)]; 
             }
           }
         }
@@ -1108,9 +1092,9 @@ function renderRadarChart(profile) {
     }
   });
 }
-
 // === Init ===
 loadData();
+
 
 
 
