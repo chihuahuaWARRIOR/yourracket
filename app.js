@@ -1002,43 +1002,41 @@ function renderRadarChart(profile) {
     return lines;
   }
 
-  // SCHNELLES PLUGIN
+ // 1. DAS PLUGIN (Die Logik für die Boxen)
   const labelHoverPlugin = {
     id: 'labelHoverPlugin',
     afterEvent(chart, args) {
       const {event} = args;
-      if (event.type !== 'mousemove' && event.type !== 'touchstart') return;
+      // Reagiert auf Mausbewegung und Touch
+      if (!event || (event.type !== 'mousemove' && event.type !== 'touchstart' && event.type !== 'touchmove')) return;
       
       const scale = chart.scales.r;
       let hoveredIndex = -1;
-      
+
       if (scale._pointLabelItems) {
-        for (let i = 0; i < scale._pointLabelItems.length; i++) {
-          const item = scale._pointLabelItems[i];
-          if (event.x >= item.left - 10 && event.x <= item.right + 10 && event.y >= item.top - 10 && event.y <= item.bottom + 10) {
-            hoveredIndex = i;
-            break; 
+        scale._pointLabelItems.forEach((item, index) => {
+          // Die Box um den Text (Puffer 25px für Desktop & Mobil)
+          if (event.x >= item.left - 25 && event.x <= item.right + 25 && 
+              event.y >= item.top - 25 && event.y <= item.bottom + 25) {
+            hoveredIndex = index;
           }
-        }
+        });
       }
 
-      // Nur updaten, wenn sich der Status wirklich ändert
-      const currentActive = chart.tooltip.getActiveElements();
-      const newActiveId = hoveredIndex !== -1 ? hoveredIndex : null;
-      const oldActiveId = currentActive.length > 0 ? currentActive[0].index : null;
-
-      if (newActiveId !== oldActiveId) {
-        if (hoveredIndex !== -1) {
-          chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }], {x: event.x, y: event.y});
-        } else {
-          chart.tooltip.setActiveElements([], {x: event.x, y: event.y});
-        }
-        // 'none' ist der Schlüssel für Speed!
+      if (hoveredIndex !== -1) {
+        // Tooltip aktivieren
+        chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }], {x: event.x, y: event.y});
         chart.update('none'); 
+      } else if (event.type === 'mousemove') {
+        // NUR auf Desktop: Tooltip löschen, wenn Maus weg ist
+        // Auf Mobil bleibt er stehen, bis man woanders tippt!
+        chart.tooltip.setActiveElements([], {x: event.x, y: event.y});
+        chart.update('none');
       }
     }
   };
 
+  // 2. DAS CHART-OBJEKT
   window.myRadarChart = new Chart(ctx, {
     type: 'radar',
     plugins: [labelHoverPlugin],
@@ -1050,24 +1048,26 @@ function renderRadarChart(profile) {
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
         pointRadius: 5,
-        pointHitRadius: 0 // Ignoriert Punkte komplett
+        pointHitRadius: 0, 
+        pointHoverRadius: 0
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: false, // Schaltet Start-Animationen aus für sofortigen Speed
+      animation: false, // Performance-Boost
+      events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
       interaction: {
-        mode: 'none' // Überlässt dem Plugin die Arbeit
+        mode: 'none'
       },
       scales: {
         r: {
-          min: 0, max: 100,
+          min: 0, max: 100, beginAtZero: true,
           ticks: { display: false },
           pointLabels: {
             display: true,
-            padding: 15,
-            font: { size: window.innerWidth < 500 ? 10 : 12, weight: 'bold' }
+            padding: 20,
+            font: { size: window.innerWidth < 500 ? 11 : 13, weight: 'bold' }
           }
         }
       },
@@ -1076,24 +1076,26 @@ function renderRadarChart(profile) {
         tooltip: {
           enabled: true,
           displayColors: false,
-          animation: { duration: 0 }, // Tooltip ploppt sofort auf
+          animation: { duration: 0 },
           callbacks: {
             title: (items) => {
                const l = labels[items[0].dataIndex];
                return Array.isArray(l) ? l.join(' ') : l;
             },
-            label: (context) => {
+            label: function(context) {
               const fullText = descriptions[activeLang][context.dataIndex];
-              return [context.raw.toFixed(1) + "%", ...splitText(fullText, 25)]; 
+              const score = context.raw.toFixed(1) + "%";
+              return [score, ...splitText(fullText, 25)]; 
             }
           }
         }
       }
     }
   });
-}
+} // <--- HIER hört die Funktion renderRadarChart auf!
 // === Init ===
 loadData();
+
 
 
 
