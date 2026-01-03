@@ -1002,11 +1002,20 @@ function renderRadarChart(profile) {
   };
 
   const activeLang = (typeof lang !== 'undefined' && lang === 'en') ? 'en' : 'de';
-  const dataValues = [profile.TheBigServer || 0, profile.ServeAndVolleyer || 0, profile.AllCourtPlayer || 0, profile.AttackingBaseliner || 0, profile.SolidBaseliner || 0, profile.CounterPuncher || 0];
+  const dataValues = [
+    profile.TheBigServer || 0, 
+    profile.ServeAndVolleyer || 0, 
+    profile.AllCourtPlayer || 0, 
+    profile.AttackingBaseliner || 0, 
+    profile.SolidBaseliner || 0, 
+    profile.CounterPuncher || 0
+  ];
 
-  if (window.myRadarChart instanceof Chart) { window.myRadarChart.destroy(); }
+  if (window.myRadarChart instanceof Chart) { 
+    window.myRadarChart.destroy(); 
+  }
 
-  // Hilfsfunktion: Text in Zeilen brechen (ca. 25 Zeichen pro Zeile)
+  // Hilfsfunktion für mehrzeilige Tooltips
   function splitText(text, maxLen) {
     const words = text.split(' ');
     const lines = [];
@@ -1045,10 +1054,7 @@ function renderRadarChart(profile) {
   window.myRadarChart = new Chart(ctx, {
     type: 'radar',
     plugins: [labelHoverPlugin],
-    window.myRadarChart = new Chart(ctx, {
-    type: 'radar',
-    plugins: [labelHoverPlugin],
-data: {
+    data: {
       labels: labels,
       datasets: [{
         data: dataValues,
@@ -1056,7 +1062,6 @@ data: {
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
         pointRadius: 5,
-        // Macht die Punkte für die Maus/Touch "unsichtbar"
         pointHitRadius: 0,
         pointHoverRadius: 0
       }]
@@ -1064,24 +1069,18 @@ data: {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      // Erlaubt die Verarbeitung von Mausbewegungen auf Desktop
       events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
       interaction: {
-        mode: 'none' // Verhindert das automatische Tooltip-Andocken an Punkte
+        mode: 'none'
       },
       scales: {
         r: {
-          min: 0, 
-          max: 100, 
-          beginAtZero: true,
+          min: 0, max: 100, beginAtZero: true,
           ticks: { display: false },
           pointLabels: {
             display: true,
             padding: 15,
-            font: { 
-              size: window.innerWidth < 500 ? 10 : 12, 
-              weight: 'bold' 
-            }
+            font: { size: window.innerWidth < 500 ? 10 : 12, weight: 'bold' }
           }
         }
       },
@@ -1099,7 +1098,6 @@ data: {
             label: function(context) {
               const fullText = descriptions[activeLang][context.dataIndex];
               const score = context.raw.toFixed(1) + "%";
-              // Nutzt die Hilfsfunktion splitText (muss in der Funktion definiert sein)
               return [score, ...splitText(fullText, 25)]; 
             }
           }
@@ -1112,6 +1110,7 @@ data: {
 
 // === Init ===
 loadData();
+
 
 
 
