@@ -303,19 +303,57 @@ function showResults() {
   });
   card.appendChild(styleTitle);
 
-  // 2. Spielstil Box
+// === RADAR CHART & SPIELSTIL LAYOUT ===
+  
+  // Container für das Nebeneinander (Flexbox)
+  const chartLayoutContainer = document.createElement("div");
+  Object.assign(chartLayoutContainer.style, {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "20px",
+    marginBottom: "18px",
+    alignItems: "stretch"
+  });
+
+  // 2. Linke Spalte: Spielstil Box (Dein existierendes Design)
   const styleDesc = getPlayStyleDescription(normalizedProfile);
   const styleDiv = document.createElement("div");
   Object.assign(styleDiv.style, {
-      margin: "0 0 18px 0",
+      flex: "1 1 450px", // Nimmt Platz ein, bricht mobil um
       padding: "16px", 
       borderRadius: "12px",
       border: "1px solid #ddd", 
       background: "#f9f9f9",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
+      boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center"
   });
   styleDiv.innerHTML = `<div style="font-size:1.0rem;">${styleDesc}</div>`;
-  card.appendChild(styleDiv);
+
+  // 2.1. Rechte Spalte: Radar Chart Box
+  const radarDiv = document.createElement("div");
+  Object.assign(radarDiv.style, {
+      flex: "1 1 300px",
+      padding: "16px",
+      borderRadius: "12px",
+      border: "1px solid #ddd",
+      background: "#fff",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+      minHeight: "300px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+  });
+  
+  const canvas = document.createElement("canvas");
+  canvas.id = "playingStyleChart";
+  radarDiv.appendChild(canvas);
+
+  // Elemente zusammenfügen
+  chartLayoutContainer.appendChild(styleDiv);
+  chartLayoutContainer.appendChild(radarDiv);
+  card.appendChild(chartLayoutContainer);
 
   // 3. Überschrift "Your Racket"
   const racketTitle = document.createElement("h3");
@@ -525,6 +563,62 @@ function showResults() {
   highlightMatchMode(); 
   highlightSelectedRacket(0);
   injectResponsiveStyles();
+}
+
+// WICHTIG: Erst nachdem das Overlay im DOM ist, Chart zeichnen!
+  // Platziere diesen Aufruf am Ende von showResults(), nachdem document.body.appendChild(overlay) ausgeführt wurde:
+  setTimeout(() => {
+    renderRadarChart(normalizedProfile);
+  }, 10);
+
+// Radar-Chart-Design
+function renderRadarChart(profile) {
+  const ctx = document.getElementById('playingStyleChart');
+  if (!ctx) return;
+
+  // ATP Kategorien für die Beschriftung
+  const labels = ["Big Server", "Serve & Volley", "All Court", "Attacking", "Solid", "Counter Puncher"];
+  const dataValues = [
+    profile.TheBigServer, 
+    profile.ServeAndVolleyer, 
+    profile.AllCourtPlayer, 
+    profile.AttackingBaseliner, 
+    profile.SolidBaseliner, 
+    profile.CounterPuncher
+  ];
+
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Playing Style Intensity',
+        data: dataValues,
+        fill: true,
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgb(54, 162, 235)',
+        pointBackgroundColor: 'rgb(54, 162, 235)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgb(54, 162, 235)'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          angleLines: { display: true },
+          suggestedMin: 0,
+          suggestedMax: 100,
+          ticks: { stepSize: 20, display: false }
+        }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
 }
 
 // === Match Mode Highlighting ===
@@ -940,5 +1034,6 @@ function restartQuiz() {
 
 // === Init ===
 loadData();
+
 
 
