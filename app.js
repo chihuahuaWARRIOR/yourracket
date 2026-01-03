@@ -292,80 +292,76 @@ function showResults() {
     overflowY: "auto"
   });
 
-  // 1. Überschrift "Your Game"
-  const styleTitle = document.createElement("h3");
-  styleTitle.innerText = "Your Game";
-  Object.assign(styleTitle.style, {
-    margin: "0 0 12px 0",
-    fontSize: "1.6rem",
-    fontStyle: "italic",
-    fontWeight: "700"
-  });
+// 1. Überschrift "Your Game" (Lass diese Zeile in deinem Code stehen)
   card.appendChild(styleTitle);
 
-// === RADAR CHART & SPIELSTIL LAYOUT ===
+  // --- START DES NEUEN LAYOUT-BLOCKS ---
+  // Container für das Nebeneinander (Flexbox)
+  const chartLayoutContainer = document.createElement("div");
+  Object.assign(chartLayoutContainer.style, {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: "20px",
+      marginBottom: "24px", // Etwas mehr Abstand nach unten
+      alignItems: "stretch", // Zieht beide Boxen auf die gleiche Höhe
+      justifyContent: "center"
+  });
+
+  // 2. Linke Spalte: Spielstil Box
+  const styleDesc = getPlayStyleDescription(normalizedProfile);
+  const styleDiv = document.createElement("div");
+  Object.assign(styleDiv.style, {
+      flex: "1 1 400px",
+      padding: "20px",
+      borderRadius: "12px",
+      border: "1px solid #ddd", 
+      background: "#f9f9f9",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      boxSizing: "border-box",
+      // Desktop: 480px, Mobile: auto
+      minHeight: window.innerWidth < 768 ? "auto" : "480px" 
+  });
+  styleDiv.innerHTML = `<div style="font-size:1.0rem; line-height:1.5;">${styleDesc}</div>`;
   
-// Container für das Nebeneinander (Flexbox)
-const chartLayoutContainer = document.createElement("div");
-Object.assign(chartLayoutContainer.style, {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "20px",
-    marginBottom: "18px",
-    alignItems: "stretch", // Zieht beide Boxen auf die gleiche Höhe
-    justifyContent: "center"
-});
+  // 2.1. Rechte Spalte: Radar Chart Box
+  const radarDiv = document.createElement("div");
+  Object.assign(radarDiv.style, {
+      flex: "1 1 350px",
+      padding: window.innerWidth < 600 ? "5px" : "20px", 
+      borderRadius: "12px",
+      border: "1px solid #ddd",
+      background: "#f9f9f9",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      margin: window.innerWidth < 768 ? "10px auto" : "0", 
+      width: "100%",
+      boxSizing: "border-box",
+      // Match mit linker Box
+      minHeight: window.innerWidth < 768 ? "320px" : "480px" 
+  });
 
-// 2. Linke Spalte: Spielstil Box
-const styleDesc = getPlayStyleDescription(normalizedProfile);
-const styleDiv = document.createElement("div");
-Object.assign(styleDiv.style, {
-    flex: "1 1 400px",      // Leicht angepasst für bessere Verteilung
-    padding: "20px",        // Padding an Radar-Box angepasst
-    borderRadius: "12px",
-    border: "1px solid #ddd", 
-    background: "#f9f9f9",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    boxSizing: "border-box", // WICHTIG: Damit Padding die Box nicht vergrößert
-    // Gleichauf mit der Radar-Box
-    minHeight: window.innerWidth < 768 ? "auto" : "480px" 
-});
-styleDiv.innerHTML = `<div style="font-size:1.0rem; line-height:1.5;">${styleDesc}</div>`;
-  
-// 2.1. Rechte Spalte: Radar Chart Box
-const radarDiv = document.createElement("div");
-Object.assign(radarDiv.style, {
-    flex: "1 1 350px",
-    padding: window.innerWidth < 600 ? "5px" : "20px", 
-    borderRadius: "12px",
-    border: "1px solid #ddd",
-    background: "#f9f9f9",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    // Margin nur mobil, damit es Desktop bündig bleibt
-    margin: window.innerWidth < 768 ? "10px auto" : "0", 
-    width: "100%",
-    boxSizing: "border-box",
-    minHeight: window.innerWidth < 768 ? "320px" : "480px" 
-});
+  const canvas = document.createElement("canvas");
+  canvas.id = "playingStyleChart";
+  canvas.style.maxHeight = "100%"; 
+  canvas.style.maxWidth = "100%";
 
-const canvas = document.createElement("canvas");
-canvas.id = "playingStyleChart";
-// WICHTIG: Canvas braucht etwas Platz zum Atmen innerhalb der Box
-canvas.style.maxHeight = "100%"; 
-canvas.style.maxWidth = "100%";
+  radarDiv.appendChild(canvas);
 
-radarDiv.appendChild(canvas);
+  // Beide Boxen in den Layout-Container
+  chartLayoutContainer.appendChild(styleDiv);
+  chartLayoutContainer.appendChild(radarDiv);
 
-// Vergiss nicht, beide dem Container hinzuzufügen:
-chartLayoutContainer.appendChild(styleDiv);
-chartLayoutContainer.appendChild(radarDiv);
+  // Den Layout-Container in die Hauptkarte
+  card.appendChild(chartLayoutContainer);
+  // --- ENDE DES NEUEN LAYOUT-BLOCKS ---
+
+  // 3. Überschrift "Your Racket" (Hier geht dein alter Code einfach weiter)
 
   // 3. Überschrift "Your Racket"
   const racketTitle = document.createElement("h3");
@@ -1135,6 +1131,7 @@ function renderRadarChart(profile) {
 
 // === Init ===
 loadData();
+
 
 
 
