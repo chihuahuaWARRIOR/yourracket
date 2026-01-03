@@ -1109,10 +1109,11 @@ function renderRadarChart(profile) {
       }
     }
   });
-
+}
 
 // === Init ===
 loadData();
+
 
 
 
