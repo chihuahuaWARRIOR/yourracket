@@ -1045,7 +1045,10 @@ function renderRadarChart(profile) {
   window.myRadarChart = new Chart(ctx, {
     type: 'radar',
     plugins: [labelHoverPlugin],
-    data: {
+    window.myRadarChart = new Chart(ctx, {
+    type: 'radar',
+    plugins: [labelHoverPlugin],
+data: {
       labels: labels,
       datasets: [{
         data: dataValues,
@@ -1053,20 +1056,32 @@ function renderRadarChart(profile) {
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
         pointRadius: 5,
-        pointHitRadius: 0 // Punkte ignorieren
+        // Macht die Punkte für die Maus/Touch "unsichtbar"
+        pointHitRadius: 0,
+        pointHoverRadius: 0
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      // Erlaubt die Verarbeitung von Mausbewegungen auf Desktop
+      events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+      interaction: {
+        mode: 'none' // Verhindert das automatische Tooltip-Andocken an Punkte
+      },
       scales: {
         r: {
-          min: 0, max: 100, beginAtZero: true,
+          min: 0, 
+          max: 100, 
+          beginAtZero: true,
           ticks: { display: false },
           pointLabels: {
             display: true,
             padding: 15,
-            font: { size: window.innerWidth < 500 ? 10 : 12, weight: 'bold' }
+            font: { 
+              size: window.innerWidth < 500 ? 10 : 12, 
+              weight: 'bold' 
+            }
           }
         }
       },
@@ -1075,6 +1090,7 @@ function renderRadarChart(profile) {
         tooltip: {
           enabled: true,
           displayColors: false,
+          position: 'nearest',
           callbacks: {
             title: (items) => {
                const l = labels[items[0].dataIndex];
@@ -1083,7 +1099,7 @@ function renderRadarChart(profile) {
             label: function(context) {
               const fullText = descriptions[activeLang][context.dataIndex];
               const score = context.raw.toFixed(1) + "%";
-              // Gibt ein Array zurück -> Chart.js macht daraus mehrere Zeilen
+              // Nutzt die Hilfsfunktion splitText (muss in der Funktion definiert sein)
               return [score, ...splitText(fullText, 25)]; 
             }
           }
@@ -1093,8 +1109,10 @@ function renderRadarChart(profile) {
   });
 }
 
+
 // === Init ===
 loadData();
+
 
 
 
