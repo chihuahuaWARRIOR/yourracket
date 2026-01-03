@@ -563,13 +563,14 @@ function showResults() {
   highlightMatchMode(); 
   highlightSelectedRacket(0);
   injectResponsiveStyles();
-}
 
   // WICHTIG: Kurz warten, bis das Overlay sichtbar ist, dann zeichnen
   setTimeout(() => {
     renderRadarChart(normalizedProfile);
   }, 50);
 
+}  
+  
 // === Match Mode Highlighting ===
 function highlightMatchMode() {
   const topRow = document.getElementById("racket-cards-container");
