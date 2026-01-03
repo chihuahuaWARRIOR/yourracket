@@ -989,50 +989,38 @@ function renderRadarChart(profile) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  const content = {
-    de: {
-      labels: {
-        "Big Server": "Aufschlag-Riese",
-        "Serve & Volley": "Serve & Volley",
-        "All-Court": "Allrounder",
-        "Attacking Baseliner": "Offensiver Grundlinienspieler",
-        "Solid Baseliner": "Solider Grundlinienspieler",
-        "Counter Puncher": "Konter-Spieler"
-      },
-      desc: {
-        "Big Server": "Fokussiert auf Asse und kurze Punkte mit hartem Aufschlag.",
-        "Serve & Volley": "Rückt ständig ans Netz vor, um Punkte schnell zu beenden.",
-        "All-Court": "In allen Bereichen sicher, passt sich jeder Situation an.",
-        "Attacking Baseliner": "Diktiert Ballwechsel mit aggressiven Schlägen.",
-        "Solid Baseliner": "Konstant, macht sehr wenige unforced errors.",
-        "Counter Puncher": "Exzellente Defensive, lebt vom Tempo des Gegners."
-      }
-    },
-    en: {
-      labels: {
-        "Big Server": "Big Server",
-        "Serve & Volley": "Serve & Volley",
-        "All-Court": "All-Court",
-        "Attacking Baseliner": "Attacking Baseliner",
-        "Solid Baseliner": "Solid Baseliner",
-        "Counter Puncher": "Counter Puncher"
-      },
-      desc: {
-        "Big Server": "Focuses on aces and short points with a powerful serve.",
-        "Serve & Volley": "Constantly rushes the net to finish points quickly.",
-        "All-Court": "Comfortable from all areas, adapts to every situation.",
-        "Attacking Baseliner": "Dictates points with aggressive groundstrokes.",
-        "Solid Baseliner": "Consistent, rarely makes unforced errors.",
-        "Counter Puncher": "Excellent defense, lives on the opponent's pace."
-      }
-    }
+  // 1. Labels bleiben immer gleich (wie gewünscht)
+  const labels = [
+    "Big Server", 
+    "Serve & Volley", 
+    "All-Court", 
+    "Attacking Baseliner", 
+    "Solid Baseliner", 
+    "Counter Puncher"
+  ];
+
+  // 2. Beschreibungen je nach Sprache
+  const descriptions = {
+    de: [
+      "Fokussiert auf Asse und kurze Punkte mit hartem Aufschlag.",
+      "Rückt ständig ans Netz vor, um Punkte schnell zu beenden.",
+      "In allen Bereichen sicher, passt sich jeder Situation an.",
+      "Diktiert Ballwechsel mit aggressiven Schlägen.",
+      "Konstant, macht sehr wenige unforced errors.",
+      "Exzellente Defensive, lebt vom Tempo des Gegners."
+    ],
+    en: [
+      "Focuses on aces and short points with a powerful serve.",
+      "Rushes the net to finish points quickly.",
+      "Comfortable from all areas, adapts to every situation.",
+      "Dictates points with aggressive groundstrokes.",
+      "Consistent, rarely makes unforced errors.",
+      "Excellent defense, lives on the opponent's pace."
+    ]
   };
 
-  // Nutzt deine globale Variable 'lang'
+  // Sprach-Check (deine 'lang' Variable)
   const activeLang = (typeof lang !== 'undefined' && lang === 'en') ? 'en' : 'de';
-  const activeLabels = Object.values(content[activeLang].labels);
-  const activeDescriptions = content[activeLang].desc;
-  const labelKeys = Object.keys(content[activeLang].labels);
 
   const dataValues = [
     profile.TheBigServer || 0,
@@ -1050,7 +1038,7 @@ function renderRadarChart(profile) {
   window.myRadarChart = new Chart(ctx, {
     type: 'radar',
     data: {
-      labels: activeLabels,
+      labels: labels,
       datasets: [{
         label: 'Match %',
         data: dataValues,
@@ -1058,7 +1046,8 @@ function renderRadarChart(profile) {
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
         pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-        pointRadius: 4
+        pointRadius: 5,      // Größerer Radius macht Mouseover einfacher
+        pointHoverRadius: 8  // Vergrößert sich beim Drüberfahren
       }]
     },
     options: {
@@ -1080,11 +1069,12 @@ function renderRadarChart(profile) {
         legend: { display: false },
         tooltip: {
           enabled: true,
+          displayColors: false, // Entfernt das kleine farbige Quadrat im Tooltip
           callbacks: {
             label: function(context) {
-              const labelKey = labelKeys[context.dataIndex];
+              const index = context.dataIndex; // Index des Punktes (0-5)
               const value = context.raw.toFixed(1);
-              const text = activeDescriptions[labelKey];
+              const text = descriptions[activeLang][index];
               return ` ${value}%: ${text}`;
             }
           }
@@ -1096,6 +1086,7 @@ function renderRadarChart(profile) {
 
 // === Init ===
 loadData();
+
 
 
 
