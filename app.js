@@ -249,7 +249,6 @@ function showResults() {
     boxSizing: "border-box"
   });
 
-  // Spielerprofil normalisieren auf 0-10 für Anzeige
   const normalizedProfile = {};
   const categories = [
     "Groundstrokes","Volleys","Serves","Returns","Power","Control",
@@ -261,11 +260,9 @@ function showResults() {
     const raw = userProfile[cat] ?? null;
     if (raw === null) normalizedProfile[cat] = 0;
     else {
-        // Racket-Kats auf 0-10 normalisieren
         if (["Groundstrokes","Volleys","Serves","Returns","Power","Control","Maneuverability","Stability","Comfort","Touch / Feel","Topspin","Slice"].includes(cat)) {
             normalizedProfile[cat] = Math.round((raw / 10) * 10) / 10;
         } else {
-            // Spielstil-Kats bleiben intern 0-100
             normalizedProfile[cat] = raw;
         }
     }
@@ -279,7 +276,6 @@ function showResults() {
   const best = bestRackets[0] || rackets[0];
   selectedRacketIndex = 0;
 
-  // Card Container
   const card = document.createElement("div");
   Object.assign(card.style, {
     width: "min(1200px, 98%)",
@@ -292,26 +288,25 @@ function showResults() {
     overflowY: "auto"
   });
 
-// 1. Überschrift "Your Game" (Lass diese Zeile in deinem Code stehen)
+  const styleTitle = document.createElement("h3");
+  styleTitle.innerText = "Your Game";
+  Object.assign(styleTitle.style, { margin: "0 0 12px 0", fontSize: "1.6rem", fontStyle: "italic", fontWeight: "700" });
   card.appendChild(styleTitle);
 
-  // --- START DES NEUEN LAYOUT-BLOCKS ---
-  // Container für das Nebeneinander (Flexbox)
+  // === DER FIX FÜR DIE BOXEN-HÖHE ===
   const chartLayoutContainer = document.createElement("div");
   Object.assign(chartLayoutContainer.style, {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: "20px",
-      marginBottom: "24px", // Etwas mehr Abstand nach unten
-      alignItems: "stretch", // Zieht beide Boxen auf die gleiche Höhe
-      justifyContent: "center"
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "20px",
+    marginBottom: "18px",
+    alignItems: "stretch" // Zwingt beide Boxen auf gleiche Höhe
   });
 
-  // 2. Linke Spalte: Spielstil Box
   const styleDesc = getPlayStyleDescription(normalizedProfile);
   const styleDiv = document.createElement("div");
   Object.assign(styleDiv.style, {
-      flex: "1 1 400px",
+      flex: "1 1 450px",
       padding: "20px",
       borderRadius: "12px",
       border: "1px solid #ddd", 
@@ -321,12 +316,10 @@ function showResults() {
       flexDirection: "column",
       justifyContent: "center",
       boxSizing: "border-box",
-      // Desktop: 480px, Mobile: auto
-      minHeight: window.innerWidth < 768 ? "auto" : "480px" 
+      minHeight: window.innerWidth < 768 ? "auto" : "500px" 
   });
-  styleDiv.innerHTML = `<div style="font-size:1.0rem; line-height:1.5;">${styleDesc}</div>`;
+  styleDiv.innerHTML = `<div style="font-size:1.0rem;">${styleDesc}</div>`;
   
-  // 2.1. Rechte Spalte: Radar Chart Box
   const radarDiv = document.createElement("div");
   Object.assign(radarDiv.style, {
       flex: "1 1 350px",
@@ -342,26 +335,16 @@ function showResults() {
       margin: window.innerWidth < 768 ? "10px auto" : "0", 
       width: "100%",
       boxSizing: "border-box",
-      // Match mit linker Box
-      minHeight: window.innerWidth < 768 ? "320px" : "480px" 
+      minHeight: window.innerWidth < 768 ? "320px" : "500px" 
   });
 
   const canvas = document.createElement("canvas");
   canvas.id = "playingStyleChart";
-  canvas.style.maxHeight = "100%"; 
-  canvas.style.maxWidth = "100%";
-
   radarDiv.appendChild(canvas);
 
-  // Beide Boxen in den Layout-Container
   chartLayoutContainer.appendChild(styleDiv);
   chartLayoutContainer.appendChild(radarDiv);
-
-  // Den Layout-Container in die Hauptkarte
   card.appendChild(chartLayoutContainer);
-  // --- ENDE DES NEUEN LAYOUT-BLOCKS ---
-
-  // 3. Überschrift "Your Racket" (Hier geht dein alter Code einfach weiter)
 
   // 3. Überschrift "Your Racket"
   const racketTitle = document.createElement("h3");
@@ -1131,6 +1114,7 @@ function renderRadarChart(profile) {
 
 // === Init ===
 loadData();
+
 
 
 
