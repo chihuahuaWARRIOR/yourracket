@@ -333,17 +333,21 @@ function showResults() {
 
   // 2.1. Rechte Spalte: Radar Chart Box
   const radarDiv = document.createElement("div");
-  Object.assign(radarDiv.style, {
+Object.assign(radarDiv.style, {
       flex: "1 1 300px",
-      padding: "16px",
+      padding: "10px",           // Weniger Innenabstand = mehr Platz für die Grafik
       borderRadius: "12px",
       border: "1px solid #ddd",
       background: "#f9f9f9",
       boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-      minHeight: "300px",
+      minHeight: "350px",
+      maxWidth: "450px",         // Die Box wird auf dem Desktop nicht riesig
+      width: "100%",             // Nutzt auf Mobile die volle Breite
       display: "flex",
-      alignItems: "center",
-      justifyContent: "center"
+      flexDirection: "column",
+      alignItems: "center",      // Zentriert den Inhalt horizontal
+      justifyContent: "center",  // Zentriert den Inhalt vertikal
+      margin: "20px auto"        // Zentriert die gesamte Box im Container
   });
   
   const canvas = document.createElement("canvas");
@@ -989,17 +993,16 @@ function renderRadarChart(profile) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  // 1. Labels bleiben immer gleich (wie gewünscht)
+  // 1. Zweizeilige Labels für mehr Platz auf Mobile
   const labels = [
     "Big Server", 
-    "Serve & Volley", 
+    ["Serve &", "Volley"], 
     "All-Court", 
-    "Attacking Baseliner", 
-    "Solid Baseliner", 
-    "Counter Puncher"
+    ["Attacking", "Baseliner"], 
+    ["Solid", "Baseliner"], 
+    ["Counter", "Puncher"]
   ];
-
-  // 2. Beschreibungen je nach Sprache
+  
   const descriptions = {
     de: [
       "Fokussiert auf Asse und kurze Punkte mit hartem Aufschlag.",
@@ -1019,7 +1022,6 @@ function renderRadarChart(profile) {
     ]
   };
 
-  // Sprach-Check (deine 'lang' Variable)
   const activeLang = (typeof lang !== 'undefined' && lang === 'en') ? 'en' : 'de';
 
   const dataValues = [
@@ -1046,8 +1048,8 @@ function renderRadarChart(profile) {
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
         pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-        pointRadius: 5,      // Größerer Radius macht Mouseover einfacher
-        pointHoverRadius: 8  // Vergrößert sich beim Drüberfahren
+        pointRadius: 5,
+        pointHoverRadius: 8
       }]
     },
     options: {
@@ -1060,7 +1062,12 @@ function renderRadarChart(profile) {
           beginAtZero: true,
           ticks: { display: false, stepSize: 20 },
           pointLabels: {
-            font: { size: 11, weight: '700' },
+            display: true,
+            centerPointLabels: true,
+            font: { 
+              size: window.innerWidth < 500 ? 10 : 11, 
+              weight: '700' 
+            },
             color: '#333'
           }
         }
@@ -1069,10 +1076,10 @@ function renderRadarChart(profile) {
         legend: { display: false },
         tooltip: {
           enabled: true,
-          displayColors: false, // Entfernt das kleine farbige Quadrat im Tooltip
+          displayColors: false,
           callbacks: {
             label: function(context) {
-              const index = context.dataIndex; // Index des Punktes (0-5)
+              const index = context.dataIndex;
               const value = context.raw.toFixed(1);
               const text = descriptions[activeLang][index];
               return ` ${value}%: ${text}`;
@@ -1086,6 +1093,7 @@ function renderRadarChart(profile) {
 
 // === Init ===
 loadData();
+
 
 
 
