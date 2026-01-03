@@ -207,6 +207,21 @@ body {
     padding: 20px;
     font-size: 0.75rem;
     transform: translate(-50%, -70%);
+    
+    #result-container .result-card {
+    width: 100%;
+    border-radius: 0; /* Optional: sieht auf Full-Width cleaner aus */
+    padding: 15px 10px; /* Weniger Padding an den Seiten */
+  }
+
+  /* Der Container selbst braucht weniger Padding */
+  #result-container {
+    padding: 0;
+  }
+
+  /* Damit die Grafik nicht gequetscht wird, verringern wir die Mindesthöhe */
+  /* Das wird im JS-Teil (nächster Schritt) mit angepasst */
+}
   }
 
   .answer {
@@ -413,4 +428,5 @@ button.selected {
   opacity: 0.7;
   transform: scale(0.98);
 }
+
 
