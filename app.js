@@ -1003,40 +1003,46 @@ function renderRadarChart(profile) {
   }
 
  // 1. DAS PLUGIN (Die Logik für die Boxen)
+// DIESES PLUGIN IST JETZT EXAKT WIE DEIN PERFEKTES DESKTOP-PLUGIN
   const labelHoverPlugin = {
     id: 'labelHoverPlugin',
     afterEvent(chart, args) {
       const {event} = args;
-      // Reagiert auf Mausbewegung und Touch
-      if (!event || (event.type !== 'mousemove' && event.type !== 'touchstart' && event.type !== 'touchmove')) return;
+      if (event.type !== 'mousemove' && event.type !== 'touchstart' && event.type !== 'touchmove') return;
       
       const scale = chart.scales.r;
       let hoveredIndex = -1;
 
       if (scale._pointLabelItems) {
-        scale._pointLabelItems.forEach((item, index) => {
-          // Die Box um den Text (Puffer 25px für Desktop & Mobil)
-          if (event.x >= item.left - 25 && event.x <= item.right + 25 && 
-              event.y >= item.top - 25 && event.y <= item.bottom + 25) {
-            hoveredIndex = index;
+        for (let i = 0; i < scale._pointLabelItems.length; i++) {
+          const item = scale._pointLabelItems[i];
+          // Deine funktionierenden Desktop-Maße (-15 bis +15)
+          if (event.x >= item.left - 15 && event.x <= item.right + 15 && 
+              event.y >= item.top - 15 && event.y <= item.bottom + 15) {
+            hoveredIndex = i;
+            break; 
           }
-        });
+        }
       }
 
-      if (hoveredIndex !== -1) {
-        // Tooltip aktivieren
-        chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }], {x: event.x, y: event.y});
-        chart.update('none'); 
-      } else if (event.type === 'mousemove') {
-        // NUR auf Desktop: Tooltip löschen, wenn Maus weg ist
-        // Auf Mobil bleibt er stehen, bis man woanders tippt!
-        chart.tooltip.setActiveElements([], {x: event.x, y: event.y});
-        chart.update('none');
+      const currentActive = chart.tooltip.getActiveElements();
+      const newActiveId = hoveredIndex !== -1 ? hoveredIndex : null;
+      const oldActiveId = currentActive.length > 0 ? currentActive[0].index : null;
+
+      if (newActiveId !== oldActiveId) {
+        if (hoveredIndex !== -1) {
+          chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }], {x: event.x, y: event.y});
+          chart.update('none'); 
+        } else if (event.type === 'mousemove') { 
+          // DER FIX: Nur bei Mausbewegung (Desktop) löschen wir den Tooltip automatisch.
+          // Bei Mobil (touchstart/touchmove) bleibt der Tooltip nun einfach stehen!
+          chart.tooltip.setActiveElements([], {x: event.x, y: event.y});
+          chart.update('none');
+        }
       }
     }
   };
 
-  // 2. DAS CHART-OBJEKT
   window.myRadarChart = new Chart(ctx, {
     type: 'radar',
     plugins: [labelHoverPlugin],
@@ -1055,7 +1061,7 @@ function renderRadarChart(profile) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: false, // Performance-Boost
+      animation: false, 
       events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
       interaction: {
         mode: 'none'
@@ -1092,9 +1098,11 @@ function renderRadarChart(profile) {
       }
     }
   });
-} // <--- HIER hört die Funktion renderRadarChart auf!
+}
+
 // === Init ===
 loadData();
+
 
 
 
