@@ -974,7 +974,6 @@ function restartQuiz() {
 }
 
 //Radar-Chart-Design
-
 function renderRadarChart(profile) {
   const canvas = document.getElementById('playingStyleChart');
   if (!canvas) return;
@@ -1022,33 +1021,35 @@ function renderRadarChart(profile) {
     return lines;
   }
 
-  // DAS HIER IST DIE BOX-LOGIK:
- const labelHoverPlugin = {
+  // Diese Logik funktioniert jetzt für Touch UND Maus identisch
+  const labelHoverPlugin = {
     id: 'labelHoverPlugin',
     afterEvent(chart, args) {
       const {event} = args;
-      if (event.type !== 'mousemove' && event.type !== 'touchstart' && event.type !== 'touchmove') return;
+      // Wir reagieren auf jede Bewegung (Maus oder Finger)
+      if (!event || (event.type !== 'mousemove' && event.type !== 'touchstart' && event.type !== 'touchmove')) return;
       
       const scale = chart.scales.r;
       let hoveredIndex = -1;
 
       if (scale._pointLabelItems) {
         scale._pointLabelItems.forEach((item, index) => {
-          // Die Box um den Text
-          if (event.x >= item.left - 20 && event.x <= item.right + 20 && 
-              event.y >= item.top - 20 && event.y <= item.bottom + 20) {
+          // Wir bauen eine großzügige "Fang-Zone" um den Text
+          const buffer = 30; 
+          if (event.x >= item.left - buffer && event.x <= item.right + buffer && 
+              event.y >= item.top - buffer && event.y <= item.bottom + buffer) {
             hoveredIndex = index;
           }
         });
       }
 
+      // Tooltip erzwingen oder löschen
       if (hoveredIndex !== -1) {
-        // Wir setzen den Tooltip MANUELL auf die Maus-Position
-        chart.tooltip.setActiveElements([
-          { datasetIndex: 0, index: hoveredIndex }
-        ], { x: event.x, y: event.y });
-        chart.update();
+        chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }], { x: event.x, y: event.y });
+      } else {
+        chart.tooltip.setActiveElements([], { x: event.x, y: event.y });
       }
+      chart.update();
     }
   };
 
@@ -1063,18 +1064,18 @@ function renderRadarChart(profile) {
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
         pointRadius: 5,
-        pointHitRadius: 0, // Punkt-Kollision aus
-        pointHoverRadius: 0 // Punkt-Hover aus
+        pointHitRadius: 0, 
+        pointHoverRadius: 0 
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
-      // DAS HIER IST NEU: Wir schalten JEDE automatische Interaktion aus
+      // Schaltet die Standard-Interaktion komplett ab, damit NUR unser Plugin steuert
       interaction: {
-        mode: null 
+        mode: null
       },
+      events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
       scales: {
         r: {
           min: 0, max: 100, beginAtZero: true,
@@ -1091,9 +1092,6 @@ function renderRadarChart(profile) {
         tooltip: {
           enabled: true,
           displayColors: false,
-          // Wir zwingen den Tooltip, NICHT zu den Punkten zu springen
-          external: null,
-          position: 'nearest', 
           callbacks: {
             title: (items) => {
                const l = labels[items[0].dataIndex];
@@ -1113,6 +1111,7 @@ function renderRadarChart(profile) {
 
 // === Init ===
 loadData();
+
 
 
 
