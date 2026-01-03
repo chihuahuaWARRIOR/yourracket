@@ -993,7 +993,6 @@ function renderRadarChart(profile) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  // 1. Zweizeilige Labels für mehr Platz auf Mobile
   const labels = [
     "Big Server", 
     ["Serve &", "Volley"], 
@@ -1037,8 +1036,37 @@ function renderRadarChart(profile) {
     window.myRadarChart.destroy();
   }
 
+  // --- DAS PLUGIN FÜR HOVER AUF LABELS ---
+  const labelHoverPlugin = {
+    id: 'labelHoverPlugin',
+    afterEvent(chart, args) {
+      const event = args.event;
+      if (event.type !== 'mousemove' && event.type !== 'touchstart') return;
+
+      // Wir suchen, ob die Maus über einem Point-Label (Text) ist
+      const { x, y } = event;
+      const scale = chart.scales.r;
+      let hoveredIndex = -1;
+
+      // Chart.js speichert die Positionen der Labels intern
+      scale._pointLabelItems.forEach((item, index) => {
+        if (x >= item.left && x <= item.right && y >= item.top && y <= item.bottom) {
+          hoveredIndex = index;
+        }
+      });
+
+      if (hoveredIndex !== -1) {
+        // Wenn wir über einem Label sind, Tooltip für diesen Punkt erzwingen
+        chart.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }]);
+        chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }]);
+        chart.render();
+      }
+    }
+  };
+
   window.myRadarChart = new Chart(ctx, {
     type: 'radar',
+    plugins: [labelHoverPlugin], // Plugin hier aktivieren
     data: {
       labels: labels,
       datasets: [{
@@ -1049,7 +1077,6 @@ function renderRadarChart(profile) {
         borderWidth: 2,
         pointBackgroundColor: 'rgba(54, 162, 235, 1)',
         pointRadius: 5,
-        pointHoverRadius: 8
       }]
     },
     options: {
@@ -1063,9 +1090,9 @@ function renderRadarChart(profile) {
           ticks: { display: false, stepSize: 20 },
           pointLabels: {
             display: true,
-            centerPointLabels: true,
+            padding: 15, // Mehr Platz zum Hovern
             font: { 
-              size: window.innerWidth < 500 ? 10 : 11, 
+              size: window.innerWidth < 500 ? 10 : 12, 
               weight: '700' 
             },
             color: '#333'
@@ -1077,6 +1104,7 @@ function renderRadarChart(profile) {
         tooltip: {
           enabled: true,
           displayColors: false,
+          position: 'nearest',
           callbacks: {
             label: function(context) {
               const index = context.dataIndex;
@@ -1093,6 +1121,7 @@ function renderRadarChart(profile) {
 
 // === Init ===
 loadData();
+
 
 
 
