@@ -338,7 +338,7 @@ function showResults() {
       padding: "16px",
       borderRadius: "12px",
       border: "1px solid #ddd",
-      background: "#fff",
+      background: "#f9f9f9",
       boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
       minHeight: "300px",
       display: "flex",
@@ -565,61 +565,10 @@ function showResults() {
   injectResponsiveStyles();
 }
 
-// WICHTIG: Erst nachdem das Overlay im DOM ist, Chart zeichnen!
-  // Platziere diesen Aufruf am Ende von showResults(), nachdem document.body.appendChild(overlay) ausgeführt wurde:
+  // WICHTIG: Kurz warten, bis das Overlay sichtbar ist, dann zeichnen
   setTimeout(() => {
     renderRadarChart(normalizedProfile);
-  }, 10);
-
-// Radar-Chart-Design
-function renderRadarChart(profile) {
-  const ctx = document.getElementById('playingStyleChart');
-  if (!ctx) return;
-
-  // ATP Kategorien für die Beschriftung
-  const labels = ["Big Server", "Serve & Volley", "All Court", "Attacking", "Solid", "Counter Puncher"];
-  const dataValues = [
-    profile.TheBigServer, 
-    profile.ServeAndVolleyer, 
-    profile.AllCourtPlayer, 
-    profile.AttackingBaseliner, 
-    profile.SolidBaseliner, 
-    profile.CounterPuncher
-  ];
-
-  new Chart(ctx, {
-    type: 'radar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Playing Style Intensity',
-        data: dataValues,
-        fill: true,
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgb(54, 162, 235)',
-        pointBackgroundColor: 'rgb(54, 162, 235)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgb(54, 162, 235)'
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        r: {
-          angleLines: { display: true },
-          suggestedMin: 0,
-          suggestedMax: 100,
-          ticks: { stepSize: 20, display: false }
-        }
-      },
-      plugins: {
-        legend: { display: false }
-      }
-    }
-  });
-}
+  }, 50);
 
 // === Match Mode Highlighting ===
 function highlightMatchMode() {
@@ -1032,8 +981,66 @@ function restartQuiz() {
   renderProgress();
 }
 
+//Radar-Chart-Design
+
+function renderRadarChart(profile) {
+  const canvas = document.getElementById('playingStyleChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  // Daten aus deinem normalizedProfile ziehen
+  const dataValues = [
+    profile.TheBigServer || 0, 
+    profile.ServeAndVolleyer || 0, 
+    profile.AllCourtPlayer || 0, 
+    profile.AttackingBaseliner || 0, 
+    profile.SolidBaseliner || 0, 
+    profile.CounterPuncher || 0
+  ];
+
+  // Alte Instanz löschen, falls vorhanden
+  if (window.myRadarChart instanceof Chart) {
+    window.myRadarChart.destroy();
+  }
+
+  window.myRadarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ["Big Server", "S & V", "All Court", "Attacker", "Solid", "Counter"],
+      datasets: [{
+        label: 'Match %',
+        data: dataValues,
+        backgroundColor: 'rgba(54, 162, 235, 0.2)', // Blau-Transparent
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 2,
+        pointBackgroundColor: 'rgba(54, 162, 235, 1)'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          min: 0,
+          max: 100,
+          beginAtZero: true,
+          ticks: { display: false, stepSize: 20 },
+          pointLabels: {
+            font: { size: 12, weight: '600' },
+            color: '#333'
+          }
+        }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+}
+
 // === Init ===
 loadData();
+
 
 
 
