@@ -305,60 +305,67 @@ function showResults() {
 
 // === RADAR CHART & SPIELSTIL LAYOUT ===
   
-  // Container für das Nebeneinander (Flexbox)
-  const chartLayoutContainer = document.createElement("div");
-  Object.assign(chartLayoutContainer.style, {
+// Container für das Nebeneinander (Flexbox)
+const chartLayoutContainer = document.createElement("div");
+Object.assign(chartLayoutContainer.style, {
     display: "flex",
     flexWrap: "wrap",
     gap: "20px",
     marginBottom: "18px",
-    alignItems: "stretch"
-  });
+    alignItems: "stretch", // Zieht beide Boxen auf die gleiche Höhe
+    justifyContent: "center"
+});
 
-  // 2. Linke Spalte: Spielstil Box (Dein existierendes Design)
-  const styleDesc = getPlayStyleDescription(normalizedProfile);
-  const styleDiv = document.createElement("div");
-  Object.assign(styleDiv.style, {
-      flex: "1 1 450px", // Nimmt Platz ein, bricht mobil um
-      padding: "16px", 
-      borderRadius: "12px",
-      border: "1px solid #ddd", 
-      background: "#f9f9f9",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center"
-  });
-  styleDiv.innerHTML = `<div style="font-size:1.0rem;">${styleDesc}</div>`;
+// 2. Linke Spalte: Spielstil Box
+const styleDesc = getPlayStyleDescription(normalizedProfile);
+const styleDiv = document.createElement("div");
+Object.assign(styleDiv.style, {
+    flex: "1 1 400px",      // Leicht angepasst für bessere Verteilung
+    padding: "20px",        // Padding an Radar-Box angepasst
+    borderRadius: "12px",
+    border: "1px solid #ddd", 
+    background: "#f9f9f9",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    boxSizing: "border-box", // WICHTIG: Damit Padding die Box nicht vergrößert
+    // Gleichauf mit der Radar-Box
+    minHeight: window.innerWidth < 768 ? "auto" : "480px" 
+});
+styleDiv.innerHTML = `<div style="font-size:1.0rem; line-height:1.5;">${styleDesc}</div>`;
   
 // 2.1. Rechte Spalte: Radar Chart Box
-  const radarDiv = document.createElement("div");
-  Object.assign(radarDiv.style, {
-      flex: "1 1 350px",
-      padding: window.innerWidth < 600 ? "5px" : "20px", 
-      borderRadius: "12px",
-      border: "1px solid #ddd",
-      background: "#f9f9f9",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      margin: "10px auto",
-      width: "100%",
-      boxSizing: "border-box",
-      // Desktop: 480px (oder höher, falls nötig), Mobile: 320px
-      minHeight: window.innerWidth < 768 ? "320px" : "480px" 
-  });
-  
-  const canvas = document.createElement("canvas");
-  canvas.id = "playingStyleChart";
-  radarDiv.appendChild(canvas);
+const radarDiv = document.createElement("div");
+Object.assign(radarDiv.style, {
+    flex: "1 1 350px",
+    padding: window.innerWidth < 600 ? "5px" : "20px", 
+    borderRadius: "12px",
+    border: "1px solid #ddd",
+    background: "#f9f9f9",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    // Margin nur mobil, damit es Desktop bündig bleibt
+    margin: window.innerWidth < 768 ? "10px auto" : "0", 
+    width: "100%",
+    boxSizing: "border-box",
+    minHeight: window.innerWidth < 768 ? "320px" : "480px" 
+});
 
-  // Elemente zusammenfügen
-  chartLayoutContainer.appendChild(styleDiv);
-  chartLayoutContainer.appendChild(radarDiv);
-  card.appendChild(chartLayoutContainer);
+const canvas = document.createElement("canvas");
+canvas.id = "playingStyleChart";
+// WICHTIG: Canvas braucht etwas Platz zum Atmen innerhalb der Box
+canvas.style.maxHeight = "100%"; 
+canvas.style.maxWidth = "100%";
+
+radarDiv.appendChild(canvas);
+
+// Vergiss nicht, beide dem Container hinzuzufügen:
+chartLayoutContainer.appendChild(styleDiv);
+chartLayoutContainer.appendChild(radarDiv);
 
   // 3. Überschrift "Your Racket"
   const racketTitle = document.createElement("h3");
@@ -1128,6 +1135,7 @@ function renderRadarChart(profile) {
 
 // === Init ===
 loadData();
+
 
 
 
