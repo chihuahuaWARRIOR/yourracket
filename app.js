@@ -974,7 +974,6 @@ function restartQuiz() {
 }
 
 //Radar-Chart-Design
-// Radar-Chart-Design
 function renderRadarChart(profile) {
   const canvas = document.getElementById('playingStyleChart');
   if (!canvas) return;
@@ -1003,52 +1002,37 @@ function renderRadarChart(profile) {
     return lines;
   }
 
+  // SCHNELLES PLUGIN (Deine funktionierende Desktop-Version)
   const labelHoverPlugin = {
     id: 'labelHoverPlugin',
     afterEvent(chart, args) {
       const {event} = args;
+      if (event.type !== 'mousemove' && event.type !== 'touchstart') return;
+      
       const scale = chart.scales.r;
-      if (!scale._pointLabelItems) return;
-
-      // --- DESKTOP LOGIK (HOVER) ---
-      if (event.type === 'mousemove') {
-        let hoveredIndex = -1;
+      let hoveredIndex = -1;
+      
+      if (scale._pointLabelItems) {
         for (let i = 0; i < scale._pointLabelItems.length; i++) {
           const item = scale._pointLabelItems[i];
-          if (event.x >= item.left - 15 && event.x <= item.right + 15 && 
-              event.y >= item.top - 15 && event.y <= item.bottom + 15) {
+          if (event.x >= item.left - 15 && event.x <= item.right + 15 && event.y >= item.top - 15 && event.y <= item.bottom + 15) {
             hoveredIndex = i;
             break; 
           }
         }
+      }
+
+      const currentActive = chart.tooltip.getActiveElements();
+      const newActiveId = hoveredIndex !== -1 ? hoveredIndex : null;
+      const oldActiveId = currentActive.length > 0 ? currentActive[0].index : null;
+
+      if (newActiveId !== oldActiveId) {
         if (hoveredIndex !== -1) {
           chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }], {x: event.x, y: event.y});
         } else {
           chart.tooltip.setActiveElements([], {x: event.x, y: event.y});
         }
-        chart.update('none');
-      }
-
-      // --- MOBIL LOGIK (CLICK / TAP) ---
-      if (event.type === 'click' || event.type === 'touchstart') {
-        let clickedIndex = -1;
-        for (let i = 0; i < scale._pointLabelItems.length; i++) {
-          const item = scale._pointLabelItems[i];
-          // Etwas größere Box für Finger-Taps (25px)
-          if (event.x >= item.left - 25 && event.x <= item.right + 25 && 
-              event.y >= item.top - 25 && event.y <= item.bottom + 25) {
-            clickedIndex = i;
-            break; 
-          }
-        }
-        if (clickedIndex !== -1) {
-          chart.tooltip.setActiveElements([{ datasetIndex: 0, index: clickedIndex }], {x: event.x, y: event.y});
-          chart.update('none');
-        } else {
-          // Klick ins Leere (Mitte des Charts) schließt Tooltip mobil
-          chart.tooltip.setActiveElements([], {x: event.x, y: event.y});
-          chart.update('none');
-        }
+        chart.update('none'); 
       }
     }
   };
@@ -1064,22 +1048,19 @@ function renderRadarChart(profile) {
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
         pointRadius: 5,
-        pointHitRadius: 0, 
-        pointHoverRadius: 0
+        pointHitRadius: 0
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: false, 
-      // Wichtig: 'click' muss hier für Mobil-Support stehen!
-      events: ['mousemove', 'mouseout', 'click', 'touchstart'],
+      animation: false,
       interaction: {
         mode: 'none'
       },
       scales: {
         r: {
-          min: 0, max: 100, beginAtZero: true,
+          min: 0, max: 100,
           ticks: { display: false },
           pointLabels: {
             display: true,
@@ -1099,10 +1080,9 @@ function renderRadarChart(profile) {
                const l = labels[items[0].dataIndex];
                return Array.isArray(l) ? l.join(' ') : l;
             },
-            label: function(context) {
+            label: (context) => {
               const fullText = descriptions[activeLang][context.dataIndex];
-              const score = context.raw.toFixed(1) + "%";
-              return [score, ...splitText(fullText, 25)]; 
+              return [context.raw.toFixed(1) + "%", ...splitText(fullText, 25)]; 
             }
           }
         }
@@ -1112,6 +1092,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
