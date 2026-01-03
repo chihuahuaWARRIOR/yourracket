@@ -989,17 +989,60 @@ function renderRadarChart(profile) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  // Daten aus deinem normalizedProfile ziehen
+  const content = {
+    de: {
+      labels: {
+        "Big Server": "Aufschlag-Riese",
+        "Serve & Volley": "Serve & Volley",
+        "All-Court": "Allrounder",
+        "Attacking Baseliner": "Offensiver Grundlinienspieler",
+        "Solid Baseliner": "Solider Grundlinienspieler",
+        "Counter Puncher": "Konter-Spieler"
+      },
+      desc: {
+        "Big Server": "Fokussiert auf Asse und kurze Punkte mit hartem Aufschlag.",
+        "Serve & Volley": "Rückt ständig ans Netz vor, um Punkte schnell zu beenden.",
+        "All-Court": "In allen Bereichen sicher, passt sich jeder Situation an.",
+        "Attacking Baseliner": "Diktiert Ballwechsel mit aggressiven Schlägen.",
+        "Solid Baseliner": "Konstant, macht sehr wenige unforced errors.",
+        "Counter Puncher": "Exzellente Defensive, lebt vom Tempo des Gegners."
+      }
+    },
+    en: {
+      labels: {
+        "Big Server": "Big Server",
+        "Serve & Volley": "Serve & Volley",
+        "All-Court": "All-Court",
+        "Attacking Baseliner": "Attacking Baseliner",
+        "Solid Baseliner": "Solid Baseliner",
+        "Counter Puncher": "Counter Puncher"
+      },
+      desc: {
+        "Big Server": "Focuses on aces and short points with a powerful serve.",
+        "Serve & Volley": "Constantly rushes the net to finish points quickly.",
+        "All-Court": "Comfortable from all areas, adapts to every situation.",
+        "Attacking Baseliner": "Dictates points with aggressive groundstrokes.",
+        "Solid Baseliner": "Consistent, rarely makes unforced errors.",
+        "Counter Puncher": "Excellent defense, lives on the opponent's pace."
+      }
+    }
+  };
+
+  // Nutzt deine globale Variable 'lang'
+  const activeLang = (typeof lang !== 'undefined' && lang === 'en') ? 'en' : 'de';
+  const activeLabels = Object.values(content[activeLang].labels);
+  const activeDescriptions = content[activeLang].desc;
+  const labelKeys = Object.keys(content[activeLang].labels);
+
   const dataValues = [
-    profile.TheBigServer || 0, 
-    profile.ServeAndVolleyer || 0, 
-    profile.AllCourtPlayer || 0, 
-    profile.AttackingBaseliner || 0, 
-    profile.SolidBaseliner || 0, 
+    profile.TheBigServer || 0,
+    profile.ServeAndVolleyer || 0,
+    profile.AllCourtPlayer || 0,
+    profile.AttackingBaseliner || 0,
+    profile.SolidBaseliner || 0,
     profile.CounterPuncher || 0
   ];
 
-  // Alte Instanz löschen, falls vorhanden
   if (window.myRadarChart instanceof Chart) {
     window.myRadarChart.destroy();
   }
@@ -1007,14 +1050,15 @@ function renderRadarChart(profile) {
   window.myRadarChart = new Chart(ctx, {
     type: 'radar',
     data: {
-      labels: ["Big Server", "S & V", "All Court", "Attacker", "Solid", "Counter"],
+      labels: activeLabels,
       datasets: [{
         label: 'Match %',
         data: dataValues,
-        backgroundColor: 'rgba(54, 162, 235, 0.2)', // Blau-Transparent
+        backgroundColor: 'rgba(54, 162, 235, 0.2)', 
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
-        pointBackgroundColor: 'rgba(54, 162, 235, 1)'
+        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+        pointRadius: 4
       }]
     },
     options: {
@@ -1027,13 +1071,24 @@ function renderRadarChart(profile) {
           beginAtZero: true,
           ticks: { display: false, stepSize: 20 },
           pointLabels: {
-            font: { size: 12, weight: '600' },
+            font: { size: 11, weight: '700' },
             color: '#333'
           }
         }
       },
       plugins: {
-        legend: { display: false }
+        legend: { display: false },
+        tooltip: {
+          enabled: true,
+          callbacks: {
+            label: function(context) {
+              const labelKey = labelKeys[context.dataIndex];
+              const value = context.raw.toFixed(1);
+              const text = activeDescriptions[labelKey];
+              return ` ${value}%: ${text}`;
+            }
+          }
+        }
       }
     }
   });
@@ -1041,6 +1096,7 @@ function renderRadarChart(profile) {
 
 // === Init ===
 loadData();
+
 
 
 
