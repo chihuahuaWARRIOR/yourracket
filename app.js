@@ -330,24 +330,25 @@ function showResults() {
       justifyContent: "center"
   });
   styleDiv.innerHTML = `<div style="font-size:1.0rem;">${styleDesc}</div>`;
-
-  // 2.1. Rechte Spalte: Radar Chart Box
+  
+// 2.1. Rechte Spalte: Radar Chart Box
   const radarDiv = document.createElement("div");
-Object.assign(radarDiv.style, {
-      flex: "1 1 300px",
-      padding: "10px",           // Weniger Innenabstand = mehr Platz für die Grafik
+  Object.assign(radarDiv.style, {
+      flex: "1 1 350px",
+      padding: window.innerWidth < 600 ? "5px" : "20px", 
       borderRadius: "12px",
       border: "1px solid #ddd",
       background: "#f9f9f9",
       boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-      minHeight: "350px",
-      maxWidth: "450px",         // Die Box wird auf dem Desktop nicht riesig
-      width: "100%",             // Nutzt auf Mobile die volle Breite
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",      // Zentriert den Inhalt horizontal
-      justifyContent: "center",  // Zentriert den Inhalt vertikal
-      margin: "20px auto"        // Zentriert die gesamte Box im Container
+      alignItems: "center",
+      justifyContent: "center",
+      margin: "10px auto",
+      width: "100%",
+      boxSizing: "border-box",
+      // Desktop: 480px (oder höher, falls nötig), Mobile: 320px
+      minHeight: window.innerWidth < 768 ? "320px" : "480px" 
   });
   
   const canvas = document.createElement("canvas");
@@ -1127,6 +1128,7 @@ function renderRadarChart(profile) {
 
 // === Init ===
 loadData();
+
 
 
 
