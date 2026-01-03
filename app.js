@@ -1002,8 +1002,6 @@ function renderRadarChart(profile) {
     return lines;
   }
 
- // 1. DAS PLUGIN (Die Logik für die Boxen)
-// DIESES PLUGIN IST JETZT EXAKT WIE DEIN PERFEKTES DESKTOP-PLUGIN
   const labelHoverPlugin = {
     id: 'labelHoverPlugin',
     afterEvent(chart, args) {
@@ -1016,7 +1014,6 @@ function renderRadarChart(profile) {
       if (scale._pointLabelItems) {
         for (let i = 0; i < scale._pointLabelItems.length; i++) {
           const item = scale._pointLabelItems[i];
-          // Deine funktionierenden Desktop-Maße (-15 bis +15)
           if (event.x >= item.left - 15 && event.x <= item.right + 15 && 
               event.y >= item.top - 15 && event.y <= item.bottom + 15) {
             hoveredIndex = i;
@@ -1034,8 +1031,7 @@ function renderRadarChart(profile) {
           chart.tooltip.setActiveElements([{ datasetIndex: 0, index: hoveredIndex }], {x: event.x, y: event.y});
           chart.update('none'); 
         } else if (event.type === 'mousemove') { 
-          // DER FIX: Nur bei Mausbewegung (Desktop) löschen wir den Tooltip automatisch.
-          // Bei Mobil (touchstart/touchmove) bleibt der Tooltip nun einfach stehen!
+          // Desktop bleibt wie es ist
           chart.tooltip.setActiveElements([], {x: event.x, y: event.y});
           chart.update('none');
         }
@@ -1099,9 +1095,9 @@ function renderRadarChart(profile) {
     }
   });
 }
-
 // === Init ===
 loadData();
+
 
 
 
