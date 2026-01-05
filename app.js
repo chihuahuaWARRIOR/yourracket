@@ -1007,7 +1007,7 @@ function renderRadarChart(profile) {
     id: 'labelHoverPlugin',
     afterEvent(chart, args) {
       const {event} = args;
-      if (event.type !== 'mousemove' && event.type !== 'touchstart') return;
+      if (event.type !== 'mousemove' && event.type !== 'touchstart' && event.type !== 'click') return;
       
       const scale = chart.scales.r;
       let hoveredIndex = -1;
@@ -1092,6 +1092,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
