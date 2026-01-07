@@ -412,8 +412,8 @@ function showResults() {
   btnStrength.addEventListener("touchstart", e => e.preventDefault(), { passive: false });
   btnWeak.addEventListener("touchstart", e => e.preventDefault(), { passive: false });
   
-  btnStrength.onclick = () => { e.preventDefault(); matchMode = "strength"; refreshOverlay(); };
-  btnWeak.onclick = () => { e.preventDefault(); matchMode = "weakness"; refreshOverlay(); };
+  btnStrength.onclick = () => { matchMode = "strength"; refreshOverlay(); };
+  btnWeak.onclick = () => { matchMode = "weakness"; refreshOverlay(); };
 
   modeRight.appendChild(btnStrength);
   modeRight.appendChild(btnWeak);
@@ -688,13 +688,11 @@ function createRestartFloatingButton() {
 // === Overlay Refresh (Stabilisierte Version) ===
 function refreshOverlay() {
   const overlay = document.getElementById("overlay");
-  // 1. Position merken
   const currentScroll = overlay ? overlay.scrollTop : 0;
 
   if (overlay) overlay.remove();
   showResults();
 
-  // 2. Position sofort wiederherstellen
   const newOverlay = document.getElementById("overlay");
   if (newOverlay) {
     newOverlay.scrollTop = currentScroll;
@@ -1104,6 +1102,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
