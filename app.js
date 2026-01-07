@@ -411,7 +411,6 @@ function showResults() {
 
   document.activeElement?.blur();
   btnStrength.onclick = () => { matchMode = "strength"; refreshOverlay(); };
-  document.activeElement?.blur();
   btnWeak.onclick = () => { matchMode = "weakness"; refreshOverlay(); };
 
   modeRight.appendChild(btnStrength);
@@ -1096,6 +1095,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
