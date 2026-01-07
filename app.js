@@ -637,7 +637,6 @@ function updateRacketDisplay(index) {
   highlightSelectedRacket(index);
   
   const overlay = document.getElementById("overlay");
-  // if (overlay) overlay.scrollTop = 0;
 }
 
 // === Karten Highlighten ===
@@ -688,18 +687,21 @@ function createRestartFloatingButton() {
 }
 
 // === Overlay Refresh ===
+// === Overlay Refresh ===
 function refreshOverlay() {
   const overlay = document.getElementById("overlay");
-  if (!overlay) return;
+  
+  // 1. Die aktuelle Scroll-Position des Overlays speichern
+  // Falls das Overlay noch nicht existiert, nutzen wir 0
+  const currentScroll = overlay ? overlay.scrollTop : 0;
 
-  // 1. Aktuelle Scroll-Position speichern
-  const currentScroll = overlay.scrollTop;
+  // 2. Das alte Overlay entfernen
+  if (overlay) overlay.remove();
 
-  // 2. Overlay entfernen und neu bauen
-  overlay.remove();
+  // 3. Das Overlay neu generieren (ruft showResults auf)
   showResults();
 
-  // 3. Scroll-Position wiederherstellen
+  // 4. Die Scroll-Position sofort wiederherstellen
   const newOverlay = document.getElementById("overlay");
   if (newOverlay) {
     newOverlay.scrollTop = currentScroll;
@@ -1109,6 +1111,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
