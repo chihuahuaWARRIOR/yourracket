@@ -241,7 +241,7 @@ function showResults() {
     background: "rgba(255,255,255,0.96)",
     backdropFilter: "blur(6px)",
     display: "flex",
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "center",
     padding: "30px",
     zIndex: "3000",
@@ -688,14 +688,33 @@ function createRestartFloatingButton() {
 // === Overlay Refresh (Stabilisierte Version) ===
 function refreshOverlay() {
   const overlay = document.getElementById("overlay");
-  const currentScroll = overlay ? overlay.scrollTop : 0;
+  if (!overlay) {
+    showResults();
+    return;
+  }
 
-  if (overlay) overlay.remove();
+  // Position merken
+  const currentScroll = overlay.scrollTop;
+
+  // Neu aufbauen
+  overlay.remove();
   showResults();
 
+  // Wiederherstellen mit "Brute Force" (mehrere Versuche für langsames Rendering)
   const newOverlay = document.getElementById("overlay");
   if (newOverlay) {
+    // Versuch 1: Sofort
     newOverlay.scrollTop = currentScroll;
+
+    // Versuch 2: Nach dem nächsten Frame (Render-Zyklus)
+    requestAnimationFrame(() => {
+      newOverlay.scrollTop = currentScroll;
+    });
+
+    // Versuch 3: Nach 50ms (wenn das Chart kommt)
+    setTimeout(() => {
+      newOverlay.scrollTop = currentScroll;
+    }, 50);
   }
 }
 
@@ -1102,6 +1121,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
