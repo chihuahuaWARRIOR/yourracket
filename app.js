@@ -412,8 +412,8 @@ function showResults() {
   btnStrength.addEventListener("touchstart", e => e.preventDefault(), { passive: false });
   btnWeak.addEventListener("touchstart", e => e.preventDefault(), { passive: false });
   
-  btnStrength.onclick = () => { matchMode = "strength"; refreshOverlay(); };
-  btnWeak.onclick = () => { matchMode = "weakness"; refreshOverlay(); };
+  btnStrength.onclick = () => { e.preventDefault(); matchMode = "strength"; refreshOverlay(); };
+  btnWeak.onclick = () => { e.preventDefault(); matchMode = "weakness"; refreshOverlay(); };
 
   modeRight.appendChild(btnStrength);
   modeRight.appendChild(btnWeak);
@@ -1106,6 +1106,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
