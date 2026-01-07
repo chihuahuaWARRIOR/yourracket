@@ -688,19 +688,17 @@ function createRestartFloatingButton() {
 // === Overlay Refresh (Stabilisierte Version) ===
 function refreshOverlay() {
   const overlay = document.getElementById("overlay");
+  // 1. Position merken
   const currentScroll = overlay ? overlay.scrollTop : 0;
 
   if (overlay) overlay.remove();
   showResults();
 
-  // Wir warten 60ms (länger als die 50ms vom Chart), 
-  // damit die Höhe des Inhalts final feststeht.
-  setTimeout(() => {
-    const newOverlay = document.getElementById("overlay");
-    if (newOverlay) {
-      newOverlay.scrollTop = currentScroll;
-    }
-  }, 70); 
+  // 2. Position sofort wiederherstellen
+  const newOverlay = document.getElementById("overlay");
+  if (newOverlay) {
+    newOverlay.scrollTop = currentScroll;
+  }
 }
 
 // === Responsive Styles ===
@@ -1106,6 +1104,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
