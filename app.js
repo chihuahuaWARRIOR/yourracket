@@ -378,6 +378,7 @@ function showResults() {
   modeRight.style.alignItems = "center";
 
   const btnStrength = document.createElement("button");
+  btnStrength.type = "button";
   btnStrength.id = "mode-strength";
   btnStrength.innerText = lang === "de" ? "Stärken ausbauen" : "Enhance strengths";
   Object.assign(btnStrength.style, {
@@ -393,6 +394,7 @@ function showResults() {
   });
 
   const btnWeak = document.createElement("button");
+  btnWeak.type = "button";
   btnWeak.id = "mode-weakness";
   btnWeak.innerText = lang === "de" ? "Schwächen ausgleichen" : "Balance weaknesses";
   Object.assign(btnWeak.style, {
@@ -1092,6 +1094,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
