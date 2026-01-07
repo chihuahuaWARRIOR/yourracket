@@ -687,30 +687,37 @@ function createRestartFloatingButton() {
 
 // === Overlay Refresh (Stabilisierte Version) ===
 function refreshOverlay() {
-  const overlay = document.getElementById("overlay");
-  if (!overlay) {
+  const oldOverlay = document.getElementById("overlay");
+  if (!oldOverlay) {
     showResults();
     return;
   }
 
-  // Wir merken uns die Position
-  const currentScroll = overlay.scrollTop;
+  const currentScroll = oldOverlay.scrollTop;
 
-  // Neu aufbauen
-  overlay.remove();
+  // 1. Das alte Overlay ID-mäßig umbenennen, damit showResults ein NEUES erstellt
+  oldOverlay.id = "overlay_old";
+  
+  // 2. Das alte Overlay halbtransparent machen, damit man sieht, dass was passiert
+  oldOverlay.style.opacity = "0.5";
+  oldOverlay.style.pointerEvents = "none";
+
+  // 3. Neues Overlay erstellen
   showResults();
 
-  // Das neue Overlay finden
   const newOverlay = document.getElementById("overlay");
   if (newOverlay) {
-    // Wir müssen warten, bis das Radar-Chart fertig ist (mind. 50ms im Code)
-    // 100ms ist der "Sweet Spot", damit die Höhe stabil ist
+    // Sofort unsichtbar machen für den Aufbau
+    newOverlay.style.opacity = "0";
+    
+    // Warten bis Chart & Layout fertig sind (wie vorher)
     setTimeout(() => {
-      newOverlay.scrollTo({
-        top: currentScroll,
-        behavior: 'instant'
-      });
-    }, 100); 
+      newOverlay.scrollTop = currentScroll;
+      newOverlay.style.opacity = "1"; // Jetzt sanft einblenden
+      
+      // 4. Erst jetzt das alte Overlay endgültig löschen
+      oldOverlay.remove();
+    }, 120); 
   }
 }
 
@@ -1117,6 +1124,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
