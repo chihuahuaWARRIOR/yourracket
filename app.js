@@ -692,26 +692,49 @@ function refreshOverlay() {
 
   const currentScroll = oldOverlay.scrollTop;
 
-  // 1. Altes Overlay sofort entfernen (für maximale Mobile-Kompatibilität)
-  oldOverlay.remove();
+  // 1. Dunklen Lade-Vorhang erstellen
+  const loader = document.createElement("div");
+  loader.id = "loading-curtain";
+  Object.assign(loader.style, {
+    position: "fixed",
+    top: "0", left: "0", width: "100%", height: "100%",
+    background: "rgba(30, 30, 30, 0.9)", // Dunkelgrau
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#fff",
+    fontSize: "1.2rem",
+    zIndex: "9999",
+    opacity: "0",
+    transition: "opacity 0.2s ease"
+  });
+  loader.innerHTML = "<div>" + (lang === "de" ? "Wird aktualisiert..." : "Updating...") + "</div>";
+  document.body.appendChild(loader);
 
-  // 2. Neues Overlay aufbauen
-  showResults();
+  // 2. Vorhang einblenden
+  requestAnimationFrame(() => {
+    loader.style.opacity = "1";
+  });
 
-  const newOverlay = document.getElementById("overlay");
-  if (newOverlay) {
-    // Wir deaktivieren kurz die Animation, damit es nicht "slidet"
-    newOverlay.style.scrollBehavior = "auto";
-    
-    // Mehrstufiges Wiederherstellen für Mobile-Browser
-    setTimeout(() => {
-      newOverlay.scrollTop = currentScroll;
-    }, 50);
+  // 3. Nach einer kurzen Verzögerung (wenn Vorhang zu ist) umbauen
+  setTimeout(() => {
+    oldOverlay.remove();
+    showResults();
 
-    setTimeout(() => {
-      newOverlay.scrollTop = currentScroll;
-    }, 150);
-  }
+    const newOverlay = document.getElementById("overlay");
+    if (newOverlay) {
+      newOverlay.style.scrollBehavior = "auto";
+      
+      // Scroll-Position wiederherstellen (bevor Vorhang aufgeht)
+      setTimeout(() => {
+        newOverlay.scrollTop = currentScroll;
+        
+        // 4. Vorhang wieder ausblenden
+        loader.style.opacity = "0";
+        setTimeout(() => loader.remove(), 200);
+      }, 80); 
+    }
+  }, 200);
 }
 
 // === Responsive Styles ===
@@ -1117,6 +1140,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
