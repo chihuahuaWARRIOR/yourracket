@@ -409,12 +409,11 @@ function showResults() {
     opacity: matchMode === "weakness" ? "0.7" : "1"
   });
 
-  btnStrength.onclick = () => { 
-    document.activeElement?.blur();
-    matchMode = "strength"; refreshOverlay(); };
-  btnWeak.onclick = () => { 
-    document.activeElement?.blur();
-    matchMode = "weakness"; refreshOverlay(); };
+  btnStrength.addEventListener("touchstart", e => e.preventDefault(), { passive: false });
+  btnWeak.addEventListener("touchstart", e => e.preventDefault(), { passive: false });
+  
+  btnStrength.onclick = () => { matchMode = "strength"; refreshOverlay(); };
+  btnWeak.onclick = () => { matchMode = "weakness"; refreshOverlay(); };
 
   modeRight.appendChild(btnStrength);
   modeRight.appendChild(btnWeak);
@@ -1098,6 +1097,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
