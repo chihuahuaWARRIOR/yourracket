@@ -284,8 +284,8 @@ function showResults() {
     padding: "22px",
     boxSizing: "border-box",
     boxShadow: "0 10px 30px rgba(0,0,0,0.12)",
-    maxHeight: "90vh",
-    overflowY: "auto"
+    maxHeight: "none",
+    overflowY: "visible"
   });
 
   const styleTitle = document.createElement("h3");
@@ -693,28 +693,24 @@ function refreshOverlay() {
     return;
   }
 
-  // Position merken
+  // Wir merken uns die Position
   const currentScroll = overlay.scrollTop;
 
   // Neu aufbauen
   overlay.remove();
   showResults();
 
-  // Wiederherstellen mit "Brute Force" (mehrere Versuche für langsames Rendering)
+  // Das neue Overlay finden
   const newOverlay = document.getElementById("overlay");
   if (newOverlay) {
-    // Versuch 1: Sofort
-    newOverlay.scrollTop = currentScroll;
-
-    // Versuch 2: Nach dem nächsten Frame (Render-Zyklus)
-    requestAnimationFrame(() => {
-      newOverlay.scrollTop = currentScroll;
-    });
-
-    // Versuch 3: Nach 50ms (wenn das Chart kommt)
+    // Wir müssen warten, bis das Radar-Chart fertig ist (mind. 50ms im Code)
+    // 100ms ist der "Sweet Spot", damit die Höhe stabil ist
     setTimeout(() => {
-      newOverlay.scrollTop = currentScroll;
-    }, 50);
+      newOverlay.scrollTo({
+        top: currentScroll,
+        behavior: 'instant'
+      });
+    }, 100); 
   }
 }
 
@@ -1121,6 +1117,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
