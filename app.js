@@ -636,7 +636,6 @@ function updateRacketDisplay(index) {
   selectedRacketIndex = index;
   highlightSelectedRacket(index);
   
-  const overlay = document.getElementById("overlay");
 }
 
 // === Karten Highlighten ===
@@ -1107,6 +1106,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
