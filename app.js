@@ -686,26 +686,27 @@ function createRestartFloatingButton() {
   document.body.appendChild(btn);
 }
 
-// === Overlay Refresh ===
-// === Overlay Refresh ===
+// === Overlay Refresh (Stabilisierte Version) ===
 function refreshOverlay() {
   const overlay = document.getElementById("overlay");
   
-  // 1. Die aktuelle Scroll-Position des Overlays speichern
-  // Falls das Overlay noch nicht existiert, nutzen wir 0
+  // 1. Aktuelle Position merken
   const currentScroll = overlay ? overlay.scrollTop : 0;
 
-  // 2. Das alte Overlay entfernen
+  // 2. Overlay neu aufbauen
   if (overlay) overlay.remove();
-
-  // 3. Das Overlay neu generieren (ruft showResults auf)
   showResults();
 
-  // 4. Die Scroll-Position sofort wiederherstellen
-  const newOverlay = document.getElementById("overlay");
-  if (newOverlay) {
-    newOverlay.scrollTop = currentScroll;
-  }
+  // 3. Dem Browser 10ms Zeit geben, das HTML zu verarbeiten
+  setTimeout(() => {
+    const newOverlay = document.getElementById("overlay");
+    if (newOverlay) {
+      newOverlay.scrollTo({
+        top: currentScroll,
+        behavior: 'instant' // Verhindert Animation, springt sofort zurück
+      });
+    }
+  }, 10); 
 }
 
 // === Responsive Styles ===
@@ -1111,6 +1112,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
