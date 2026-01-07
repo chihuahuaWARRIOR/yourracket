@@ -408,9 +408,6 @@ function showResults() {
     color: "#fff",
     opacity: matchMode === "weakness" ? "0.7" : "1"
   });
-
-  btnStrength.addEventListener("touchstart", e => e.preventDefault(), { passive: false });
-  btnWeak.addEventListener("touchstart", e => e.preventDefault(), { passive: false });
   
   btnStrength.onclick = () => { matchMode = "strength"; refreshOverlay(); };
   btnWeak.onclick = () => { matchMode = "weakness"; refreshOverlay(); };
@@ -695,29 +692,25 @@ function refreshOverlay() {
 
   const currentScroll = oldOverlay.scrollTop;
 
-  // 1. Das alte Overlay ID-mäßig umbenennen, damit showResults ein NEUES erstellt
-  oldOverlay.id = "overlay_old";
-  
-  // 2. Das alte Overlay halbtransparent machen, damit man sieht, dass was passiert
-  oldOverlay.style.opacity = "0.5";
-  oldOverlay.style.pointerEvents = "none";
+  // 1. Altes Overlay sofort entfernen (für maximale Mobile-Kompatibilität)
+  oldOverlay.remove();
 
-  // 3. Neues Overlay erstellen
+  // 2. Neues Overlay aufbauen
   showResults();
 
   const newOverlay = document.getElementById("overlay");
   if (newOverlay) {
-    // Sofort unsichtbar machen für den Aufbau
-    newOverlay.style.opacity = "0";
+    // Wir deaktivieren kurz die Animation, damit es nicht "slidet"
+    newOverlay.style.scrollBehavior = "auto";
     
-    // Warten bis Chart & Layout fertig sind (wie vorher)
+    // Mehrstufiges Wiederherstellen für Mobile-Browser
     setTimeout(() => {
       newOverlay.scrollTop = currentScroll;
-      newOverlay.style.opacity = "1"; // Jetzt sanft einblenden
-      
-      // 4. Erst jetzt das alte Overlay endgültig löschen
-      oldOverlay.remove();
-    }, 120); 
+    }, 50);
+
+    setTimeout(() => {
+      newOverlay.scrollTop = currentScroll;
+    }, 150);
   }
 }
 
@@ -1124,6 +1117,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
