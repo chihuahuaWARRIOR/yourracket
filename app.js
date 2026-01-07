@@ -409,9 +409,12 @@ function showResults() {
     opacity: matchMode === "weakness" ? "0.7" : "1"
   });
 
-  document.activeElement?.blur();
-  btnStrength.onclick = () => { matchMode = "strength"; refreshOverlay(); };
-  btnWeak.onclick = () => { matchMode = "weakness"; refreshOverlay(); };
+  btnStrength.onclick = () => { 
+    document.activeElement?.blur();
+    matchMode = "strength"; refreshOverlay(); };
+  btnWeak.onclick = () => { 
+    document.activeElement?.blur();
+    matchMode = "weakness"; refreshOverlay(); };
 
   modeRight.appendChild(btnStrength);
   modeRight.appendChild(btnWeak);
@@ -1095,6 +1098,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
