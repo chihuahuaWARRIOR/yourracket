@@ -868,26 +868,32 @@ function getTopRackets(profile, mode) {
 function getPlayStyleDescription(profile) {
   const playStyles = {
     TheBigServer: {
+      iconPath: "/assets/icons/biceps-flexed.svg",
       de: { name: "Big Serve", desc: "Dein Spiel dreht sich um Deinen <b>schnellen ersten Aufschlag</b>. Dabei hilft Dir ein Schläger, der Dich bei <b>Serves</b> unterstützt. Um Punkte frühzeitig zu entscheiden, hilft Dir ein Schläger mit viel <b>Power</b>. Du bestimmst das Spiel mit Deinem <b>risikoreichen Offensivspiel</b> und bewegst dich daher sehr effizient: <b>Manövrierfähigkeit</b> ist für Deinen Schläger also weniger wichtig." },
       en: { name: "Big Serve", desc: "Your game is built around your <b>fast first serve</b>. You need a racket that provides maximum support for your <b>serves</b>. To end points early, a racket with plenty of <b>power</b> is your best ally. You dictate the game with your <b>high-risk offensive play</b> and move very efficiently: <b>maneuverability</b> is therefore less of a priority for your racket." }
     },
     ServeAndVolleyer: {
+      iconPath: "/assets/icons/zap.svg",
       de: { name: "Serve and Volley", desc: "Ein guter <b>Aufschlag, gefolgt von einem Angriff am Netz</b> ist der Mittelpunkt Deines Spiels. Ein Schläger für gute <b>Serves</b> ist dabei ebenso wichtig, wie die Qualität der <b>Volleys</b>. Durch den Fokus auf Dein <b>Offensivspiel am Netz</b> ist eine Unterstützung für <b>Schläge von der Grundlinie</b> von Deinem Schläger nicht die Priorität." },
       en: { name: "Serve and Volley", desc: "A strong <b>serve followed by an attack at the net</b> is the heart of your game. A racket for great <b>serves</b> is just as important as the quality of your <b>volleys</b>. Due to the focus on your <b>offensive net play</b>, support for <b>baseline strokes</b> is not the priority for your racket." }
     },
     AllCourtPlayer: {
+      iconPath: "/assets/icons/wind.svg",
       de: { name: "All-Court", desc: "Du spielst <b>offensiv</b> und versuchst von allen Bereichen des Platzes aus in den Angriff zu kommen. Dein Schläger sollte, wie du, eine gute <b>all-around Performance</b> mitbringen. Bei Angriffsbällen aus dem Halbfeld und dem Angriff am Netz danach hilft Dir eine gute <b>Manövrierfähigkeit</b> besonders. Um Deine Präzision zu unterstützen, rückt die <b>Power</b> des Schlägers etwas in den Hintergrund. " },
       en: { name: "All-Court", desc: "You play <b>offensively</b> and look to attack from all areas of the court. Like you, your racket should deliver strong <b>all-around performance</b>. For mid-court approach shots and following up at the net, good <b>maneuverability</b> is especially helpful. To support your precision, the <b>power</b> of the racket takes more of a backseat." }
     },
     AttackingBaseliner: {
+      iconPath: "/assets/icons/target.svg",
       de: { name: "Attacking Baseliner", desc: "Du diktierst das Spiel von der <b>Grundlinie</b>. Mit harten, platzierten Bällen bringst Du den Gegner zum Laufen. Ein Schläger, der Dir dafür starken <b>Topspin</b> liefert, ist perfekt. Auch bei der Qualität der <b>Schläge von der Grundlinie</b> kann dein Racket dich unterstützen, um Bälle platziert und weit zu spielen. Bei Deinem hohen Spieltempo liegt der Fokus für dich nicht auf defensive Schläger mit viel Slice." },
       en: { name: "Attacking Baseliner", desc: "You dictate the play from the <b>baseline</b>. With hard, well-placed shots, you keep your opponent on the run. A racket that provides strong <b>topspin</b> is perfect for this. Your racket also supports the quality of your <b>baseline strokes</b>, helping you play deep and accurate balls. Given your high pace, defensive rackets with high <b>slice</b> potential are not the focus for you." }
     },
     SolidBaseliner: {
+      iconPath: "/assets/icons/scale.svg",
       de: { name: "Solid Baseliner", desc: "Eine gute <b>Balance aus Angriff und Verteidigung</b> von der Grundlinie aus steht für Dich im Mittelpunkt. Schläger mit einer guten <b>Kontrolle</b> helfen dir bei der Platzierung genauer Bälle, während eine hohe <b>Stabilität</b> hilft, auch schnelle Angriffsbälle zurückzuspielen. In der Regel stehst Du weiter hinten: <b>Volleys</b> sind daher eher eine zweitrangige Anforderung an deinen Schläger," },
       en: { name: "Solid Baseliner", desc: "A solid <b>balance between offense and defense</b> from the baseline is the heart of your game. Rackets with great <b>control</b> help you place precise shots, while high <b>stability</b> allows you to return even the fastest attacking balls. Since you typically play from deep in the court, <b>volleys</b> are a secondary requirement for your racket." }
     },
     CounterPuncher: {
+      iconPath: "/assets/icons/shield.svg",
       de: { name: "Counter Puncher", desc: "Du fühlst Dich in der <b>Defensive wohl</b>. Eine hohe <b>Stabilität</b> hilft Dir, auch schnelle Angriffsbälle sicher zurückzuspielen, während Dir ein Schläger mit gutem <b>Slice</b> die nötige Zeit verschafft, wieder in die Ausgangsposition zu kommen. Da Du die Kraft des Gegners nutzt, ist zusätzliche <b>Power</b> aus Deinem Schläger weniger wichtig. " },
       en: { name: "Counter Puncher", desc: "You feel comfortable playing <b>defense</b>. High <b>stability</b> helps you return even the fastest attacking shots, while a racket with great <b>slice</b> potential gives you the time you need to recover your position. Since you use your opponent's pace, <b>power</b> from your racket is less of a priority. " }   }
   };
@@ -1139,6 +1145,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
