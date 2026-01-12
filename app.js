@@ -889,7 +889,7 @@ function getPlayStyleDescription(profile) {
     },
     SolidBaseliner: {
       iconPath: "/assets/icons/scale.svg",
-      de: { name: "Solid Baseliner", desc: "Eine gute <b>Balance aus Angriff und Verteidigung</b> von der Grundlinie aus steht für Dich im Mittelpunkt. Schläger mit einer guten <b>Kontrolle</b> helfen dir bei der Platzierung genauer Bälle, während eine hohe <b>Stabilität</b> hilft, auch schnelle Angriffsbälle zurückzuspielen. In der Regel stehst Du weiter hinten: <b>Volleys</b> sind daher eher eine zweitrangige Anforderung an deinen Schläger," },
+      de: { name: "Solid Baseliner", desc: "Eine gute <b>Balance aus Angriff und Verteidigung</b> von der Grundlinie aus steht für Dich im Mittelpunkt. Schläger mit einer guten <b>Kontrolle</b> helfen dir bei der Platzierung genauer Bälle, während eine hohe <b>Stabilität</b> hilft, auch schnelle Angriffsbälle zurückzuspielen. In der Regel stehst Du weiter hinten: <b>Volleys</b> sind daher eher eine zweitrangige Anforderung an deinen Schläger." },
       en: { name: "Solid Baseliner", desc: "A solid <b>balance between offense and defense</b> from the baseline is the heart of your game. Rackets with great <b>control</b> help you place precise shots, while high <b>stability</b> allows you to return even the fastest attacking balls. Since you typically play from deep in the court, <b>volleys</b> are a secondary requirement for your racket." }
     },
     CounterPuncher: {
@@ -1169,6 +1169,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
