@@ -865,7 +865,6 @@ function getTopRackets(profile, mode) {
 }
 
 // === Spielstil Beschreibung ===
-// === Spielstil Beschreibung ===
 function getPlayStyleDescription(profile) {
   const playStyles = {
     TheBigServer: {
@@ -915,52 +914,52 @@ function getPlayStyleDescription(profile) {
   const bestStyleKey = sortedStyles[0].name;
   const bestStyle = playStyles[bestStyleKey];
 
-  // Einleitungssatz ganz oben
+  // 1. EINLEITUNG GANZ OBEN
   const intro = lang === "de" 
     ? "Auf Basis Deiner Antworten haben wir folgendes Spielprofil gematched:" 
     : "Based on your answers, we have matched the following player profile:";
-  const introHtml = `<p style="color:#666; font-style:italic; font-size:0.85rem; margin-bottom:12px; line-height:1.2;">${intro}</p>`;
+  const introHtml = `<p style="color:#666; font-style:italic; font-size:0.85rem; margin-bottom:15px; line-height:1.2;">${intro}</p>`;
 
-  // Hilfsfunktion für kleine Icons in der Zeile
-  const getSmallIcon = (path) => `<img src="${path}" style="width:24px; height:24px; object-fit:contain; vertical-align:middle;" onerror="this.style.display='none'">`;
+  // Hilfsfunktion für Icon + Name in einer Zeile
+  const renderLine = (path, name) => `
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+      <img src="${path}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">
+      <span style="font-weight:700; font-size:1.1rem;">${name}</span>
+    </div>`;
 
-  // HYBRID LOGIK
+  // 2. HYBRID LOGIK
   if (sortedStyles.length > 1) {
-    const secondBestKey = sortedStyles[1].name;
-    const secondBestStyle = playStyles[secondBestKey];
+    const secondKey = sortedStyles[1].name;
+    const secondStyle = playStyles[secondKey];
     const score1 = sortedStyles[0].score;
     const score2 = sortedStyles[1].score;
 
     if (score1 - score2 <= 3 && score1 >= 0 && score2 >= 0) {
-        const s1 = bestStyle[lang];
-        const s2 = secondBestStyle[lang];
-        
-        const hybridHeadline = `
-          <div style="display:flex; align-items:center; gap:8px; flex-wrap:nowrap; font-weight:700; font-size:1.1rem; margin-bottom:10px;">
-            ${getSmallIcon(bestStyle.iconPath)} ${getSmallIcon(secondBestStyle.iconPath)}
-            <span>Hybrid: ${s1.name} & ${s2.name}</span>
-          </div>`;
+      const s1 = bestStyle[lang];
+      const s2 = secondStyle[lang];
 
-        const hybridDesc = `<div style="font-weight:400; font-size:0.95em; line-height:1.4; color:#333;">
-          <p style="margin-bottom:10px;"><b>${s1.name}</b>: ${s1.desc}</p>
+      return `
+        ${introHtml}
+        <div style="margin-bottom:15px;">
+          <div style="font-size:0.85rem; font-weight:800; text-transform:uppercase; color:#999; margin-bottom:8px;">Hybrid</div>
+          ${renderLine(bestStyle.iconPath, s1.name)}
+          ${renderLine(secondStyle.iconPath, s2.name)}
+        </div>
+        <div style="font-size:0.95em; line-height:1.4; color:#333;">
+          <p style="margin-bottom:12px;"><b>${s1.name}</b>: ${s1.desc}</p>
           <p><b>${s2.name}</b>: ${s2.desc}</p>
         </div>`;
-        
-        return `${introHtml}${hybridHeadline}${hybridDesc}`;
-      }
+    }
   }
 
-  // SINGLE STYLE LOGIK
+  // 3. SINGLE STYLE LOGIK
   const s = bestStyle[lang];
-  const singleHeadline = `
-    <div style="display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.1rem; margin-bottom:10px;">
-      ${getSmallIcon(bestStyle.iconPath)}
-      <span>${s.name}</span>
-    </div>`;
-
-  const singleDesc = `<div style="font-weight:400; font-size:0.95em; line-height:1.4; color:#333;">${s.desc}</div>`;
-  
-  return `${introHtml}${singleHeadline}${singleDesc}`;
+  return `
+    ${introHtml}
+    <div style="margin-bottom:12px;">
+      ${renderLine(bestStyle.iconPath, s.name)}
+    </div>
+    <div style="font-size:0.95em; line-height:1.4; color:#333;">${s.desc}</div>`;
 }
 
 // === Zurück-Button ===
@@ -1177,6 +1176,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
