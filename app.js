@@ -868,8 +868,8 @@ function getTopRackets(profile, mode) {
 function getPlayStyleDescription(profile) {
   const playStyles = {
     TheBigServer: {
-      de: { name: "The Big Server", desc: "Du bist ein Spieler mit einem <b>schnellen ersten Aufschlag</b>, der oft Punkte innerhalb seiner ersten zwei Schläge gewinnt." },
-      en: { name: "The Big Server", desc: "A player with a <b>fast first serve</b>, who will often win points within their first two shots." }
+      de: { name: "The Big Server", desc: "Dein Spiel dreht sich um Deinen <b>schnellen ersten Aufschlag</b>. Dabei hilft Dir ein Schläger, der Dich bei <b>Serves</b> unterstützt. Um Punkte frühzeitig zu entscheiden, hilft Dir ein Schläger mit viel <b>Power</b>. Du bestimmst das Spiel mit Deinem <b>risikoreichen Offensivspiel</b> und bewegst dich daher sehr effizient: <b> Manövrierfähigkeit</b> ist für Deinen Schläger also weniger wichtig." },
+      en: { name: "The Big Server", desc: "Your game is built around your <b>fast first serve</b>. You need a racket that provides maximum support for your <b>serves</b>. To end points early, a racket with plenty of <b>power</b> is your best ally. You dictate the game with your <b>high-risk offensive play</b> and move very efficiently: <b>maneuverability</b> is therefore less of a priority for your racket." }
     },
     ServeAndVolleyer: {
       de: { name: "Serve and Volleyer", desc: "Du nutzt <b>Aufschlag und Volley als deine primäre Taktik</b>." },
@@ -889,8 +889,7 @@ function getPlayStyleDescription(profile) {
     },
     CounterPuncher: {
       de: { name: "Counter Puncher", desc: "Du fühlst dich in der <b>Defensive wohl</b>. Du nutzt diese Fähigkeit, um deine Gegner zu frustrieren." },
-      en: { name: "Counter Puncher", desc: "A player who is <b>comfortable playing in defence</b>. They use this ability to frustrate their opponent." }
-      }
+      en: { name: "Counter Puncher", desc: "A player who is <b>comfortable playing in defence</b>. They use this ability to frustrate their opponent." }      }
   };
 
   const styleScores = {};
@@ -1140,6 +1139,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
