@@ -318,7 +318,7 @@ function showResults() {
       boxSizing: "border-box",
       minHeight: window.innerWidth < 768 ? "auto" : "500px" 
   });
-  styleDiv.innerHTML = `<div style="font-size:1.0rem;">${styleDesc}</div>`;
+  styleDiv.innerHTML = styleDesc;
   
   const radarDiv = document.createElement("div");
   Object.assign(radarDiv.style, {
@@ -865,6 +865,7 @@ function getTopRackets(profile, mode) {
 }
 
 // === Spielstil Beschreibung ===
+// === Spielstil Beschreibung ===
 function getPlayStyleDescription(profile) {
   const playStyles = {
     TheBigServer: {
@@ -895,11 +896,12 @@ function getPlayStyleDescription(profile) {
     CounterPuncher: {
       iconPath: "/assets/icons/shield.svg",
       de: { name: "Counter Puncher", desc: "Du fühlst Dich in der <b>Defensive wohl</b>. Eine hohe <b>Stabilität</b> hilft Dir, auch schnelle Angriffsbälle sicher zurückzuspielen, während Dir ein Schläger mit gutem <b>Slice</b> die nötige Zeit verschafft, wieder in die Ausgangsposition zu kommen. Da Du die Kraft des Gegners nutzt, ist zusätzliche <b>Power</b> aus Deinem Schläger weniger wichtig. " },
-      en: { name: "Counter Puncher", desc: "You feel comfortable playing <b>defense</b>. High <b>stability</b> helps you return even the fastest attacking shots, while a racket with great <b>slice</b> potential gives you the time you need to recover your position. Since you use your opponent's pace, <b>power</b> from your racket is less of a priority. " }   }
+      en: { name: "Counter Puncher", desc: "You feel comfortable playing <b>defense</b>. High <b>stability</b> helps you return even the fastest attacking shots, while a racket with great <b>slice</b> potential gives you the time you need to recover your position. Since you use your opponent's pace, <b>power</b> from your racket is less of a priority. " }
+    }
   };
 
   const styleScores = {};
-  const BASE_CALC = 50; // Festwert für Spielstile
+  const BASE_CALC = 50; 
   Object.keys(playStyles).forEach(style => {
     const raw = userProfile[style] ?? BASE_CALC; 
     const score = Math.round(((raw - BASE_CALC) / BASE_CALC) * 16);
@@ -909,26 +911,49 @@ function getPlayStyleDescription(profile) {
   const sortedStyles = Object.entries(styleScores)
     .map(([name, score]) => ({ name, score }))
     .sort((a, b) => b.score - a.score);
-  const bestStyle = sortedStyles[0];
+  
+  const bestStyleKey = sortedStyles[0].name;
+  const bestStyle = playStyles[bestStyleKey];
 
+  // Einleitungssatz (Fest verbaut)
+  const intro = lang === "de" 
+    ? "Auf Basis Deiner Antworten haben wir Dein Spielprofil analysiert und folgende Stile gematched:" 
+    : "Based on your answers, we have analyzed your player profile and matched the following styles:";
+  const introHtml = `<p style="color:#666; font-style:italic; font-size:0.9rem; margin-bottom:15px;">${intro}</p>`;
+
+  // HYBRID LOGIK
   if (sortedStyles.length > 1) {
-    const secondBest = sortedStyles[1];
-    if (bestStyle.score - secondBest.score <= 3 && bestStyle.score >= 0 && secondBest.score >= 0) {
-        const style1 = playStyles[bestStyle.name][lang];
-        const style2 = playStyles[secondBest.name][lang];
-        const hybridName = lang === "de"
-          ? `Hybrid: <strong>${style1.name}</strong> & <strong>${style2.name}</strong>`
-          : `Hybrid: <strong>${style1.name}</strong> & <strong>${style2.name}</strong>`;
-        const hybridDesc = lang === "de"
-          ? `<span style="font-weight:700;">${style1.name}</span>: ${style1.desc} <br><br> <span style="font-weight:700;">${style2.name}</span>: ${style2.desc}`
-          : `<span style="font-weight:700;">${style1.name}</span>: ${style1.desc} <br><br> <span style="font-weight:700;">${style2.name}</span>: ${style2.desc}`;
-        return `${hybridName}<br><span style="font-weight:400; font-size:0.95em; line-height:1.4;"><br>${hybridDesc}</span>`;
+    const secondBestKey = sortedStyles[1].name;
+    const secondBestStyle = playStyles[secondBestKey];
+    const score1 = sortedStyles[0].score;
+    const score2 = sortedStyles[1].score;
+
+    if (score1 - score2 <= 3 && score1 >= 0 && score2 >= 0) {
+        const s1 = bestStyle[lang];
+        const s2 = secondBestStyle[lang];
+        
+        const iconsHtml = `
+          <div style="display:flex; gap:10px; margin-bottom:15px;">
+            <img src="${bestStyle.iconPath}" style="width:40px; height:40px;" onerror="this.style.display='none'">
+            <img src="${secondBestStyle.iconPath}" style="width:40px; height:40px;" onerror="this.style.display='none'">
+          </div>`;
+
+        const hybridName = `Hybrid: <strong>${s1.name}</strong> & <strong>${s2.name}</strong>`;
+        const hybridDesc = `<span style="font-weight:700;">${s1.name}</span>: ${s1.desc} <br><br> <span style="font-weight:700;">${s2.name}</span>: ${s2.desc}`;
+        
+        return `${introHtml}${iconsHtml}${hybridName}<br><span style="font-weight:400; font-size:0.95em; line-height:1.4;"><br>${hybridDesc}</span>`;
       }
   }
 
-  const style = playStyles[bestStyle.name][lang];
-  const singleDesc = `<span style="font-weight:700;">${style.name}</span>: ${style.desc}`;
-  return `${style.name}<br><span style="font-weight:400; font-size:0.95em;"><br>${singleDesc}</span>`;
+  // SINGLE STYLE LOGIK
+  const s = bestStyle[lang];
+  const iconHtml = `
+    <div style="margin-bottom:15px;">
+      <img src="${bestStyle.iconPath}" style="width:40px; height:40px;" onerror="this.style.display='none'">
+    </div>`;
+
+  const singleDesc = `<span style="font-weight:700;">${s.name}</span>: ${s.desc}`;
+  return `${introHtml}${iconHtml}${s.name}<br><span style="font-weight:400; font-size:0.95em;"><br>${singleDesc}</span>`;
 }
 
 // === Zurück-Button ===
@@ -1145,6 +1170,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
