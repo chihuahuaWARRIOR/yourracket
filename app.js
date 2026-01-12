@@ -915,11 +915,14 @@ function getPlayStyleDescription(profile) {
   const bestStyleKey = sortedStyles[0].name;
   const bestStyle = playStyles[bestStyleKey];
 
-  // Einleitungssatz (Fest verbaut)
+  // Einleitungssatz ganz oben
   const intro = lang === "de" 
-    ? "Auf Basis Deiner Antworten haben wir Dein Spielprofil analysiert und folgende Stile gematched:" 
-    : "Based on your answers, we have analyzed your player profile and matched the following styles:";
-  const introHtml = `<p style="color:#666; font-style:italic; font-size:0.9rem; margin-bottom:15px;">${intro}</p>`;
+    ? "Auf Basis Deiner Antworten haben wir folgendes Spielprofil gematched:" 
+    : "Based on your answers, we have matched the following player profile:";
+  const introHtml = `<p style="color:#666; font-style:italic; font-size:0.85rem; margin-bottom:12px; line-height:1.2;">${intro}</p>`;
+
+  // Hilfsfunktion für kleine Icons in der Zeile
+  const getSmallIcon = (path) => `<img src="${path}" style="width:24px; height:24px; object-fit:contain; vertical-align:middle;" onerror="this.style.display='none'">`;
 
   // HYBRID LOGIK
   if (sortedStyles.length > 1) {
@@ -932,28 +935,32 @@ function getPlayStyleDescription(profile) {
         const s1 = bestStyle[lang];
         const s2 = secondBestStyle[lang];
         
-        const iconsHtml = `
-          <div style="display:flex; gap:10px; margin-bottom:15px;">
-            <img src="${bestStyle.iconPath}" style="width:40px; height:40px;" onerror="this.style.display='none'">
-            <img src="${secondBestStyle.iconPath}" style="width:40px; height:40px;" onerror="this.style.display='none'">
+        const hybridHeadline = `
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:nowrap; font-weight:700; font-size:1.1rem; margin-bottom:10px;">
+            ${getSmallIcon(bestStyle.iconPath)} ${getSmallIcon(secondBestStyle.iconPath)}
+            <span>Hybrid: ${s1.name} & ${s2.name}</span>
           </div>`;
 
-        const hybridName = `Hybrid: <strong>${s1.name}</strong> & <strong>${s2.name}</strong>`;
-        const hybridDesc = `<span style="font-weight:700;">${s1.name}</span>: ${s1.desc} <br><br> <span style="font-weight:700;">${s2.name}</span>: ${s2.desc}`;
+        const hybridDesc = `<div style="font-weight:400; font-size:0.95em; line-height:1.4; color:#333;">
+          <p style="margin-bottom:10px;"><b>${s1.name}</b>: ${s1.desc}</p>
+          <p><b>${s2.name}</b>: ${s2.desc}</p>
+        </div>`;
         
-        return `${introHtml}${iconsHtml}${hybridName}<br><span style="font-weight:400; font-size:0.95em; line-height:1.4;"><br>${hybridDesc}</span>`;
+        return `${introHtml}${hybridHeadline}${hybridDesc}`;
       }
   }
 
   // SINGLE STYLE LOGIK
   const s = bestStyle[lang];
-  const iconHtml = `
-    <div style="margin-bottom:15px;">
-      <img src="${bestStyle.iconPath}" style="width:40px; height:40px;" onerror="this.style.display='none'">
+  const singleHeadline = `
+    <div style="display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.1rem; margin-bottom:10px;">
+      ${getSmallIcon(bestStyle.iconPath)}
+      <span>${s.name}</span>
     </div>`;
 
-  const singleDesc = `<span style="font-weight:700;">${s.name}</span>: ${s.desc}`;
-  return `${introHtml}${iconHtml}${s.name}<br><span style="font-weight:400; font-size:0.95em;"><br>${singleDesc}</span>`;
+  const singleDesc = `<div style="font-weight:400; font-size:0.95em; line-height:1.4; color:#333;">${s.desc}</div>`;
+  
+  return `${introHtml}${singleHeadline}${singleDesc}`;
 }
 
 // === Zurück-Button ===
@@ -1170,6 +1177,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
