@@ -914,54 +914,47 @@ function getPlayStyleDescription(profile) {
   const bestStyleKey = sortedStyles[0].name;
   const bestStyle = playStyles[bestStyleKey];
 
-  // 1. EINLEITUNG GANZ OBEN
-  const intro = lang === "de" 
+  // 1. EINLEITUNG (Farbe #444 wie in Mode Selection)
+  const introText = lang === "de" 
     ? "Auf Basis Deiner Antworten haben wir folgendes Spielprofil gematched:" 
     : "Based on your answers, we have matched the following player profile:";
-  const introHtml = `<p style="color:#666; font-style:italic; font-size:0.85rem; margin-bottom:15px; line-height:1.2;">${intro}</p>`;
+  const introHtml = `<p style="color:#444; margin:0 0 15px 0; line-height:1.4;">${introText}</p>`;
 
-  // Hilfsfunktion für Icon + Name in einer Zeile
+  // Hilfsfunktion für Icon + Name Zeile
   const renderLine = (path, name) => `
-    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
       <img src="${path}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">
-      <span style="font-weight:700; font-size:1.1rem;">${name}</span>
+      <span style="font-weight:700; font-size:1.15rem;">${name}</span>
     </div>`;
 
   // 2. HYBRID LOGIK
   if (sortedStyles.length > 1) {
     const secondKey = sortedStyles[1].name;
     const secondStyle = playStyles[secondKey];
-    const score1 = sortedStyles[0].score;
-    const score2 = sortedStyles[1].score;
-
-    if (score1 - score2 <= 3 && score1 >= 0 && score2 >= 0) {
-      const s1 = bestStyle[lang];
-      const s2 = secondStyle[lang];
-
+    if (sortedStyles[0].score - sortedStyles[1].score <= 3 && sortedStyles[0].score >= 0 && sortedStyles[1].score >= 0) {
+      
       return `
         ${introHtml}
-        <div style="margin-bottom:15px;">
-          <div style="font-size:0.85rem; font-weight:800; text-transform:uppercase; color:#999; margin-bottom:8px;">Hybrid</div>
-          ${renderLine(bestStyle.iconPath, s1.name)}
-          ${renderLine(secondStyle.iconPath, s2.name)}
+        <div style="margin-bottom:20px;">
+          <div style="font-size:0.85rem; font-weight:800; text-transform:uppercase; color:#999; margin-bottom:8px; letter-spacing:0.5px;">Hybrid</div>
+          ${renderLine(bestStyle.iconPath, bestStyle[lang].name)}
+          ${renderLine(secondStyle.iconPath, secondStyle[lang].name)}
         </div>
-        <div style="font-size:0.95em; line-height:1.4; color:#333;">
-          <p style="margin-bottom:12px;"><b>${s1.name}</b>: ${s1.desc}</p>
-          <p><b>${s2.name}</b>: ${s2.desc}</p>
+        <div style="color:#444; line-height:1.5;">
+          <p style="margin-bottom:15px;"><b>${bestStyle[lang].name}</b>: ${bestStyle[lang].desc}</p>
+          <p><b>${secondStyle[lang].name}</b>: ${secondStyle[lang].desc}</p>
         </div>`;
     }
   }
 
   // 3. SINGLE STYLE LOGIK
-  const s = bestStyle[lang];
   return `
     ${introHtml}
-    <div style="margin-bottom:12px;">
-      ${renderLine(bestStyle.iconPath, s.name)}
+    <div style="margin-bottom:15px;">
+      ${renderLine(bestStyle.iconPath, bestStyle[lang].name)}
     </div>
-    <div style="font-size:0.95em; line-height:1.4; color:#333;">${s.desc}</div>`;
+    <div style="color:#444; line-height:1.5;">${bestStyle[lang].desc}</div>`;
 }
-
 // === Zurück-Button ===
 function createBackButton() {
   const existing = document.getElementById("back-button");
@@ -1176,6 +1169,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
