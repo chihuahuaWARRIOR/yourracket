@@ -270,17 +270,14 @@ body {
 }
 
 /* === Responsives Verhalten (Mobile & Tablet) === */
-/* === Responsives Verhalten (Mobile & Tablet) === */
 @media (max-width: 768px) {
   
-  /* 1. Hintergrund & Body */
   html, body {
     height: 100%;
     overflow-y: auto;
-    margin: 0;
   }
 
-  /* 2. Inseln oben bündig (38px hoch) */
+  /* 1. Inseln oben bündig (38px hoch) */
   #brand, #nav-island {
     top: 0 !important;
     height: 38px !important;
@@ -307,7 +304,7 @@ body {
     border-bottom-right-radius: 20px;
   }
 
-  /* 3. Fragenbox: Mehr Platz & Luft zur Fortschrittsanzeige */
+  /* 2. Fragenbox: 3px Gap zur Insel + Abstand zur Fortschrittsanzeige */
   #question-container {
     position: relative;
     top: auto;
@@ -315,59 +312,57 @@ body {
     transform: none;
     width: 92%;
     max-width: 640px;
-    margin: 41px auto 15px auto !important; /* 41px Abstand zu Inseln oben */
-    min-height: auto; /* Erlaubt der Box mitzuwachsen */
-    padding: 20px 16px 25px 16px; /* Mehr Padding unten für Abstand zum Progress */
+    margin: 41px auto 10px auto !important; /* Knapp unter die Inseln */
+    padding: 20px 16px 25px 16px; /* Viel Padding unten für den Balken */
     box-sizing: border-box;
     z-index: 5;
     font-size: 0.9rem;
   }
 
   #progress-container {
-    margin-top: 25px !important; /* Schafft deutlich mehr Platz zwischen Frage und Balken */
+    margin-top: 25px !important; /* Abstand Text zu Fortschrittsbalken */
     position: relative;
     width: 100%;
   }
 
-  /* 4. Antwort-Grid: Einspaltig, Kompakt & Gleich hoch */
+  /* 3. Antwort-Grid: ABSOLUT IDENTISCH */
   #answers-grid {
     position: relative;
     display: grid !important;
-    grid-template-columns: 1fr !important;
-    /* Entfernt das 1fr, damit die Boxen nicht den ganzen Screen füllen */
-    grid-auto-rows: min-content; 
-    gap: 8px; /* Engeres Gap für kompaktes Design */
+    grid-template-columns: 1fr !important; /* Eine Spalte */
+    
+    /* Wir definieren 4 Zeilen, die alle exakt 1 Teil vom Platz nehmen */
+    grid-template-rows: repeat(4, 1fr) !important; 
+    
+    gap: 10px; 
     width: 100%;
-    padding: 0 12px 70px 12px;
+    max-width: 400px; /* Damit die Buttons nicht zu breit werden auf Tablets */
+    margin: 0 auto;
+    padding: 0 12px 80px 12px;
     box-sizing: border-box;
   }
 
   .answer {
     width: 100%;
-    /* Kompakteres Padding für kleinere Buttons */
+    /* Wichtig: Keine feste Höhe, sondern flexibel innerhalb der Grid-Zelle */
+    min-height: 55px; 
     padding: 12px 15px; 
     font-size: 0.95rem;
     border-radius: 12px;
     
-    /* Flexbox für Zentrierung */
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    
-    /* Gleiche Höhe erzwingen wir hier über eine Mindesthöhe, 
-       die für 1-2 Zeiler perfekt passt */
-    min-height: 52px; 
-    height: auto;
     box-sizing: border-box;
   }
 
-  /* 5. Impressum */
+  /* 4. Impressum */
   #footer-island {
     position: fixed;
     right: 12px !important;
     bottom: 0 !important;
-    padding: 6px 15px;
+    padding: 8px 20px;
     background: white;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -378,10 +373,9 @@ body {
     color: black !important;
     text-decoration: none;
     font-weight: 700;
-    font-size: 0.8rem;
   }
 
-  /* 6. Ergebnis-Bildschirm */
+  /* 5. Ergebnis-Bildschirm */
   #result-container .result-card {
     width: 100% !important;
     max-width: 100% !important;
@@ -389,7 +383,6 @@ body {
     padding: 15px 10px;
   }
 }
-
 /* === Abschlussbildschirm Overlay (Allgemein) === */
 #result-container {
   position: fixed;
@@ -439,6 +432,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
