@@ -456,15 +456,15 @@ const makeRacketCard = (r, idx) => {
   div.dataset.index = idx;
   div.onclick = () => updateRacketDisplay(idx);
 
-  // --- TOP 2 KATEGORIEN ---
-  const relevantCats = [
-    "Power", "Control", "Maneuverability", "Stability", 
-    "Comfort", "Touch / Feel", "Topspin", "Slice"
-  ];
-  
-  const topCats = relevantCats
-    .map(cat => ({ name: cat, val: (r.stats && r.stats[cat]) ? r.stats[cat] : 0 }))
+ // --- TOP 2 KATEGORIEN (REIN NACH ZAHLENWERT) ---
+  const topCats = Object.entries(r.stats)
+    // Wir filtern Weight und Headsize raus, da das technische Daten sind, keine Performance-Stats
+    .filter(([key]) => key !== "Weight" && key !== "Headsize")
+    // Wir wandeln alles in ein sortierbares Array um
+    .map(([name, val]) => ({ name, val: parseFloat(val) }))
+    // Sortieren: Höchste Zahl zuerst
     .sort((a, b) => b.val - a.val)
+    // Die obersten zwei nehmen
     .slice(0, 2);
 
   const badgeContainer = document.createElement("div");
@@ -473,19 +473,22 @@ const makeRacketCard = (r, idx) => {
     gap: "6px",
     marginBottom: "12px",
     justifyContent: "center",
-    width: "100%"
+    width: "100%",
+    minHeight: "22px"
   });
 
   topCats.forEach(cat => {
     const badge = document.createElement("span");
-    badge.innerText = cat.name;
+    let displayName = cat.name;
+    
+    badge.innerText = displayName;
     Object.assign(badge.style, {
       background: "transparent",
       color: "#333",
       fontSize: "0.65rem",
       fontWeight: "800",
-      padding: "4px 8px",
-      borderRadius: "6px",
+      padding: "3px 8px",
+      borderRadius: "4px",
       textTransform: "uppercase",
       border: "1px solid #ddd",
       whiteSpace: "nowrap",
@@ -1254,6 +1257,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
