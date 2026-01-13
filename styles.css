@@ -322,60 +322,53 @@ body {
   text-align: center; /* Zentriert den Fragentext */
 }
 
-/* 2. Fragenbox - Vorbereitung für den Balken */
+/* 2. Fragenbox - Der "Sicherheits-Rahmen" */
 #question-container {
-  position: relative; 
-  top: auto;
-  left: auto;
-  transform: none;
+  position: relative;
+  display: flex !important; /* Aktiviert Flexbox für die Box selbst */
+  flex-direction: column;   /* Stapelt Inhalt vertikal */
+  align-items: center;      /* Zentriert ALLES (Text + Balken) horizontal */
+  
   width: 92%;
   max-width: 640px;
   margin: 41px auto 10px auto !important; 
-  padding: 16px 16px 35px 16px; /* 35px unten für genug Platz */
+  padding: 16px 16px 40px 16px; /* 40px unten Platz für den angedockten Balken */
   box-sizing: border-box;
   z-index: 5;
   font-size: 0.7rem;
-  text-align: center;
 }
-  
-/* Der angedockte Fortschrittsbalken (Zentriert) */
+
+/* Der Fortschritts-Container - Jetzt ohne kompliziertes Geschiebe */
 #progress-container {
   position: absolute; 
-  bottom: 8px;          
-  left: 0;
-  right: 0;
-  margin: 0 auto !important; /* Zentriert den gesamten Container */
-  width: 80%;
-  max-width: 250px;
+  bottom: 8px;          /* Klebt unten am Rand der Box */
+  width: 100%;          /* Nutzt die volle Breite der Fragenbox */
+  left: 0;              /* Startet ganz links */
   
-  /* Das hier sorgt dafür, dass Text und Balken untereinander stehen */
-  display: block !important; 
-  text-align: center; /* Zentriert den Text über dem Balken */
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;  /* Zwingt Text und Balken EXAKT in die Mitte */
+  
+  margin: 0 !important;
+  padding: 0 20px;      /* Kleiner Seitenabstand zum Rand der Box */
+  box-sizing: border-box;
 }
 
-/* Falls "Frage 1 von X" in einem Span oder Div dort drin steht */
-#progress-container span, 
-#progress-container div {
-  display: block; /* Erzwingt, dass jedes Element eine neue Zeile nimmt */
-  margin: 0 auto;
+/* Text über dem Balken */
+#progress-text {
+  display: block;
+  text-align: center;
+  margin-bottom: 4px;
 }
 
-/* Der eigentliche Balken braucht wieder seine Form */
+/* Der Balken selbst */
 #progress-bar {
-  width: 100%;
+  width: 100%;          /* Füllt den Container (der durch Padding begrenzt ist) */
+  max-width: 250px;     /* Damit er nicht zu breit wird */
   height: 6px; 
   border-radius: 10px;
   background-color: #eee;
   overflow: hidden;
-  margin-top: 4px; /* Kleiner Abstand zum Text oben drüber */
-}
-
-/* Die Füllung (wichtig, falls diese separat gesteuert wird) */
-#progress-fill {
-  height: 100%;
-  background-color: #111;
-  width: 0%; /* Wird durch JS gesteuert */
-  transition: width 0.3s ease;
 }
 
   /* 3. Antwort-Grid: ABSOLUT IDENTISCH */
@@ -485,6 +478,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
