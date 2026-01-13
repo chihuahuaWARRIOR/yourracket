@@ -419,82 +419,165 @@ function showResults() {
   card.appendChild(modeSelectionWrap);
 
   // 5. Racket Cards Container
-  const topRow = document.createElement("div");
-  topRow.id = "racket-cards-container";
-  Object.assign(topRow.style, {
+const topRow = document.createElement("div");
+topRow.id = "racket-cards-container";
+Object.assign(topRow.style, {
+  display: "flex",
+  gap: "14px",
+  justifyContent: "space-between",
+  flexWrap: "wrap",
+  marginTop: "0px",
+  marginBottom: "18px",
+  padding: "18px",
+  borderRadius: "14px",
+});
+
+const makeRacketCard = (r, idx) => {
+  const div = document.createElement("div");
+  Object.assign(div.style, {
+    flex: "1 1 30%",
+    minWidth: "220px",
+    maxWidth: "360px",
+    borderRadius: "12px",
+    padding: "16px 12px",
+    boxSizing: "border-box",
+    border: "1px solid #ddd", 
+    background: "#fff", 
+    cursor: "pointer",
+    position: "relative",
+    transition: "border 0.2s, box-shadow 0.2s",
     display: "flex",
-    gap: "14px",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-    marginTop: "0px",
-    marginBottom: "18px",
-    padding: "18px",
-    borderRadius: "14px",
+    flexDirection: "column",
+    alignItems: "center"
+  });
+  div.dataset.index = idx;
+  div.onclick = () => updateRacketDisplay(idx);
+
+  // --- TOP 2 KATEGORIEN FINDEN ---
+  const relevantCats = [
+    "Power", "Control", "Maneuverability", "Stability", 
+    "Comfort", "Touch / Feel", "Topspin", "Slice"
+  ];
+  
+  const topCats = relevantCats
+    .map(cat => ({ name: cat, val: (r.stats && r.stats[cat]) ? r.stats[cat] : 0 }))
+    .sort((a, b) => b.val - a.val)
+    .slice(0, 2);
+
+  const badgeContainer = document.createElement("div");
+  Object.assign(badgeContainer.style, {
+    display: "flex",
+    gap: "6px",
+    marginBottom: "12px",
+    justifyContent: "center",
+    width: "100%"
   });
 
-  const makeRacketCard = (r, idx) => {
-    const div = document.createElement("div");
-    Object.assign(div.style, {
-      flex: "1 1 30%",
-      minWidth: "220px",
-      maxWidth: "360px",
-      borderRadius: "12px",
-      padding: "12px",
-      boxSizing: "border-box",
-      border: "1px solid #ddd", 
-      background: "#fff", 
-      cursor: "pointer",
-      transition: "border 0.2s, box-shadow 0.2s" 
+  topCats.forEach(cat => {
+    const badge = document.createElement("span");
+    badge.innerText = cat.name;
+    Object.assign(badge.style, {
+      background: "#f4f4f4",
+      color: "#333",
+      fontSize: "0.65rem",
+      fontWeight: "800",
+      padding: "4px 8px",
+      borderRadius: "6px",
+      textTransform: "uppercase",
+      border: "1px solid #e0e0e0",
+      whiteSpace: "nowrap"
     });
-    div.dataset.index = idx;
-    div.onclick = () => updateRacketDisplay(idx);
+    badgeContainer.appendChild(badge);
+  });
 
-    const img = document.createElement("img");
-    img.src = r.img;
-    img.alt = r.name;
-    Object.assign(img.style, { 
-      width: "50%", 
-      borderRadius: "8px", 
-      display: "block", 
-      marginBottom: "8px",
-      margin: "0 auto 8px auto",
-      border: "1px solid transparent"
-    });
+  // BILD
+  const img = document.createElement("img");
+  img.src = r.img;
+  img.alt = r.name;
+  Object.assign(img.style, { 
+    width: "55%", 
+    height: "auto",
+    borderRadius: "8px", 
+    display: "block", 
+    marginBottom: "12px",
+    filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.1))" // Macht das Schlägerbild plastischer
+  });
 
-    const h = document.createElement("div");
-    h.innerText = r.name;
-    h.style.fontWeight = "800";
-    h.style.marginBottom = "6px";
+  // NAME
+  const h = document.createElement("div");
+  h.innerText = r.name;
+  Object.assign(h.style, {
+    fontWeight: "800",
+    fontSize: "1rem",
+    textAlign: "center",
+    marginBottom: "6px",
+    lineHeight: "1.2",
+    color: "#111"
+  });
 
-    const link = document.createElement("a");
-    link.href = r.url;
-    link.target = "_blank";
-    link.innerText = lang === "de" ? "Mehr erfahren" : "Learn more";
-    link.style.fontSize = "0.9rem";
-    link.style.color = "#0066cc";
-    link.style.textDecoration = "none";
+  // LINK
+// OPTIMIERTER CTA LINK
+  const link = document.createElement("a");
+  link.href = r.url;
+  link.target = "_blank";
+  link.innerText = lang === "de" ? "Jetzt entdecken & kaufen" : "Explore & buy now";
+  
+  Object.assign(link.style, {
+    display: "inline-block",
+    marginTop: "8px",
+    marginBottom: "12px",
+    padding: "8px 16px",
+    background: "#f4f4f4", // Dezenter Button-Hintergrund
+    color: "#111",
+    fontSize: "0.85rem",
+    fontWeight: "700",
+    textDecoration: "none",
+    borderRadius: "8px",
+    border: "1px solid #ddd",
+    transition: "all 0.2s ease",
+    textAlign: "center"
+  });
 
-    const tech = document.createElement("div");
-    tech.style.marginTop = "8px";
-    tech.style.fontSize = "0.9rem";
-    tech.innerHTML = `
-      ${r.stats.Weight !== undefined ? `<div>Gewicht: ${r.stats.Weight} g</div>` : ""}
-      ${r.stats.Headsize !== undefined ? `<div>Headsize: ${r.stats.Headsize} cm²</div>` : ""}
-    `;
-
-    div.appendChild(img);
-    div.appendChild(h);
-    div.appendChild(link);
-    div.appendChild(tech);
-
-    return div;
+  // Hover-Effekt für Interaktion
+  link.onmouseenter = () => {
+    link.style.background = "#111";
+    link.style.color = "#fff";
+    link.style.borderColor = "#111";
+  };
+  link.onmouseleave = () => {
+    link.style.background = "#f4f4f4";
+    link.style.color = "#111";
+    link.style.borderColor = "#ddd";
   };
 
-  bestRackets.forEach((r, i) => {
-    topRow.appendChild(makeRacketCard(r, i));
+  // TECH STATS
+  const tech = document.createElement("div");
+  Object.assign(tech.style, {
+    marginTop: "auto", // Schiebt die Stats immer nach ganz unten in der Karte
+    fontSize: "0.8rem",
+    color: "#777",
+    fontWeight: "500"
   });
-  card.appendChild(topRow);
+  tech.innerHTML = `
+    ${r.stats.Weight !== undefined ? `${r.stats.Weight}g` : ""}
+    ${r.stats.Headsize !== undefined ? ` | ${r.stats.Headsize}cm²` : ""}
+  `;
 
+  // Reihenfolge im DOM
+  div.appendChild(badgeContainer);
+  div.appendChild(img);
+  div.appendChild(h);
+  div.appendChild(link);
+  div.appendChild(tech);
+
+  return div;
+};
+
+bestRackets.forEach((r, i) => {
+  topRow.appendChild(makeRacketCard(r, i));
+});
+card.appendChild(topRow);
+  
   // 6. Tabelle
   const tableWrap = document.createElement("div");
   tableWrap.style.overflowX = "auto";
@@ -1169,6 +1252,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
