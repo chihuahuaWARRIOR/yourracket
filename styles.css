@@ -346,7 +346,7 @@ body {
     width: 100%;
     /* Wichtig: Keine feste Höhe, sondern flexibel innerhalb der Grid-Zelle */
     min-height: 55px; 
-    padding: 12px 15px; 
+    padding: 4px 12px; 
     font-size: 0.95rem;
     border-radius: 12px;
     
@@ -432,6 +432,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
