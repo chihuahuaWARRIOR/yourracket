@@ -280,24 +280,35 @@ body {
   }
 
   /* FIX: Branding & Nav-Insel oben bündig und gleich hoch */
+  /* === Responsives Verhalten (Mobile & Tablet) === */
+@media (max-width: 768px) {
+  
+  /* 1. Hintergrund & Body */
+  html, body {
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  /* 2. Inseln oben bündig und gleich hoch (38px) */
   #brand, #nav-island {
     top: 0 !important;
-    height: 38px !important; /* Gleiche Höhe wie Desktop-Insel */
+    height: 38px !important;
     display: flex;
     align-items: center;
     padding: 0 12px;
     box-sizing: border-box;
     position: absolute;
     z-index: 1000;
+    background: white;
   }
 
   #brand {
     left: 12px !important;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+    font-weight: 800;
   }
 
-  /* Nav-Insel (Hilfe/Sprache) oben rechts */
   #nav-island {
     right: 12px !important;
     gap: 6px;
@@ -305,13 +316,12 @@ body {
     border-bottom-right-radius: 20px;
   }
 
-  /* Icons etwas anpassen für die mobile Höhe */
   .nav-icon-img {
     width: 20px;
     height: 20px;
   }
 
-  /* 2. Fragenbox (Zentrierung & Größe) - DEIN ORIGINAL */
+  /* 3. Fragenbox: 3px Abstand zur Insel (38px + 3px = 41px) */
   #question-container {
     position: relative;
     top: auto;
@@ -319,7 +329,8 @@ body {
     transform: none;
     width: 92%;
     max-width: 640px;
-    margin: 60px auto 20px auto; /* 60px oben lässt Platz für die bündigen Inseln */
+    /* Margin-Top fixiert auf 41px für den perfekten Gap */
+    margin: 41px auto 20px auto !important;
     min-height: 160px;
     padding: 14px 16px 18px 16px;
     box-sizing: border-box;
@@ -327,58 +338,61 @@ body {
     font-size: 0.85rem;
   }
 
-  /* 3. Antwort-Grid (Einspaltig auf Mobile) - DEIN ORIGINAL */
+  /* 4. Antwort-Grid: Einspaltig & Buttons IMMER gleich groß */
   #answers-grid {
     position: relative;
     top: auto;
-    transform: none; /* Verhindert Verschiebung */
-    height: auto; 
-    min-height: calc(100vh - 250px);
-    width: 100%;
+    transform: none;
     display: grid !important;
-    grid-template-columns: 1fr !important; /* Erzwingt UNTEREINANDER */
-    gap: 8px;
-    padding: 0 12px 80px 12px; /* 80px unten Platz für Impressum */
+    grid-template-columns: 1fr !important; /* Eine Spalte */
+    grid-auto-rows: 1fr;                   /* ALLE Zeilen erzwingen die gleiche Höhe */
+    gap: 10px;
+    width: 100%;
+    padding: 0 12px 80px 12px; /* Platz für Impressum unten */
     box-sizing: border-box;
   }
 
   .answer {
+    width: 100%;
+    height: 100% !important; /* Button füllt die Grid-Zelle komplett aus */
     font-size: 1rem;
     padding: 16px;
     border-radius: 12px;
-    width: 100%; /* Volle Breite für Einspaltigkeit */
+    /* Zentrierung des Textes in den nun gleich hohen Buttons */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+    min-height: 60px; /* Mindesthöhe für Einzeiler */
   }
 
-  /* 4. Branding & Footer - FIX: Impressum Schwarz auf Weiß */
-  .brand-island { font-size: 0.95rem; }
-  
-  #footer-island { 
-    right: 12px !important; 
-    bottom: 0 !important; 
+  /* 5. Impressum bündig unten - Schwarz auf Weiß */
+  #footer-island {
+    position: fixed;
+    right: 12px !important;
+    bottom: 0 !important;
     padding: 8px 20px;
     background: white;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    position: fixed;
+    z-index: 10;
   }
-  
+
   #footer-island a {
     color: black !important;
     text-decoration: none;
     font-weight: 700;
+    font-size: 0.85rem;
   }
 
-  /* 5. Progress Bar */
+  /* 6. Progress Bar & Ergebnis-Fixes */
   #progress-container {
     position: relative;
-    bottom: auto;
-    left: auto;
-    transform: none;
     width: 100%;
     margin-top: 12px !important;
   }
 
-  /* 6. DER MOBILE-FIX FÜR DIE ENDKARTE (100% Breite) */
   #result-container {
     padding: 0 !important;
   }
@@ -441,6 +455,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
