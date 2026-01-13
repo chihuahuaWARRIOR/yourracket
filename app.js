@@ -419,7 +419,7 @@ function showResults() {
   card.appendChild(modeSelectionWrap);
 
   // 5. Racket Cards Container
-  // 5. Racket Cards Container
+ // 5. Racket Cards Container
 const topRow = document.createElement("div");
 topRow.id = "racket-cards-container";
 Object.assign(topRow.style, {
@@ -431,6 +431,7 @@ Object.assign(topRow.style, {
   marginBottom: "18px",
   padding: "18px",
   borderRadius: "14px",
+  background: "#fff" // Container Hintergrund auf Weiß
 });
 
 const makeRacketCard = (r, idx) => {
@@ -443,7 +444,7 @@ const makeRacketCard = (r, idx) => {
     padding: "16px 12px",
     boxSizing: "border-box",
     border: "1px solid #ddd", 
-    background: "#fff", 
+    background: "#fff", // Karte Hintergrund auf Weiß
     cursor: "pointer",
     position: "relative",
     transition: "border 0.2s, box-shadow 0.2s",
@@ -493,7 +494,7 @@ const makeRacketCard = (r, idx) => {
     badgeContainer.appendChild(badge);
   });
 
-  // BILD
+  // BILD (Schatten entfernt für reines Weiß-auf-Weiß)
   const img = document.createElement("img");
   img.src = r.img;
   img.alt = r.name;
@@ -503,7 +504,7 @@ const makeRacketCard = (r, idx) => {
     borderRadius: "8px", 
     display: "block", 
     marginBottom: "12px",
-    filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.1))"
+    filter: "none" // Entfernt den drop-shadow
   });
 
   // NAME
@@ -1253,6 +1254,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
