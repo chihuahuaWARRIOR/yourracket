@@ -419,7 +419,7 @@ function showResults() {
   card.appendChild(modeSelectionWrap);
 
   // 5. Racket Cards Container
-const makeRacketCard = (r, idx) => {
+const makeRacketCard = (r, idx) => {  
   const div = document.createElement("div");
   Object.assign(div.style, {
     flex: "1 1 30%",
@@ -435,13 +435,13 @@ const makeRacketCard = (r, idx) => {
     transition: "border 0.2s, box-shadow 0.2s",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    fontFamily: "inherit" // Erbt die Schriftart der Website/Endkarte
+    alignItems: "center"
+    fontFamily: "inherit"
   });
   div.dataset.index = idx;
   div.onclick = () => updateRacketDisplay(idx);
 
-  // --- TOP 2 KATEGORIEN (Dezenter Outline-Stil) ---
+  // --- TOP 2 KATEGORIEN FINDEN ---
   const relevantCats = [
     "Power", "Control", "Maneuverability", "Stability", 
     "Comfort", "Touch / Feel", "Topspin", "Slice"
@@ -465,16 +465,15 @@ const makeRacketCard = (r, idx) => {
     const badge = document.createElement("span");
     badge.innerText = cat.name;
     Object.assign(badge.style, {
-      background: "transparent", // Kein Hintergrund mehr
-      color: "#444",
+      background: "transparent",
+      color: "#333",
       fontSize: "0.65rem",
-      fontWeight: "700",
-      padding: "3px 8px",
+      fontWeight: "800",
+      padding: "4px 8px",
       borderRadius: "6px",
       textTransform: "uppercase",
-      border: "1px solid #ddd", // Nur Umrandung
-      whiteSpace: "nowrap",
-      fontFamily: "inherit"
+      border: "1px solid #ddd",
+      whiteSpace: "nowrap"
     });
     badgeContainer.appendChild(badge);
   });
@@ -489,7 +488,7 @@ const makeRacketCard = (r, idx) => {
     borderRadius: "8px", 
     display: "block", 
     marginBottom: "12px",
-    filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.08))"
+    filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.1))" // Macht das Schlägerbild plastischer
   });
 
   // NAME
@@ -501,11 +500,11 @@ const makeRacketCard = (r, idx) => {
     textAlign: "center",
     marginBottom: "6px",
     lineHeight: "1.2",
-    color: "#111",
-    fontFamily: "inherit"
+    color: "#111"
   });
 
-  // OPTIMIERTER CTA LINK (Button-Stil passend zu den Badges)
+  // LINK
+// OPTIMIERTER CTA LINK
   const link = document.createElement("a");
   link.href = r.url;
   link.target = "_blank";
@@ -516,19 +515,18 @@ const makeRacketCard = (r, idx) => {
     marginTop: "8px",
     marginBottom: "12px",
     padding: "8px 16px",
-    background: "transparent",
+    background: "transparent", // Dezenter Button-Hintergrund
     color: "#111",
-    fontSize: "0.8rem",
+    fontSize: "0.85rem",
     fontWeight: "700",
     textDecoration: "none",
     borderRadius: "8px",
-    border: "1px solid #111", // Starker Kontrast für den Button
+    border: "1px solid #111",
     transition: "all 0.2s ease",
-    textAlign: "center",
-    fontFamily: "inherit"
+    textAlign: "center"
   });
 
-  // Hover-Effekt
+  // Hover-Effekt für Interaktion
   link.onmouseenter = () => {
     link.style.background = "#111";
     link.style.color = "#fff";
@@ -541,10 +539,10 @@ const makeRacketCard = (r, idx) => {
   // TECH STATS
   const tech = document.createElement("div");
   Object.assign(tech.style, {
-    marginTop: "auto",
+    marginTop: "auto", // Schiebt die Stats immer nach ganz unten in der Karte
     fontSize: "0.8rem",
     color: "#777",
-    fontWeight: "500",
+    fontWeight: "500"
     fontFamily: "inherit"
   });
   tech.innerHTML = `
@@ -552,6 +550,7 @@ const makeRacketCard = (r, idx) => {
     ${r.stats.Headsize !== undefined ? ` | ${r.stats.Headsize}cm²` : ""}
   `;
 
+  // Reihenfolge im DOM
   div.appendChild(badgeContainer);
   div.appendChild(img);
   div.appendChild(h);
@@ -560,6 +559,11 @@ const makeRacketCard = (r, idx) => {
 
   return div;
 };
+
+bestRackets.forEach((r, i) => {
+  topRow.appendChild(makeRacketCard(r, i));
+});
+card.appendChild(topRow);
   
   // 6. Tabelle
   const tableWrap = document.createElement("div");
@@ -1235,8 +1239,6 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
-
-
 
 
 
