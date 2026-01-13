@@ -304,48 +304,51 @@ body {
     border-bottom-right-radius: 20px;
   }
 
-/* 2. Fragenbox - DEIN ORIGINAL */
+/* 2. Fragenbox */
 #question-container {
   position: relative; 
-  top: auto;
-  left: auto;
-  transform: none;
   width: 92%;
   max-width: 640px;
   margin: 41px auto 10px auto !important; 
-  padding: 16px 16px 45px 16px; /* Padding unten auf 45px erhöht, damit der Balken Platz hat */
+  padding: 16px 16px 45px 16px; /* Platz für den Balken */
   box-sizing: border-box;
   z-index: 5;
   font-size: 0.7rem;
   text-align: center;
 }
 
-/* Der Fortschrittsbalken - Jetzt einfach an den unteren Rand gedockt */
+/* Der Fortschrittsbalken - DER TOTALE RESET */
 #progress-container {
-  /* Diese 3 Zeilen schicken ihn nach unten mittig */
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  width: 100%;
-
-  /* Diese Zeilen sorgen dafür, dass Text & Balken im Container zentriert bleiben */
+  position: absolute !important;
+  bottom: 10px !important;
+  
+  /* Wir setzen ALLES zurück, was ihn nach links schieben könnte */
+  left: 0 !important;
+  right: 0 !important;
+  transform: none !important; 
+  width: auto !important; /* Erlaubt left/right Bindung */
+  
+  /* Zentrierung innerhalb der Ränder */
   display: flex !important;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: column !important;
+  align-items: center !important;
   
   margin: 0 !important;
-  padding: 0;
+  padding: 0 !important;
+  box-sizing: border-box !important;
 }
 
-/* Der Balken selbst (bleibt wie er war, nur Breite fixiert) */
+/* Der Balken selbst */
 #progress-bar {
-  width: 80%;
-  max-width: 250px;
-  height: 6px;
-  background-color: #eee;
-  border-radius: 10px;
-  overflow: hidden;
+  width: 80% !important;
+  max-width: 250px !important;
+  height: 6px !important;
+  background-color: #eee !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  margin: 4px auto 0 auto !important; /* Zentriert ihn zusätzlich im Container */
 }
+  
   /* 3. Antwort-Grid: ABSOLUT IDENTISCH */
   #answers-grid {
     position: relative;
@@ -453,6 +456,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
