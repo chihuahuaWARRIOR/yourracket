@@ -380,7 +380,7 @@ body {
   /* Padding nur für den Text im Inneren */
   padding: 4px 12px !important; 
   
-  font-size: 0.8rem;
+  font-size: 1.0rem;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -467,6 +467,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
