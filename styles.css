@@ -316,7 +316,7 @@ body {
     padding: 20px 16px 25px 16px; /* Viel Padding unten für den Balken */
     box-sizing: border-box;
     z-index: 5;
-    font-size: 0.9rem;
+    font-size: 0.6rem;
   }
 
   #progress-container {
@@ -432,6 +432,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
