@@ -363,7 +363,7 @@ body {
   /* HIER DIE HÖHE STEUERN: 
      Statt '1fr' geben wir eine feste Höhe an (z.B. 45px). 
      Alle 4 Zeilen werden dadurch exakt gleich hoch. */
-  grid-template-rows: repeat(4, 45px) !important; 
+  grid-template-rows: repeat(4, 55px) !important; 
   
   gap: 8px; 
   width: 100%;
@@ -380,7 +380,7 @@ body {
   /* Padding nur für den Text im Inneren */
   padding: 0 12px !important; 
   
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -482,6 +482,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
