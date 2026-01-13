@@ -98,17 +98,18 @@ async function loadData() {
     calculateAverageScores(rackets);
     initializeUserProfile();
 
-    // 2. BRANDING UND EVENT-LISTENER
-    const brandEl = document.getElementById("brand");
+ // 2. BRANDING UND EVENT-LISTENER
+    // Wir nutzen jetzt das neue nav-island als Branding-Container
+    const brandEl = document.getElementById("nav-island");
     if (brandEl) {
-      brandEl.innerHTML = `<b>WhichRacket.com</b>`;
-      brandEl.style.textDecoration = "none";
-      brandEl.style.cursor = "pointer";
-
-      // Klick auf Branding-Insel -> Quiz neu starten
-      brandEl.addEventListener("click", () => {
-        restartQuiz();
-      });
+      // Wir fügen das Logo/Text vorne an, falls es noch nicht da ist
+      if (!document.getElementById("brand-link")) {
+        const brandLink = document.createElement("span");
+        brandLink.id = "brand-link";
+        brandLink.innerHTML = `<b style="margin-right: 10px; cursor:pointer;">WhichRacket.com</b>`;
+        brandLink.onclick = () => restartQuiz();
+        brandEl.prepend(brandLink); // Ganz nach links in der Insel
+      }
     }
 
     // 3. START DES QUIZ-ABLAUFS
@@ -1084,27 +1085,20 @@ function goBack() {
 // === Sprachumschaltung ===
 function switchLang(newLang) {
   lang = newLang;
-  localStorage.setItem("language", newLang);
+  localStorage.setItem("language", lang);
   
-  // Quiz-Status zurücksetzen
-  currentQuestion = 0;
-  initializeUserProfile(); 
+  // Menü nach Klick wieder schließen
+  const menu = document.getElementById("lang-dropdown-menu");
+  if (menu) menu.style.display = "none";
+  
+  // Quiz mit neuer Sprache aktualisieren
   showQuestion();
   renderProgress();
   
-  // UI-Update: Dropdown nach Klick schließen
-  const langMenu = document.getElementById("lang-dropdown-menu");
-  if (langMenu) langMenu.style.display = "none";
-  
-  // Falls du die Nav-Insel Texte im Hilfe-Popup sofort aktualisieren willst:
-  const helpPopup = document.getElementById("help-popup");
-  if (helpPopup && helpPopup.style.display === "block") {
-      // Simuliert einen Klick auf den Hilfe-Button, um den Text zu aktualisieren
-      document.getElementById("help-btn").click(); 
-      document.getElementById("help-btn").click();
-    const langMenu = document.getElementById("lang-dropdown-menu");
-  if (langMenu) langMenu.style.display = "none";
-}
+  // Falls das Impressum-Link-Wort auch übersetzt werden soll:
+  const impLink = document.querySelector("#impressum-island a");
+  if (impLink) {
+    impLink.innerText = lang === "de" ? "Impressum" : "Legal Notice";
   }
 }
 
@@ -1182,17 +1176,27 @@ setupNavIsland();
 
 // === Impressum Hook ===
 function createImpressumHook() {
-  const footer = document.getElementById("footer-island");
-  if (!footer) return;
-  if (document.getElementById("impressum-anchor")) return;
-  const a = document.createElement("a");
-  a.id = "impressum-anchor";
-  a.href = "impressum.html";
-  a.target = "_blank";
-  a.innerText = lang === "de" ? "Impressum" : "Imprint";
-  a.style.textDecoration = "none";
-  a.style.color = "inherit";
-  footer.appendChild(a);
+  // Prüfen, ob die Impressum-Insel schon da ist
+  if (document.getElementById("impressum-island")) return;
+
+  const imp = document.createElement("div");
+  imp.id = "impressum-island";
+  // Wir nutzen deine alten Insel-Styles via CSS oder direkt hier:
+  Object.assign(imp.style, {
+    position: "fixed",
+    bottom: "0",
+    right: "50px",
+    background: "white",
+    padding: "4px 12px",
+    borderTopLeftRadius: "15px",
+    borderTopRightRadius: "15px",
+    fontSize: "0.8rem",
+    zIndex: "100",
+    boxShadow: "0 -2px 8px rgba(0,0,0,0.05)"
+  });
+  
+  imp.innerHTML = `<a href="/impressum" style="color:black; text-decoration:none; opacity:0.6;">Impressum</a>`;
+  document.body.appendChild(imp);
 }
 
 // === Quiz neu starten ===
@@ -1328,67 +1332,3 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
