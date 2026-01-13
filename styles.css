@@ -143,40 +143,110 @@ body {
   color: black;
 }
 
-/* Sprache rechts oben */
-#lang-switch {
+/* Ersetzt dein altes #lang-switch komplett */
+#nav-island {
+  position: absolute;
   top: 0;
   right: 50px;
   display: flex;
-  gap: 6px;
-  z-index: 10;
-  background: rgba(255, 255, 255, 1);
-  padding: 6px 12px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  align-items: center;
+  gap: 6px; /* Dein Originalwert */
+  z-index: 1000;
+  background: rgba(255, 255, 255, 1); /* Dein Originalwert */
+  padding: 6px 12px; /* Dein Originalwert */
+  border-bottom-left-radius: 20px; /* Dein Originalwert */
+  border-bottom-right-radius: 20px; /* Dein Originalwert */
   backdrop-filter: blur(6px);
 }
 
-#lang-switch button {
+/* Icons verhalten sich wie deine alten Buttons */
+.nav-icon-btn {
   background: none;
   border: none;
   font-weight: 600;
   cursor: pointer;
   color: black;
-  padding: 4px 6px;
+  padding: 4px 6px; /* Dein Originalwert */
   border-radius: 6px;
   transition: background 0.2s;
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#lang-switch button:hover {
-  background: rgba(0, 0, 0, 0.1);
+.nav-icon-btn:hover {
+  background: rgba(0, 0, 0, 0.1); /* Dein Originalwert */
 }
 
-/* " | " zwischen Sprachen */
-#lang-switch span {
+.nav-icon-img {
+  width: 20px; /* Perfekte Größe für die Insel-Höhe */
+  height: 20px;
+  object-fit: contain;
+}
+
+/* Dein Original " | " */
+#nav-island span.divider {
   color: black;
   opacity: 0.6;
+  font-weight: 600;
+}
+
+/* --- DAS DROPDOWN (Schwebt unter der Insel) --- */
+#lang-dropdown-menu {
+  position: absolute;
+  top: 100%; /* Startet direkt am unteren Rand der Insel */
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  display: none; /* Initial versteckt */
+  min-width: 130px;
+  overflow: hidden;
+  z-index: 2000;
+}
+
+.lang-header {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #999;
+  padding: 10px 12px 4px;
+  letter-spacing: 0.5px;
+}
+
+.lang-option {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+.lang-option:hover {
+  background: #f5f5f5;
+}
+
+/* --- HILFE POP-UP (Oberes Achtel) --- */
+#help-popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 450px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  padding: 20px;
+  z-index: 3000;
+  display: none;
+  border: 1px solid #eee;
+  font-family: inherit;
 }
 
 /* Impressum unten rechts */
@@ -327,3 +397,4 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
