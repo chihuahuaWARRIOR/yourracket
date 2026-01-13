@@ -322,17 +322,35 @@ body {
   text-align: center; /* Zentriert den Fragentext */
 }
 
-/* Der angedockte Fortschrittsbalken (Zentriert) */
+/* 2. Fragenbox - Vorbereitung für den Balken */
+#question-container {
+  position: relative; 
+  top: auto;
+  left: auto;
+  transform: none;
+  width: 92%;
+  max-width: 640px;
+  margin: 41px auto 10px auto !important; 
+  padding: 16px 16px 35px 16px; /* 35px unten für genug Platz */
+  box-sizing: border-box;
+  z-index: 5;
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+/* Der angedockte Fortschrittsbalken (Zentrierung fixiert) */
 #progress-container {
   position: absolute; 
-  bottom: 8px;          /* Etwas mehr als 2px, damit er optisch mittig im unteren Padding sitzt */
-  left: 0;
-  width: 100%;
+  bottom: 8px;          /* Abstand zur Unterkante der Box */
+  left: 50%;            /* Schiebt den Container-Anfang in die Mitte */
+  transform: translateX(-50%); /* Zieht ihn genau um die eigene Hälfte zurück = Perfekt Zentriert */
+  
+  width: 80%;           /* Balken ist 80% so breit wie die Box */
+  max-width: 250px;     /* Verhindert, dass er zu groß wird */
   margin: 0 !important;
-  padding: 0 20px;      /* Seitenabstand, damit der Balken nicht die Box-Ränder berührt */
+  padding: 0;
   box-sizing: border-box;
   
-  /* Diese drei Zeilen garantieren die Zentrierung des Balkens */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -340,18 +358,19 @@ body {
 
 /* Der eigentliche Balken */
 #progress-bar {
-  width: 100%;         /* Nutzt die Breite des Containers (minus Container-Padding) */
-  max-width: 200px;    /* Optional: Begrenzt die Breite des Balkens auf Mobile, damit er edler aussieht */
+  width: 100%;
   height: 6px; 
   border-radius: 10px;
-  background-color: #eee; /* Hintergrund des leeren Balkens */
-  overflow: hidden;    /* Damit die Füllung nicht über die Rundung ragt */
+  background-color: #eee;
+  overflow: hidden;
+  position: relative;
 }
 
-/* Falls du ein Füllelement im Balken hast (z.B. .progress-fill) */
-#progress-bar > div {
+/* Die Füllung (wichtig, falls diese separat gesteuert wird) */
+#progress-fill {
   height: 100%;
-  background-color: #111; /* Deine Brand-Farbe */
+  background-color: #111;
+  width: 0%; /* Wird durch JS gesteuert */
   transition: width 0.3s ease;
 }
 
@@ -375,7 +394,7 @@ body {
   .answer {
     width: 100%;
     /* Wichtig: Keine feste Höhe, sondern flexibel innerhalb der Grid-Zelle */
-    min-height: 55px; 
+    min-height: 40px; 
     padding: 4px 12px; 
     font-size: 0.7rem;
     border-radius: 12px;
@@ -462,6 +481,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
