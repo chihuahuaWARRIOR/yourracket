@@ -305,35 +305,54 @@ body {
   }
 
 /* 2. Fragenbox - Vorbereitung für den Balken */
+/* 2. Fragenbox - Vorbereitung für den Balken */
 #question-container {
-  position: relative; /* WICHTIG: Erlaubt dem Balken sich an mir zu orientieren */
+  position: relative; 
   top: auto;
   left: auto;
   transform: none;
   width: 92%;
   max-width: 640px;
   margin: 41px auto 10px auto !important; 
-  padding: 20px 16px 35px 16px; /* Unten mehr Padding (35px), damit Platz für den Balken ist */
+  /* Padding unten erhöht, um Platz für den zentrierten Balken zu schaffen */
+  padding: 16px 16px 30px 16px; 
   box-sizing: border-box;
   z-index: 5;
-  font-size: 0.7rem;
+  font-size: 0.7rem; /* Deine gewünschte Größe */
+  text-align: center; /* Zentriert den Fragentext */
 }
 
-/* Der angedockte Fortschrittsbalken */
+/* Der angedockte Fortschrittsbalken (Zentriert) */
 #progress-container {
-  position: absolute; /* Klebt den Balken fest */
-  bottom: 2px;        /* Genau 2px Abstand zum unteren Rand */
+  position: absolute; 
+  bottom: 8px;          /* Etwas mehr als 2px, damit er optisch mittig im unteren Padding sitzt */
   left: 0;
   width: 100%;
-  margin: 0 !important; /* Entfernt alte Abstände */
-  padding: 0 16px;      /* Gleicher Seitenabstand wie der Text darüber */
+  margin: 0 !important;
+  padding: 0 20px;      /* Seitenabstand, damit der Balken nicht die Box-Ränder berührt */
   box-sizing: border-box;
+  
+  /* Diese drei Zeilen garantieren die Zentrierung des Balkens */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Sicherstellen, dass der Balken selbst nicht zu hoch ist */
+/* Der eigentliche Balken */
 #progress-bar {
-  height: 6px; /* Falls er zu wuchtig ist, hier anpassen */
-  border-radius: 3px;
+  width: 100%;         /* Nutzt die Breite des Containers (minus Container-Padding) */
+  max-width: 200px;    /* Optional: Begrenzt die Breite des Balkens auf Mobile, damit er edler aussieht */
+  height: 6px; 
+  border-radius: 10px;
+  background-color: #eee; /* Hintergrund des leeren Balkens */
+  overflow: hidden;    /* Damit die Füllung nicht über die Rundung ragt */
+}
+
+/* Falls du ein Füllelement im Balken hast (z.B. .progress-fill) */
+#progress-bar > div {
+  height: 100%;
+  background-color: #111; /* Deine Brand-Farbe */
+  transition: width 0.3s ease;
 }
 
   /* 3. Antwort-Grid: ABSOLUT IDENTISCH */
@@ -443,6 +462,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
