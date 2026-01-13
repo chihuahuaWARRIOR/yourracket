@@ -355,22 +355,42 @@ body {
   }
 }
   
-  /* 3. Antwort-Grid: ABSOLUT IDENTISCH */
-  #answers-grid {
-    position: relative;
-    display: grid !important;
-    grid-template-columns: 1fr !important; /* Eine Spalte */
-    
-    /* Wir definieren 4 Zeilen, die alle exakt 1 Teil vom Platz nehmen */
-    grid-template-rows: repeat(4, 1fr) !important; 
-    
-    gap: 10px; 
-    width: 100%;
-    max-width: 400px; /* Damit die Buttons nicht zu breit werden auf Tablets */
-    margin: 0 auto;
-    padding: 4px 12px 80px 12px;
-    box-sizing: border-box;
-  }
+/* 4. Antwort-Grid: Gleichmäßig & Kompakt */
+#answers-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important; 
+  
+  /* HIER DIE HÖHE STEUERN: 
+     Statt '1fr' geben wir eine feste Höhe an (z.B. 45px). 
+     Alle 4 Zeilen werden dadurch exakt gleich hoch. */
+  grid-template-rows: repeat(4, 45px) !important; 
+  
+  gap: 8px; 
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 10px 12px 30px 12px !important;
+  box-sizing: border-box;
+}
+
+.answer {
+  width: 100%;
+  height: 100% !important; /* Füllt die 45px Zeile komplett aus */
+  
+  /* Padding nur für den Text im Inneren */
+  padding: 0 12px !important; 
+  
+  font-size: 0.75rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+  
+  /* Verhindert, dass min-height die Grid-Einstellung überschreibt */
+  min-height: 0 !important; 
+}
 
   .answer {
     width: 100%;
@@ -462,6 +482,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
