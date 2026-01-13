@@ -337,33 +337,37 @@ body {
   font-size: 0.7rem;
   text-align: center;
 }
-
-/* Der angedockte Fortschrittsbalken (Zentrierung fixiert) */
+  
+/* Der angedockte Fortschrittsbalken (Zentriert) */
 #progress-container {
   position: absolute; 
-  bottom: 8px;          /* Abstand zur Unterkante der Box */
-  left: 50%;            /* Schiebt den Container-Anfang in die Mitte */
-  transform: translateX(-50%); /* Zieht ihn genau um die eigene Hälfte zurück = Perfekt Zentriert */
+  bottom: 8px;          
+  left: 0;
+  right: 0;
+  margin: 0 auto !important; /* Zentriert den gesamten Container */
+  width: 80%;
+  max-width: 250px;
   
-  width: 80%;           /* Balken ist 80% so breit wie die Box */
-  max-width: 250px;     /* Verhindert, dass er zu groß wird */
-  margin: 0 !important;
-  padding: 0;
-  box-sizing: border-box;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* Das hier sorgt dafür, dass Text und Balken untereinander stehen */
+  display: block !important; 
+  text-align: center; /* Zentriert den Text über dem Balken */
 }
 
-/* Der eigentliche Balken */
+/* Falls "Frage 1 von X" in einem Span oder Div dort drin steht */
+#progress-container span, 
+#progress-container div {
+  display: block; /* Erzwingt, dass jedes Element eine neue Zeile nimmt */
+  margin: 0 auto;
+}
+
+/* Der eigentliche Balken braucht wieder seine Form */
 #progress-bar {
   width: 100%;
   height: 6px; 
   border-radius: 10px;
   background-color: #eee;
   overflow: hidden;
-  position: relative;
+  margin-top: 4px; /* Kleiner Abstand zum Text oben drüber */
 }
 
 /* Die Füllung (wichtig, falls diese separat gesteuert wird) */
@@ -481,6 +485,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
