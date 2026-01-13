@@ -318,9 +318,10 @@ body {
     padding: 20px 15px 50px 15px !important; 
     box-sizing: border-box;
     display: block !important;
-    font-size: 0.85;
     text-align: center;
+    font-size: 0.8rem;
   }
+
 
   /* 2. Fortschrittsanzeige: Wir nutzen DEINE Desktop-Logik */
   #progress-container {
@@ -461,6 +462,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
