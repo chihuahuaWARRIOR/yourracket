@@ -380,7 +380,7 @@ body {
   /* Padding nur für den Text im Inneren */
   padding: 4px 12px !important; 
   
-  font-size: 1.0rem;
+  font-size: 0.8rem;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -391,21 +391,6 @@ body {
   /* Verhindert, dass min-height die Grid-Einstellung überschreibt */
   min-height: 0 !important; 
 }
-
-  .answer {
-    width: 100%;
-    /* Wichtig: Keine feste Höhe, sondern flexibel innerhalb der Grid-Zelle */
-    min-height: 40px; 
-    padding: 4px 12px; 
-    font-size: 0.7rem;
-    border-radius: 12px;
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    box-sizing: border-box;
-  }
 
   /* 4. Impressum */
   #footer-island {
@@ -482,6 +467,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
