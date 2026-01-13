@@ -304,26 +304,37 @@ body {
     border-bottom-right-radius: 20px;
   }
 
-  /* 2. Fragenbox: 3px Gap zur Insel + Abstand zur Fortschrittsanzeige */
-  #question-container {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
-    width: 92%;
-    max-width: 640px;
-    margin: 41px auto 10px auto !important; /* Knapp unter die Inseln */
-    padding: 20px 16px 25px 16px; /* Viel Padding unten für den Balken */
-    box-sizing: border-box;
-    z-index: 5;
-    font-size: 0.8rem;
-  }
+/* 2. Fragenbox - Vorbereitung für den Balken */
+#question-container {
+  position: relative; /* WICHTIG: Erlaubt dem Balken sich an mir zu orientieren */
+  top: auto;
+  left: auto;
+  transform: none;
+  width: 92%;
+  max-width: 640px;
+  margin: 41px auto 10px auto !important; 
+  padding: 20px 16px 35px 16px; /* Unten mehr Padding (35px), damit Platz für den Balken ist */
+  box-sizing: border-box;
+  z-index: 5;
+  font-size: 0.7rem;
+}
 
-  #progress-container {
-    margin-top: 25px !important; /* Abstand Text zu Fortschrittsbalken */
-    position: relative;
-    width: 100%;
-  }
+/* Der angedockte Fortschrittsbalken */
+#progress-container {
+  position: absolute; /* Klebt den Balken fest */
+  bottom: 2px;        /* Genau 2px Abstand zum unteren Rand */
+  left: 0;
+  width: 100%;
+  margin: 0 !important; /* Entfernt alte Abstände */
+  padding: 0 16px;      /* Gleicher Seitenabstand wie der Text darüber */
+  box-sizing: border-box;
+}
+
+/* Sicherstellen, dass der Balken selbst nicht zu hoch ist */
+#progress-bar {
+  height: 6px; /* Falls er zu wuchtig ist, hier anpassen */
+  border-radius: 3px;
+}
 
   /* 3. Antwort-Grid: ABSOLUT IDENTISCH */
   #answers-grid {
@@ -347,7 +358,7 @@ body {
     /* Wichtig: Keine feste Höhe, sondern flexibel innerhalb der Grid-Zelle */
     min-height: 55px; 
     padding: 4px 12px; 
-    font-size: 0.95rem;
+    font-size: 0.7rem;
     border-radius: 12px;
     
     display: flex;
@@ -432,6 +443,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
