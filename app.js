@@ -93,27 +93,15 @@ async function loadData() {
 
     questions = qData;
     rackets = rData;
-
-    // 1. DYNAMISCHE WERTE BERECHNEN & PROFIL INITIALISIEREN
+    
+// 1. DYNAMISCHE WERTE BERECHNEN & PROFIL INITIALISIEREN
     calculateAverageScores(rackets);
     initializeUserProfile();
 
- // 2. BRANDING UND EVENT-LISTENER
-    // Wir nutzen jetzt das neue nav-island als Branding-Container
-    const brandEl = document.getElementById("nav-island");
-    if (brandEl) {
-      // Wir fügen das Logo/Text vorne an, falls es noch nicht da ist
-      if (!document.getElementById("brand-link")) {
-        const brandLink = document.createElement("span");
-        brandLink.id = "brand-link";
-        brandLink.innerHTML = `<b style="margin-right: 10px; cursor:pointer;">WhichRacket.com</b>`;
-        brandLink.onclick = () => restartQuiz();
-        brandEl.prepend(brandLink); // Ganz nach links in der Insel
-      }
-    }
+    // 2. UI INITIALISIEREN (Hilfe & Sprach-Menü)
+    setupNavIsland(); 
 
     // 3. START DES QUIZ-ABLAUFS
-    createImpressumHook();
     showQuestion();
     renderProgress();
     createBackButton();
@@ -1096,11 +1084,8 @@ function switchLang(newLang) {
   renderProgress();
   
   // Falls das Impressum-Link-Wort auch übersetzt werden soll:
-  const impLink = document.querySelector("#impressum-island a");
-  if (impLink) {
-    impLink.innerText = lang === "de" ? "Impressum" : "Legal Notice";
+  document.getElementById("impressum-link").innerText = newLang === 'de' ? 'Impressum' : 'Legal Notice';
   }
-}
 
 // === Sprachumschaltung ===
 function switchLang(newLang) {
@@ -1332,3 +1317,4 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
