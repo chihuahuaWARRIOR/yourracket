@@ -435,13 +435,12 @@ const makeRacketCard = (r, idx) => {
     transition: "border 0.2s, box-shadow 0.2s",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
     fontFamily: "inherit"
   });
   div.dataset.index = idx;
   div.onclick = () => updateRacketDisplay(idx);
 
-  // --- TOP 2 KATEGORIEN FINDEN ---
   const relevantCats = [
     "Power", "Control", "Maneuverability", "Stability", 
     "Comfort", "Touch / Feel", "Topspin", "Slice"
@@ -473,12 +472,12 @@ const makeRacketCard = (r, idx) => {
       borderRadius: "6px",
       textTransform: "uppercase",
       border: "1px solid #ddd",
-      whiteSpace: "nowrap"
+      whiteSpace: "nowrap",
+      fontFamily: "inherit"
     });
     badgeContainer.appendChild(badge);
   });
 
-  // BILD
   const img = document.createElement("img");
   img.src = r.img;
   img.alt = r.name;
@@ -488,10 +487,9 @@ const makeRacketCard = (r, idx) => {
     borderRadius: "8px", 
     display: "block", 
     marginBottom: "12px",
-    filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.1))" // Macht das Schlägerbild plastischer
+    filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.1))"
   });
 
-  // NAME
   const h = document.createElement("div");
   h.innerText = r.name;
   Object.assign(h.style, {
@@ -500,11 +498,10 @@ const makeRacketCard = (r, idx) => {
     textAlign: "center",
     marginBottom: "6px",
     lineHeight: "1.2",
-    color: "#111"
+    color: "#111",
+    fontFamily: "inherit"
   });
 
-  // LINK
-// OPTIMIERTER CTA LINK
   const link = document.createElement("a");
   link.href = r.url;
   link.target = "_blank";
@@ -515,7 +512,7 @@ const makeRacketCard = (r, idx) => {
     marginTop: "8px",
     marginBottom: "12px",
     padding: "8px 16px",
-    background: "transparent", // Dezenter Button-Hintergrund
+    background: "transparent",
     color: "#111",
     fontSize: "0.85rem",
     fontWeight: "700",
@@ -523,10 +520,10 @@ const makeRacketCard = (r, idx) => {
     borderRadius: "8px",
     border: "1px solid #111",
     transition: "all 0.2s ease",
-    textAlign: "center"
+    textAlign: "center",
+    fontFamily: "inherit"
   });
 
-  // Hover-Effekt für Interaktion
   link.onmouseenter = () => {
     link.style.background = "#111";
     link.style.color = "#fff";
@@ -536,13 +533,12 @@ const makeRacketCard = (r, idx) => {
     link.style.color = "#111";
   };
 
-  // TECH STATS
   const tech = document.createElement("div");
   Object.assign(tech.style, {
-    marginTop: "auto", // Schiebt die Stats immer nach ganz unten in der Karte
+    marginTop: "auto", 
     fontSize: "0.8rem",
     color: "#777",
-    fontWeight: "500"
+    fontWeight: "500",
     fontFamily: "inherit"
   });
   tech.innerHTML = `
@@ -550,7 +546,6 @@ const makeRacketCard = (r, idx) => {
     ${r.stats.Headsize !== undefined ? ` | ${r.stats.Headsize}cm²` : ""}
   `;
 
-  // Reihenfolge im DOM
   div.appendChild(badgeContainer);
   div.appendChild(img);
   div.appendChild(h);
@@ -1239,6 +1234,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
