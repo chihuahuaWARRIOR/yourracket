@@ -277,19 +277,10 @@ body {
   html, body {
     height: 100%;
     overflow-y: auto;
+    margin: 0;
   }
 
-  /* FIX: Branding & Nav-Insel oben bündig und gleich hoch */
-  /* === Responsives Verhalten (Mobile & Tablet) === */
-@media (max-width: 768px) {
-  
-  /* 1. Hintergrund & Body */
-  html, body {
-    height: 100%;
-    overflow-y: auto;
-  }
-
-  /* 2. Inseln oben bündig und gleich hoch (38px) */
+  /* 2. Inseln oben bündig (38px hoch) */
   #brand, #nav-island {
     top: 0 !important;
     height: 38px !important;
@@ -316,12 +307,7 @@ body {
     border-bottom-right-radius: 20px;
   }
 
-  .nav-icon-img {
-    width: 20px;
-    height: 20px;
-  }
-
-  /* 3. Fragenbox: 3px Abstand zur Insel (38px + 3px = 41px) */
+  /* 3. Fragenbox: Mehr Platz & Luft zur Fortschrittsanzeige */
   #question-container {
     position: relative;
     top: auto;
@@ -329,50 +315,59 @@ body {
     transform: none;
     width: 92%;
     max-width: 640px;
-    /* Margin-Top fixiert auf 41px für den perfekten Gap */
-    margin: 41px auto 20px auto !important;
-    min-height: 160px;
-    padding: 14px 16px 18px 16px;
+    margin: 41px auto 15px auto !important; /* 41px Abstand zu Inseln oben */
+    min-height: auto; /* Erlaubt der Box mitzuwachsen */
+    padding: 20px 16px 25px 16px; /* Mehr Padding unten für Abstand zum Progress */
     box-sizing: border-box;
     z-index: 5;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 
-  /* 4. Antwort-Grid: Einspaltig & Buttons IMMER gleich groß */
+  #progress-container {
+    margin-top: 25px !important; /* Schafft deutlich mehr Platz zwischen Frage und Balken */
+    position: relative;
+    width: 100%;
+  }
+
+  /* 4. Antwort-Grid: Einspaltig, Kompakt & Gleich hoch */
   #answers-grid {
     position: relative;
-    top: auto;
-    transform: none;
     display: grid !important;
-    grid-template-columns: 1fr !important; /* Eine Spalte */
-    grid-auto-rows: 1fr;                   /* ALLE Zeilen erzwingen die gleiche Höhe */
-    gap: 10px;
+    grid-template-columns: 1fr !important;
+    /* Entfernt das 1fr, damit die Boxen nicht den ganzen Screen füllen */
+    grid-auto-rows: min-content; 
+    gap: 8px; /* Engeres Gap für kompaktes Design */
     width: 100%;
-    padding: 0 12px 80px 12px; /* Platz für Impressum unten */
+    padding: 0 12px 70px 12px;
     box-sizing: border-box;
   }
 
   .answer {
     width: 100%;
-    height: 100% !important; /* Button füllt die Grid-Zelle komplett aus */
-    font-size: 1rem;
-    padding: 16px;
+    /* Kompakteres Padding für kleinere Buttons */
+    padding: 12px 15px; 
+    font-size: 0.95rem;
     border-radius: 12px;
-    /* Zentrierung des Textes in den nun gleich hohen Buttons */
+    
+    /* Flexbox für Zentrierung */
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    
+    /* Gleiche Höhe erzwingen wir hier über eine Mindesthöhe, 
+       die für 1-2 Zeiler perfekt passt */
+    min-height: 52px; 
+    height: auto;
     box-sizing: border-box;
-    min-height: 60px; /* Mindesthöhe für Einzeiler */
   }
 
-  /* 5. Impressum bündig unten - Schwarz auf Weiß */
+  /* 5. Impressum */
   #footer-island {
     position: fixed;
     right: 12px !important;
     bottom: 0 !important;
-    padding: 8px 20px;
+    padding: 6px 15px;
     background: white;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -383,26 +378,15 @@ body {
     color: black !important;
     text-decoration: none;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
-  /* 6. Progress Bar & Ergebnis-Fixes */
-  #progress-container {
-    position: relative;
-    width: 100%;
-    margin-top: 12px !important;
-  }
-
-  #result-container {
-    padding: 0 !important;
-  }
-
+  /* 6. Ergebnis-Bildschirm */
   #result-container .result-card {
     width: 100% !important;
     max-width: 100% !important;
     border-radius: 0;
-    padding: 20px 10px;
-    box-shadow: none;
+    padding: 15px 10px;
   }
 }
 
@@ -455,6 +439,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
