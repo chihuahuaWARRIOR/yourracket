@@ -304,49 +304,54 @@ body {
     border-bottom-right-radius: 20px;
   }
 
-/* 2. Fragenbox */
-#question-container {
-  position: relative; 
-  width: 92%;
-  max-width: 640px;
-  margin: 41px auto 10px auto !important; 
-  padding: 16px 16px 45px 16px; /* Platz für den Balken */
-  box-sizing: border-box;
-  z-index: 5;
-  font-size: 0.7rem;
-  text-align: center;
-}
 
-/* Der Fortschrittsbalken - DER TOTALE RESET */
-#progress-container {
-  position: absolute !important;
-  bottom: 10px !important;
-  
-  /* Wir setzen ALLES zurück, was ihn nach links schieben könnte */
-  left: 0 !important;
-  right: 0 !important;
-  transform: none !important; 
-  width: auto !important; /* Erlaubt left/right Bindung */
-  
-  /* Zentrierung innerhalb der Ränder */
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  
-  margin: 0 !important;
-  padding: 0 !important;
-  box-sizing: border-box !important;
-}
+  @media (max-width: 768px) {
 
-/* Der Balken selbst */
-#progress-bar {
-  width: 80% !important;
-  max-width: 250px !important;
-  height: 6px !important;
-  background-color: #eee !important;
-  border-radius: 10px !important;
-  overflow: hidden !important;
-  margin: 4px auto 0 auto !important; /* Zentriert ihn zusätzlich im Container */
+  /* 1. Der Container muss relativ sein, damit der Balken sich an ihm orientiert */
+  #question-container {
+    position: relative !important;
+    transform: none !important;
+    left: auto !important;
+    top: auto !important;
+    margin: 41px auto 15px auto !important;
+    width: 92% !important;
+    /* WICHTIG: Genug Platz unten lassen, damit der Balken nicht über dem Text liegt */
+    padding: 20px 15px 50px 15px !important; 
+    box-sizing: border-box;
+    display: block !important;
+    text-align: center;
+  }
+
+  /* 2. Fortschrittsanzeige: Wir nutzen DEINE Desktop-Logik */
+  #progress-container {
+    position: absolute !important;
+    left: 50% !important;
+    bottom: 10px !important; /* Klebt 10px über dem unteren Rand des Containers */
+    transform: translateX(-50%) !important; /* Perfekte Zentrierung */
+    width: 85% !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  /* 3. Die Segmente (Spans) */
+  #progress-bar {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    width: 100% !important;
+  }
+
+  #progress-bar span {
+    width: 10px !important; /* Etwas schmaler für Mobile */
+    height: 4px !important;
+  }
+
+  #progress-text {
+    font-size: 0.75rem !important;
+    margin-bottom: 4px !important;
+  }
 }
   
   /* 3. Antwort-Grid: ABSOLUT IDENTISCH */
@@ -456,6 +461,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
