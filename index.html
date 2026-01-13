@@ -13,10 +13,30 @@
 <div id="brand" class="brand-island"></div>
 
 <!-- Sprache -->
-<div id="lang-switch" class="brand-island">
-  <button id="lang-de">DE</button>
-    <span>|</span>
-  <button id="lang-en">EN</button>
+<div id="nav-island" class="brand-island">
+  
+  <button id="help-btn" class="nav-icon-btn">
+    <img src="/assets/icons/circle-question-mark.svg" class="nav-icon-img" alt="Help">
+  </button>
+  
+  <span class="divider">|</span>
+  
+  <div style="position: relative; display: flex; align-items: center;">
+    <button id="lang-globe-btn" class="nav-icon-btn">
+      <img src="/assets/icons/globe.svg" class="nav-icon-img" alt="Language">
+    </button>
+    
+    <div id="lang-dropdown-menu">
+      <div class="lang-header">Language</div>
+      <button class="lang-option" onclick="switchLang('de')">Deutsch</button>
+      <button class="lang-option" onclick="switchLang('en')">English</button>
+    </div>
+  </div>
+</div>
+
+<div id="help-popup">
+  <h4 id="help-title" style="margin-top:0; font-weight:800;"></h4>
+  <p id="help-text" style="margin-bottom:0; font-size:0.9rem; line-height:1.5; color:#333;"></p>
 </div>
 
 <!-- Impressum -->
@@ -48,6 +68,7 @@
   <script src="app.js"></script>
 </body>
 </html>
+
 
 
 
