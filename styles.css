@@ -270,76 +270,125 @@ body {
 }
 
 /* === Responsives Verhalten (Mobile & Tablet) === */
+/* === Responsives Verhalten (Mobile & Tablet) === */
 @media (max-width: 768px) {
   
-  /* 1. Branding-Insel (Links) & Nav-Insel (Rechts) angleichen */
+  /* 1. Hintergrund & Body */
+  html, body {
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  /* FIX: Branding & Nav-Insel oben bündig und gleich hoch */
   #brand, #nav-island {
-    top: 0 !important;         /* Bündig an den oberen Rand */
-    height: 38px !important;    /* Exakt gleiche Höhe für beide */
+    top: 0 !important;
+    height: 38px !important; /* Gleiche Höhe wie Desktop-Insel */
     display: flex;
     align-items: center;
-    padding: 0 12px;           /* Innerer Abstand */
-    font-size: 0.9rem;
+    padding: 0 12px;
     box-sizing: border-box;
+    position: absolute;
+    z-index: 1000;
   }
 
   #brand {
-    left: 12px !important;     /* Kleiner Abstand zum linken Rand */
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
+    left: 12px !important;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
 
+  /* Nav-Insel (Hilfe/Sprache) oben rechts */
   #nav-island {
-    right: 12px !important;    /* Kleiner Abstand zum rechten Rand */
-    gap: 4px;                  /* Etwas enger auf Mobile */
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-  }
-
-  /* Icons auf Mobile dezent kleiner, damit sie in die 38px Höhe passen */
-  .nav-icon-img {
-    width: 18px;
-    height: 18px;
-  }
-
-  .nav-icon-btn {
-    padding: 2px 4px;
-  }
-
-  /* 2. Impressum-Insel (Unten Rechts) */
-  #footer-island {
     right: 12px !important;
-    bottom: 0 !important;
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    gap: 6px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
 
-  /* 3. Fragenbox & Antworten (Platz schaffen für die Inseln oben) */
+  /* Icons etwas anpassen für die mobile Höhe */
+  .nav-icon-img {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* 2. Fragenbox (Zentrierung & Größe) - DEIN ORIGINAL */
   #question-container {
-    margin: 60px auto 20px auto; /* 60px Top-Margin, damit Inseln nicht überlappen */
-    width: 94%;
-    padding: 16px;
-    font-size: 0.9rem;
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 92%;
+    max-width: 640px;
+    margin: 60px auto 20px auto; /* 60px oben lässt Platz für die bündigen Inseln */
+    min-height: 160px;
+    padding: 14px 16px 18px 16px;
+    box-sizing: border-box;
+    z-index: 5;
+    font-size: 0.85rem;
   }
 
+  /* 3. Antwort-Grid (Einspaltig auf Mobile) - DEIN ORIGINAL */
   #answers-grid {
-    padding: 0 12px 60px 12px; /* 60px Bottom-Padding wegen Impressum */
-    gap: 10px;
+    position: relative;
+    top: auto;
+    transform: none; /* Verhindert Verschiebung */
+    height: auto; 
+    min-height: calc(100vh - 250px);
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: 1fr !important; /* Erzwingt UNTEREINANDER */
+    gap: 8px;
+    padding: 0 12px 80px 12px; /* 80px unten Platz für Impressum */
+    box-sizing: border-box;
   }
 
   .answer {
-    padding: 18px; /* Größere Klickfläche auf dem Handy */
     font-size: 1rem;
+    padding: 16px;
+    border-radius: 12px;
+    width: 100%; /* Volle Breite für Einspaltigkeit */
   }
 
-  /* 4. Result Card Fixes */
+  /* 4. Branding & Footer - FIX: Impressum Schwarz auf Weiß */
+  .brand-island { font-size: 0.95rem; }
+  
+  #footer-island { 
+    right: 12px !important; 
+    bottom: 0 !important; 
+    padding: 8px 20px;
+    background: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    position: fixed;
+  }
+  
+  #footer-island a {
+    color: black !important;
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  /* 5. Progress Bar */
+  #progress-container {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    margin-top: 12px !important;
+  }
+
+  /* 6. DER MOBILE-FIX FÜR DIE ENDKARTE (100% Breite) */
+  #result-container {
+    padding: 0 !important;
+  }
+
   #result-container .result-card {
     width: 100% !important;
     max-width: 100% !important;
     border-radius: 0;
     padding: 20px 10px;
+    box-shadow: none;
   }
 }
 
@@ -392,5 +441,6 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
