@@ -116,7 +116,7 @@ async function loadData() {
     showQuestion();
     renderProgress();
     createBackButton();
-    attachLangSwitchHandlers();
+
 
   } catch (err) {
     console.error("Fehler beim Laden:", err);
@@ -1082,32 +1082,103 @@ function goBack() {
 }
 
 // === Sprachumschaltung ===
-function attachLangSwitchHandlers() {
-  const en = document.getElementById("lang-en");
-  const de = document.getElementById("lang-de");
+function switchLang(newLang) {
+  lang = newLang;
+  localStorage.setItem("language", newLang);
+  
+  // Quiz-Status zurücksetzen
+  currentQuestion = 0;
+  initializeUserProfile(); 
+  showQuestion();
+  renderProgress();
+  
+  // UI-Update: Dropdown nach Klick schließen
+  const langMenu = document.getElementById("lang-dropdown-menu");
+  if (langMenu) langMenu.style.display = "none";
+  
+  // Falls du die Nav-Insel Texte im Hilfe-Popup sofort aktualisieren willst:
+  const helpPopup = document.getElementById("help-popup");
+  if (helpPopup && helpPopup.style.display === "block") {
+      // Simuliert einen Klick auf den Hilfe-Button, um den Text zu aktualisieren
+      document.getElementById("help-btn").click(); 
+      document.getElementById("help-btn").click();
+    const langMenu = document.getElementById("lang-dropdown-menu");
+  if (langMenu) langMenu.style.display = "none";
+}
+  }
+}
 
-  if (en) en.onclick = () => switchLang("en");
-  if (de) de.onclick = () => switchLang("de");
+// === Sprachumschaltung ===
+function switchLang(newLang) {
+  lang = newLang;
+  localStorage.setItem("language", newLang);
+  
+  // Quiz-Status zurücksetzen
+  currentQuestion = 0;
+  initializeUserProfile(); 
+  showQuestion();
+  renderProgress();
+  
+  // UI-Update: Menüs schließen
+  const langMenu = document.getElementById("lang-dropdown-menu");
+  const helpPopup = document.getElementById("help-popup");
 
-  const langSwitch = document.getElementById("lang-switch");
-  if (langSwitch && !en && !de) {
-    const btns = langSwitch.getElementsByTagName("button");
-    for (const b of btns) {
-      if (/en/i.test(b.innerText)) b.onclick = () => switchLang("en");
-      if (/de/i.test(b.innerText)) b.onclick = () => switchLang("de");
+  if (langMenu) langMenu.style.display = "none";
+
+  // Falls das Hilfe-Popup offen ist, Texte aktualisieren
+  if (helpPopup && helpPopup.style.display === "block") {
+    const helpBtn = document.getElementById("help-btn");
+    if (helpBtn) {
+      // Kurz zu und wieder aufmachen, um Texte neu zu laden
+      helpPopup.style.display = "none";
+      helpBtn.click();
     }
   }
 }
 
-function switchLang(newLang) {
-  lang = newLang;
-  localStorage.setItem("language", newLang);
-  currentQuestion = 0;
-  // Profil resetten und neu initialisieren mit den bereits berechneten Averages
-  initializeUserProfile(); 
-  showQuestion();
-  renderProgress();
+// === Hilfe und Sprach-Box ===
+function setupNavIsland() {
+  const helpBtn = document.getElementById("help-btn");
+  const globeBtn = document.getElementById("lang-globe-btn");
+  const helpPopup = document.getElementById("help-popup");
+  const langMenu = document.getElementById("lang-dropdown-menu");
+
+  if (!helpBtn || !globeBtn) return;
+
+  const helpContent = {
+    de: {
+      title: "Wie das Quiz funktioniert",
+      text: "Wir analysieren dein Spiel durch konkrete Situationen auf dem Platz. Deine Antworten gewichten die Relevanz der Kategorien (wie Power, Spin oder Kontrolle) für dein perfektes Racket."
+    },
+    en: {
+      title: "How the quiz works",
+      text: "We analyze your game through real on-court situations. Your answers weight the relevance of categories (like power, spin or control) for your perfect racket."
+    }
+  };
+
+  helpBtn.onclick = (e) => {
+    e.stopPropagation();
+    const content = helpContent[lang] || helpContent.de;
+    document.getElementById("help-title").innerText = content.title;
+    document.getElementById("help-text").innerText = content.text;
+    helpPopup.style.display = helpPopup.style.display === "block" ? "none" : "block";
+    if (langMenu) langMenu.style.display = "none";
+  };
+
+  globeBtn.onclick = (e) => {
+    e.stopPropagation();
+    langMenu.style.display = langMenu.style.display === "block" ? "none" : "block";
+    if (helpPopup) helpPopup.style.display = "none";
+  };
+
+  document.addEventListener("click", () => {
+    if (helpPopup) helpPopup.style.display = "none";
+    if (langMenu) langMenu.style.display = "none";
+  });
 }
+
+// Aufruf der Initialisierung
+setupNavIsland();
 
 // === Impressum Hook ===
 function createImpressumHook() {
@@ -1257,6 +1328,7 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
 
 
