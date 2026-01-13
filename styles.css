@@ -304,8 +304,7 @@ body {
     border-bottom-right-radius: 20px;
   }
 
-/* 2. Fragenbox - Vorbereitung für den Balken */
-/* 2. Fragenbox - Vorbereitung für den Balken */
+/* 2. Fragenbox - DEIN ORIGINAL */
 #question-container {
   position: relative; 
   top: auto;
@@ -314,63 +313,39 @@ body {
   width: 92%;
   max-width: 640px;
   margin: 41px auto 10px auto !important; 
-  /* Padding unten erhöht, um Platz für den zentrierten Balken zu schaffen */
-  padding: 16px 16px 30px 16px; 
-  box-sizing: border-box;
-  z-index: 5;
-  font-size: 0.7rem; /* Deine gewünschte Größe */
-  text-align: center; /* Zentriert den Fragentext */
-}
-
-/* 2. Fragenbox - Der "Sicherheits-Rahmen" */
-#question-container {
-  position: relative;
-  display: flex !important; /* Aktiviert Flexbox für die Box selbst */
-  flex-direction: column;   /* Stapelt Inhalt vertikal */
-  align-items: center;      /* Zentriert ALLES (Text + Balken) horizontal */
-  
-  width: 92%;
-  max-width: 640px;
-  margin: 41px auto 10px auto !important; 
-  padding: 16px 16px 40px 16px; /* 40px unten Platz für den angedockten Balken */
+  padding: 16px 16px 45px 16px; /* Padding unten auf 45px erhöht, damit der Balken Platz hat */
   box-sizing: border-box;
   z-index: 5;
   font-size: 0.7rem;
+  text-align: center;
 }
 
-/* Der Fortschritts-Container - Jetzt ohne kompliziertes Geschiebe */
+/* Der Fortschrittsbalken - Jetzt einfach an den unteren Rand gedockt */
 #progress-container {
-  position: absolute; 
-  bottom: 8px;          /* Klebt unten am Rand der Box */
-  width: 100%;          /* Nutzt die volle Breite der Fragenbox */
-  left: 0;              /* Startet ganz links */
-  
+  /* Diese 3 Zeilen schicken ihn nach unten mittig */
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+
+  /* Diese Zeilen sorgen dafür, dass Text & Balken im Container zentriert bleiben */
   display: flex !important;
   flex-direction: column;
-  align-items: center;  /* Zwingt Text und Balken EXAKT in die Mitte */
+  align-items: center;
   
   margin: 0 !important;
-  padding: 0 20px;      /* Kleiner Seitenabstand zum Rand der Box */
-  box-sizing: border-box;
+  padding: 0;
 }
 
-/* Text über dem Balken */
-#progress-text {
-  display: block;
-  text-align: center;
-  margin-bottom: 4px;
-}
-
-/* Der Balken selbst */
+/* Der Balken selbst (bleibt wie er war, nur Breite fixiert) */
 #progress-bar {
-  width: 100%;          /* Füllt den Container (der durch Padding begrenzt ist) */
-  max-width: 250px;     /* Damit er nicht zu breit wird */
-  height: 6px; 
-  border-radius: 10px;
+  width: 80%;
+  max-width: 250px;
+  height: 6px;
   background-color: #eee;
+  border-radius: 10px;
   overflow: hidden;
 }
-
   /* 3. Antwort-Grid: ABSOLUT IDENTISCH */
   #answers-grid {
     position: relative;
@@ -478,6 +453,7 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
 
 
