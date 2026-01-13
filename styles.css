@@ -272,79 +272,74 @@ body {
 /* === Responsives Verhalten (Mobile & Tablet) === */
 @media (max-width: 768px) {
   
-  /* 1. Hintergrund & Body */
-  html, body {
-    height: 100%;
-    overflow-y: auto;
+  /* 1. Branding-Insel (Links) & Nav-Insel (Rechts) angleichen */
+  #brand, #nav-island {
+    top: 0 !important;         /* Bündig an den oberen Rand */
+    height: 38px !important;    /* Exakt gleiche Höhe für beide */
+    display: flex;
+    align-items: center;
+    padding: 0 12px;           /* Innerer Abstand */
+    font-size: 0.9rem;
+    box-sizing: border-box;
   }
 
-  /* 2. Fragenbox (Zentrierung & Größe) */
+  #brand {
+    left: 12px !important;     /* Kleiner Abstand zum linken Rand */
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  #nav-island {
+    right: 12px !important;    /* Kleiner Abstand zum rechten Rand */
+    gap: 4px;                  /* Etwas enger auf Mobile */
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  /* Icons auf Mobile dezent kleiner, damit sie in die 38px Höhe passen */
+  .nav-icon-img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .nav-icon-btn {
+    padding: 2px 4px;
+  }
+
+  /* 2. Impressum-Insel (Unten Rechts) */
+  #footer-island {
+    right: 12px !important;
+    bottom: 0 !important;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+
+  /* 3. Fragenbox & Antworten (Platz schaffen für die Inseln oben) */
   #question-container {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
-    width: 92%;
-    max-width: 640px;
-    margin: 32px auto;
-    min-height: 160px;
-    padding: 14px 16px 18px 16px;
-    box-sizing: border-box;
-    z-index: 5;
-    font-size: 0.85rem;
+    margin: 60px auto 20px auto; /* 60px Top-Margin, damit Inseln nicht überlappen */
+    width: 94%;
+    padding: 16px;
+    font-size: 0.9rem;
   }
 
-  /* 3. Antwort-Grid (Einspaltig auf Mobile) */
   #answers-grid {
-    position: relative;
-    top: auto;
-    height: auto; 
-    min-height: calc(100vh - 250px);
-    width: 100%;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, 1fr);
-    gap: 8px;
-    padding: 0 12px 40px 12px;
-    box-sizing: border-box;
+    padding: 0 12px 60px 12px; /* 60px Bottom-Padding wegen Impressum */
+    gap: 10px;
   }
 
   .answer {
+    padding: 18px; /* Größere Klickfläche auf dem Handy */
     font-size: 1rem;
-    padding: 16px;
-    border-radius: 12px;
   }
 
-  /* 4. Branding & Footer */
-  .brand-island { font-size: 0.95rem; padding: 6px 12px; }
-  #brand { left: 12px; top: 8px; }
-  #lang-switch { right: 12px; top: 8px; padding: 6px 10px; }
-  #footer-island { right: 12px; bottom: 0; padding: 8px 12px; }
-
-  /* 5. Progress Bar */
-  #progress-container {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    transform: none;
-    width: 100%;
-    margin-top: 12px !important;
-  }
-
-  /* 6. DER MOBILE-FIX FÜR DIE ENDKARTE (100% Breite) */
-  #result-container {
-    padding: 0 !important; /* Entfernt äußeren Rand auf Mobile */
-  }
-
+  /* 4. Result Card Fixes */
   #result-container .result-card {
     width: 100% !important;
     max-width: 100% !important;
-    border-radius: 0;      /* Sieht besser aus, wenn es Kante an Kante liegt */
-    padding: 20px 10px;    /* Weniger Seitenabstand = mehr Platz für Chart */
-    box-shadow: none;
-  }
-
-  #result-container .result-card img {
-    max-width: 180px;      /* Bild etwas kleiner, damit Chart nach oben rückt */
+    border-radius: 0;
+    padding: 20px 10px;
   }
 }
 
@@ -397,4 +392,5 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
 
