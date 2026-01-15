@@ -1127,11 +1127,11 @@ function setupNavIsland() {
   const helpContent = {
     de: {
       title: "Wie das Quiz funktioniert",
-      text: "Wir analysieren dein Spiel durch konkrete Situationen auf dem Platz. Deine Antworten gewichten die Relevanz der Kategorien (wie Power, Spin oder Kontrolle) für dein perfektes Racket."
+      text: "Wir analysieren dein Spiel durch konkrete Situationen auf dem Platz. Deine Antworten gewichten das Wunschprofil für deinen perfekten Schläger in Kategorien wie Power, Topspin oder Kontrolle. Dein Spielniveau ist dabei nicht wichtig: Antworte einfach so, wie du im besten Falle spielen würdest."
     },
     en: {
       title: "How the quiz works",
-      text: "We analyze your game through real on-court situations. Your answers weight the relevance of categories (like power, spin or control) for your perfect racket."
+      text: "We analyze your game through real on-court situations. Your answers weight the relevance of categories (like power, spin or control) for your perfect racket. Your level of play is not important: simply respond as you would in the best-case scenario."
     }
   };
 
@@ -1317,4 +1317,5 @@ function renderRadarChart(profile) {
 }
 // === Init ===
 loadData();
+
 
