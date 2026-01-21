@@ -1,19 +1,19 @@
 {
   "de": [
     {
-      "q": "Wie alt bist du?",
+      "q": "In welcher Altersgruppe spielst Du?",
       "answers": [
-        { "text": "Unter 18", "effects": { "Power": 0, "Topspin": 0, "Stability": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "18 bis 52", "effects": { "Control": 0, "Maneuverability": 0, "Touch / Feel": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "52 bis 67", "effects": { "Comfort": 0, "Power": 0, "Stability": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Über 67", "effects": { "Comfort": 0, "Power": 0, "Stability": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } }
+        { "text": "Unter 14", "effects": { "WeightMax": 289, "HeadsizeMin": 104 } },
+        { "text": "14 bis 18", "effects": { "WeightMax": 300, "HeadsizeMin": 100 } },
+        { "text": "18 bis 67", "effects": { "WeightMax": 400, "HeadsizeMin": 50 } },
+        { "text": "Über 67", "effects": { "WeightMax": 299, "HeadSizeMin": 101 } }
       ]
     },
     {
-      "q": "Wie würdest du deinen Schwung beschreiben?",
+      "q": "Wie lange spielst Du schon Tennis?",
       "answers": [
-        { "text": "Groß und schnell – ich hole weit aus und schwinge durch", "effects": { "Control": 0, "Topspin": 0, "Power": 0, "Stability": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
-        { "text": "Mittel – gleichmäßig und kontrolliert", "effects": { "Control": 0, "Maneuverability": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
+        { "text": "Ich bin ganz neu dabei", "effects": { "WeightMax": 299, "HeadsizeMin": 100 } },
+        { "text": "Seit einigen Monaten", "effects": { "Control": 0, "Maneuverability": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
         { "text": "Kurz und kompakt – effizient ohne viel Ausholbewegung", "effects": { "Comfort": 0, "Power": 0, "Maneuverability": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } },
         { "text": "Ich variiere stark, je nach Schlag", "effects": { "Touch / Feel": 0, "TheBigServer": 0, "ServeAndVolleyer": 0, "AllCourtPlayer": 0, "AttackingBaseliner": 0, "SolidBaseliner": 0, "CounterPuncher": 0 } }
       ]
@@ -2500,6 +2500,7 @@
   }
   ]
 }
+
 
 
 
